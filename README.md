@@ -1,4 +1,4 @@
-# TacticPair website prototype
+# TactiChess website prototype
 
 A responsive, self-contained frontend demo for an ECLAT-powered chess tactics discovery website. No build tools, server, dependencies, or authentication are required.
 
