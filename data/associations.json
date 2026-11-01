@@ -1,0 +1,634 @@
+{
+  "themes": [
+    {
+      "id": "advancedPawn",
+      "name": "Advanced Pawn",
+      "description": "A pawn close to promotion."
+    },
+    {
+      "id": "attraction",
+      "name": "Attraction",
+      "description": "Draw an opponent's piece to a vulnerable square."
+    },
+    {
+      "id": "backRankMate",
+      "name": "Back Rank Mate",
+      "description": "Checkmate a king trapped on its back rank."
+    },
+    {
+      "id": "clearance",
+      "name": "Clearance",
+      "description": "Clear a square or line for another tactic."
+    },
+    {
+      "id": "defensiveMove",
+      "name": "Defensive Move",
+      "description": "Find a move that prevents a loss."
+    },
+    {
+      "id": "deflection",
+      "name": "Deflection",
+      "description": "Draw a defender away from its duty."
+    },
+    {
+      "id": "discoveredAttack",
+      "name": "Discovered Attack",
+      "description": "Move a piece to reveal another piece's attack."
+    },
+    {
+      "id": "discoveredCheck",
+      "name": "Discovered Check",
+      "description": "Move a piece to reveal a check."
+    },
+    {
+      "id": "exposedKing",
+      "name": "Exposed King",
+      "description": "Attack a king with limited protection."
+    },
+    {
+      "id": "fork",
+      "name": "Fork",
+      "description": "Attack two or more opposing pieces at once."
+    },
+    {
+      "id": "hangingPiece",
+      "name": "Hanging Piece",
+      "description": "Find a piece that can be captured."
+    },
+    {
+      "id": "kingsideAttack",
+      "name": "Kingside Attack",
+      "description": "Attack the opponent's kingside king."
+    },
+    {
+      "id": "pillsburysMate",
+      "name": "Pillsbury's Mate",
+      "description": "A rook checkmates with help from a bishop."
+    },
+    {
+      "id": "pin",
+      "name": "Pin",
+      "description": "Restrict a piece because moving it exposes another target."
+    },
+    {
+      "id": "promotion",
+      "name": "Promotion",
+      "description": "Advance a pawn to become a stronger piece."
+    },
+    {
+      "id": "queensideAttack",
+      "name": "Queenside Attack",
+      "description": "Attack the opponent's queenside king."
+    },
+    {
+      "id": "quietMove",
+      "name": "Quiet Move",
+      "description": "Prepare a strong threat without an immediate capture or check."
+    },
+    {
+      "id": "sacrifice",
+      "name": "Sacrifice",
+      "description": "Give up material to gain a tactical advantage."
+    },
+    {
+      "id": "skewer",
+      "name": "Skewer",
+      "description": "Attack a valuable piece to expose another behind it."
+    },
+    {
+      "id": "zugzwang",
+      "name": "Zugzwang",
+      "description": "Force an opponent to make a move that worsens their position."
+    }
+  ],
+  "rules": [
+    {
+      "source_theme": "advancedPawn",
+      "related_theme": "quietMove",
+      "pair_key": "advancedPawn|quietMove",
+      "source_count": 24723,
+      "related_count": 17022,
+      "pair_count": 2979,
+      "support": 0.0074475,
+      "confidence": 0.1204950855478704,
+      "lift": 2.8315141710226857
+    },
+    {
+      "source_theme": "advancedPawn",
+      "related_theme": "defensiveMove",
+      "pair_key": "advancedPawn|defensiveMove",
+      "source_count": 24723,
+      "related_count": 24123,
+      "pair_count": 2362,
+      "support": 0.005905,
+      "confidence": 0.0955385673259717,
+      "lift": 1.584190479226825
+    },
+    {
+      "source_theme": "advancedPawn",
+      "related_theme": "exposedKing",
+      "pair_key": "advancedPawn|exposedKing",
+      "source_count": 24723,
+      "related_count": 12078,
+      "pair_count": 1605,
+      "support": 0.0040125,
+      "confidence": 0.064919305909477,
+      "lift": 2.150001851613744
+    },
+    {
+      "source_theme": "attraction",
+      "related_theme": "sacrifice",
+      "pair_key": "attraction|sacrifice",
+      "source_count": 14538,
+      "related_count": 29895,
+      "pair_count": 8532,
+      "support": 0.02133,
+      "confidence": 0.58687577383409,
+      "lift": 7.852494046952199
+    },
+    {
+      "source_theme": "attraction",
+      "related_theme": "fork",
+      "pair_key": "attraction|fork",
+      "source_count": 14538,
+      "related_count": 51132,
+      "pair_count": 4600,
+      "support": 0.0115,
+      "confidence": 0.3164121612326317,
+      "lift": 2.475257460945253
+    },
+    {
+      "source_theme": "attraction",
+      "related_theme": "kingsideAttack",
+      "pair_key": "attraction|kingsideAttack",
+      "source_count": 14538,
+      "related_count": 35224,
+      "pair_count": 2895,
+      "support": 0.0072375,
+      "confidence": 0.1991333058192323,
+      "lift": 2.261336654772114
+    },
+    {
+      "source_theme": "backRankMate",
+      "related_theme": "sacrifice",
+      "pair_key": "backRankMate|sacrifice",
+      "source_count": 13601,
+      "related_count": 29895,
+      "pair_count": 3446,
+      "support": 0.008615,
+      "confidence": 0.253363723255643,
+      "lift": 3.390048145250282
+    },
+    {
+      "source_theme": "backRankMate",
+      "related_theme": "hangingPiece",
+      "pair_key": "backRankMate|hangingPiece",
+      "source_count": 13601,
+      "related_count": 14559,
+      "pair_count": 886,
+      "support": 0.002215,
+      "confidence": 0.0651422689508124,
+      "lift": 1.7897456954684372
+    },
+    {
+      "source_theme": "clearance",
+      "related_theme": "sacrifice",
+      "pair_key": "clearance|sacrifice",
+      "source_count": 5254,
+      "related_count": 29895,
+      "pair_count": 1715,
+      "support": 0.0042875,
+      "confidence": 0.3264179672630377,
+      "lift": 4.36752590417177
+    },
+    {
+      "source_theme": "clearance",
+      "related_theme": "kingsideAttack",
+      "pair_key": "clearance|kingsideAttack",
+      "source_count": 5254,
+      "related_count": 35224,
+      "pair_count": 833,
+      "support": 0.0020825,
+      "confidence": 0.1585458698134754,
+      "lift": 1.8004300455766007
+    },
+    {
+      "source_theme": "defensiveMove",
+      "related_theme": "quietMove",
+      "pair_key": "defensiveMove|quietMove",
+      "source_count": 24123,
+      "related_count": 17022,
+      "pair_count": 2967,
+      "support": 0.0074175,
+      "confidence": 0.1229946524064171,
+      "lift": 2.890251495862228
+    },
+    {
+      "source_theme": "defensiveMove",
+      "related_theme": "advancedPawn",
+      "pair_key": "advancedPawn|defensiveMove",
+      "source_count": 24123,
+      "related_count": 24723,
+      "pair_count": 2362,
+      "support": 0.005905,
+      "confidence": 0.097914853044812,
+      "lift": 1.584190479226825
+    },
+    {
+      "source_theme": "defensiveMove",
+      "related_theme": "zugzwang",
+      "pair_key": "defensiveMove|zugzwang",
+      "source_count": 24123,
+      "related_count": 4050,
+      "pair_count": 1417,
+      "support": 0.0035425,
+      "confidence": 0.058740620984123,
+      "lift": 5.801542813246719
+    },
+    {
+      "source_theme": "deflection",
+      "related_theme": "sacrifice",
+      "pair_key": "deflection|sacrifice",
+      "source_count": 17125,
+      "related_count": 29895,
+      "pair_count": 1801,
+      "support": 0.0045025,
+      "confidence": 0.1051678832116788,
+      "lift": 1.407163515125323
+    },
+    {
+      "source_theme": "deflection",
+      "related_theme": "attraction",
+      "pair_key": "attraction|deflection",
+      "source_count": 17125,
+      "related_count": 14538,
+      "pair_count": 1555,
+      "support": 0.0038875,
+      "confidence": 0.0908029197080292,
+      "lift": 2.498360701830491
+    },
+    {
+      "source_theme": "deflection",
+      "related_theme": "pin",
+      "pair_key": "deflection|pin",
+      "source_count": 17125,
+      "related_count": 24007,
+      "pair_count": 1443,
+      "support": 0.0036075,
+      "confidence": 0.0842627737226277,
+      "lift": 1.4039700707731533
+    },
+    {
+      "source_theme": "discoveredAttack",
+      "related_theme": "kingsideAttack",
+      "pair_key": "discoveredAttack|kingsideAttack",
+      "source_count": 20186,
+      "related_count": 35224,
+      "pair_count": 3455,
+      "support": 0.0086375,
+      "confidence": 0.1711582284751808,
+      "lift": 1.9436546499566296
+    },
+    {
+      "source_theme": "discoveredAttack",
+      "related_theme": "sacrifice",
+      "pair_key": "discoveredAttack|sacrifice",
+      "source_count": 20186,
+      "related_count": 29895,
+      "pair_count": 1812,
+      "support": 0.00453,
+      "confidence": 0.089765183790746,
+      "lift": 1.2010728722628676
+    },
+    {
+      "source_theme": "discoveredAttack",
+      "related_theme": "deflection",
+      "pair_key": "deflection|discoveredAttack",
+      "source_count": 20186,
+      "related_count": 17125,
+      "pair_count": 1160,
+      "support": 0.0029,
+      "confidence": 0.0574655701971663,
+      "lift": 1.3422614936564403
+    },
+    {
+      "source_theme": "discoveredCheck",
+      "related_theme": "sacrifice",
+      "pair_key": "discoveredCheck|sacrifice",
+      "source_count": 6941,
+      "related_count": 29895,
+      "pair_count": 1181,
+      "support": 0.0029525,
+      "confidence": 0.1701483936032272,
+      "lift": 2.276613394925268
+    },
+    {
+      "source_theme": "discoveredCheck",
+      "related_theme": "kingsideAttack",
+      "pair_key": "discoveredCheck|kingsideAttack",
+      "source_count": 6941,
+      "related_count": 35224,
+      "pair_count": 1101,
+      "support": 0.0027525,
+      "confidence": 0.1586226768477164,
+      "lift": 1.8013022580935325
+    },
+    {
+      "source_theme": "discoveredCheck",
+      "related_theme": "advancedPawn",
+      "pair_key": "advancedPawn|discoveredCheck",
+      "source_count": 6941,
+      "related_count": 24723,
+      "pair_count": 984,
+      "support": 0.00246,
+      "confidence": 0.141766316092782,
+      "lift": 2.293674976221041
+    },
+    {
+      "source_theme": "exposedKing",
+      "related_theme": "fork",
+      "pair_key": "exposedKing|fork",
+      "source_count": 12078,
+      "related_count": 51132,
+      "pair_count": 3169,
+      "support": 0.0079225,
+      "confidence": 0.2623778771319754,
+      "lift": 2.0525532123286823
+    },
+    {
+      "source_theme": "exposedKing",
+      "related_theme": "sacrifice",
+      "pair_key": "exposedKing|sacrifice",
+      "source_count": 12078,
+      "related_count": 29895,
+      "pair_count": 1798,
+      "support": 0.004495,
+      "confidence": 0.1488657062427554,
+      "lift": 1.9918475496605508
+    },
+    {
+      "source_theme": "exposedKing",
+      "related_theme": "attraction",
+      "pair_key": "attraction|exposedKing",
+      "source_count": 12078,
+      "related_count": 14538,
+      "pair_count": 1730,
+      "support": 0.004325,
+      "confidence": 0.1432356350389137,
+      "lift": 3.9409997259296654
+    },
+    {
+      "source_theme": "fork",
+      "related_theme": "sacrifice",
+      "pair_key": "fork|sacrifice",
+      "source_count": 51132,
+      "related_count": 29895,
+      "pair_count": 5259,
+      "support": 0.0131475,
+      "confidence": 0.1028514433231635,
+      "lift": 1.376169169736258
+    },
+    {
+      "source_theme": "fork",
+      "related_theme": "attraction",
+      "pair_key": "attraction|fork",
+      "source_count": 51132,
+      "related_count": 14538,
+      "pair_count": 4600,
+      "support": 0.0115,
+      "confidence": 0.0899632324180552,
+      "lift": 2.475257460945253
+    },
+    {
+      "source_theme": "fork",
+      "related_theme": "exposedKing",
+      "pair_key": "exposedKing|fork",
+      "source_count": 51132,
+      "related_count": 12078,
+      "pair_count": 3169,
+      "support": 0.0079225,
+      "confidence": 0.0619768442462645,
+      "lift": 2.0525532123286827
+    },
+    {
+      "source_theme": "hangingPiece",
+      "related_theme": "defensiveMove",
+      "pair_key": "defensiveMove|hangingPiece",
+      "source_count": 14559,
+      "related_count": 24123,
+      "pair_count": 1378,
+      "support": 0.003445,
+      "confidence": 0.0946493577855622,
+      "lift": 1.5694458862589595
+    },
+    {
+      "source_theme": "hangingPiece",
+      "related_theme": "backRankMate",
+      "pair_key": "backRankMate|hangingPiece",
+      "source_count": 14559,
+      "related_count": 13601,
+      "pair_count": 886,
+      "support": 0.002215,
+      "confidence": 0.0608558280101655,
+      "lift": 1.7897456954684372
+    },
+    {
+      "source_theme": "kingsideAttack",
+      "related_theme": "sacrifice",
+      "pair_key": "kingsideAttack|sacrifice",
+      "source_count": 35224,
+      "related_count": 29895,
+      "pair_count": 6022,
+      "support": 0.015055,
+      "confidence": 0.1709629797865092,
+      "lift": 2.287512691573965
+    },
+    {
+      "source_theme": "kingsideAttack",
+      "related_theme": "discoveredAttack",
+      "pair_key": "discoveredAttack|kingsideAttack",
+      "source_count": 35224,
+      "related_count": 20186,
+      "pair_count": 3455,
+      "support": 0.0086375,
+      "confidence": 0.0980865319100613,
+      "lift": 1.9436546499566296
+    },
+    {
+      "source_theme": "kingsideAttack",
+      "related_theme": "attraction",
+      "pair_key": "attraction|kingsideAttack",
+      "source_count": 35224,
+      "related_count": 14538,
+      "pair_count": 2895,
+      "support": 0.0072375,
+      "confidence": 0.0821882807176924,
+      "lift": 2.261336654772114
+    },
+    {
+      "source_theme": "pillsburysMate",
+      "related_theme": "sacrifice",
+      "pair_key": "pillsburysMate|sacrifice",
+      "source_count": 4309,
+      "related_count": 29895,
+      "pair_count": 800,
+      "support": 0.002,
+      "confidence": 0.185657925272685,
+      "lift": 2.484133470783543
+    },
+    {
+      "source_theme": "pin",
+      "related_theme": "sacrifice",
+      "pair_key": "pin|sacrifice",
+      "source_count": 24007,
+      "related_count": 29895,
+      "pair_count": 2813,
+      "support": 0.0070325,
+      "confidence": 0.1171741575373849,
+      "lift": 1.5678094335157708
+    },
+    {
+      "source_theme": "pin",
+      "related_theme": "kingsideAttack",
+      "pair_key": "kingsideAttack|pin",
+      "source_count": 24007,
+      "related_count": 35224,
+      "pair_count": 2605,
+      "support": 0.0065125,
+      "confidence": 0.1085100179114424,
+      "lift": 1.2322282297461105
+    },
+    {
+      "source_theme": "pin",
+      "related_theme": "deflection",
+      "pair_key": "deflection|pin",
+      "source_count": 24007,
+      "related_count": 17125,
+      "pair_count": 1443,
+      "support": 0.0036075,
+      "confidence": 0.0601074686549756,
+      "lift": 1.4039700707731533
+    },
+    {
+      "source_theme": "promotion",
+      "related_theme": "quietMove",
+      "pair_key": "promotion|quietMove",
+      "source_count": 9713,
+      "related_count": 17022,
+      "pair_count": 1354,
+      "support": 0.003385,
+      "confidence": 0.1394008030474621,
+      "lift": 3.275779650980194
+    },
+    {
+      "source_theme": "queensideAttack",
+      "related_theme": "sacrifice",
+      "pair_key": "queensideAttack|sacrifice",
+      "source_count": 5963,
+      "related_count": 29895,
+      "pair_count": 882,
+      "support": 0.002205,
+      "confidence": 0.1479121247694113,
+      "lift": 1.9790884732485212
+    },
+    {
+      "source_theme": "quietMove",
+      "related_theme": "advancedPawn",
+      "pair_key": "advancedPawn|quietMove",
+      "source_count": 17022,
+      "related_count": 24723,
+      "pair_count": 2979,
+      "support": 0.0074475,
+      "confidence": 0.1750088121254846,
+      "lift": 2.831514171022686
+    },
+    {
+      "source_theme": "quietMove",
+      "related_theme": "defensiveMove",
+      "pair_key": "defensiveMove|quietMove",
+      "source_count": 17022,
+      "related_count": 24123,
+      "pair_count": 2967,
+      "support": 0.0074175,
+      "confidence": 0.1743038420867113,
+      "lift": 2.890251495862228
+    },
+    {
+      "source_theme": "quietMove",
+      "related_theme": "promotion",
+      "pair_key": "promotion|quietMove",
+      "source_count": 17022,
+      "related_count": 9713,
+      "pair_count": 1354,
+      "support": 0.003385,
+      "confidence": 0.0795441193749265,
+      "lift": 3.275779650980194
+    },
+    {
+      "source_theme": "sacrifice",
+      "related_theme": "attraction",
+      "pair_key": "attraction|sacrifice",
+      "source_count": 29895,
+      "related_count": 14538,
+      "pair_count": 8532,
+      "support": 0.02133,
+      "confidence": 0.2853988961364777,
+      "lift": 7.852494046952199
+    },
+    {
+      "source_theme": "sacrifice",
+      "related_theme": "kingsideAttack",
+      "pair_key": "kingsideAttack|sacrifice",
+      "source_count": 29895,
+      "related_count": 35224,
+      "pair_count": 6022,
+      "support": 0.015055,
+      "confidence": 0.2014383676200033,
+      "lift": 2.2875126915739648
+    },
+    {
+      "source_theme": "sacrifice",
+      "related_theme": "fork",
+      "pair_key": "fork|sacrifice",
+      "source_count": 29895,
+      "related_count": 51132,
+      "pair_count": 5259,
+      "support": 0.0131475,
+      "confidence": 0.1759157049673858,
+      "lift": 1.376169169736258
+    },
+    {
+      "source_theme": "skewer",
+      "related_theme": "exposedKing",
+      "pair_key": "exposedKing|skewer",
+      "source_count": 8739,
+      "related_count": 12078,
+      "pair_count": 879,
+      "support": 0.0021975,
+      "confidence": 0.1005835907998626,
+      "lift": 3.331133989066491
+    },
+    {
+      "source_theme": "zugzwang",
+      "related_theme": "defensiveMove",
+      "pair_key": "defensiveMove|zugzwang",
+      "source_count": 4050,
+      "related_count": 24123,
+      "pair_count": 1417,
+      "support": 0.0035425,
+      "confidence": 0.3498765432098765,
+      "lift": 5.801542813246719
+    },
+    {
+      "source_theme": "zugzwang",
+      "related_theme": "quietMove",
+      "pair_key": "quietMove|zugzwang",
+      "source_count": 4050,
+      "related_count": 17022,
+      "pair_count": 1306,
+      "support": 0.003265,
+      "confidence": 0.3224691358024691,
+      "lift": 7.577702638995866
+    }
+  ]
+}

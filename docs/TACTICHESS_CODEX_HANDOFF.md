@@ -1,0 +1,105 @@
+# TactiChess — Codex Project Handoff
+
+Updated: November 1, 2026  
+Project: TactiChess, offline ECLAT-powered chess tactic association explorer  
+Current status: Stages 1–5 completed. Stage 6.1 (local website preparation and repository inspection) is in progress and **has not yet been confirmed complete**.
+
+## 1. Goal and scope
+
+Build a responsive, static website where a learner selects a chess tactic, sees related tactics based on genuine co-occurrence in Lichess puzzles, examines the training-derived support, confidence, lift, and counts, and views real puzzles tagged with both tactics. Users can filter examples by rating and open the puzzle on Lichess.
+
+- ECLAT ran **offline in Google Colab**. The website **does not rerun ECLAT** or train a model.
+- Mine and present **two-item tactical pairs only**; no triples.
+- This is association discovery, **not** chess move prediction, classification accuracy, causal inference, or proof of educational effectiveness.
+- MVP excludes accounts/profiles, databases, backend APIs, and a playable chess engine. A correct static board preview and Lichess practice link suffice.
+- Preserve the existing prototype's design where practical. Keep technology and changes minimal; current site uses one `index.html` with inline CSS and JS.
+- Use the user-approved development plan and completed documentation for research decisions. Do not silently change model parameters or JSON metrics.
+
+## 2. Completed research and data pipeline
+
+| Stage | Actual outcome |
+|---|---|
+| 1. Acquire/sample/split | Scanned **6,157,341** Lichess source puzzles; excluded all **50,000** previously examined puzzle IDs; uniform reservoir sample **500,000**, seed **42**; random split **400,000 train / 100,000 test**, seed **43**; zero ID overlap. |
+| 2. Training EDA | Training data passed reported missing/duplicate/basic numeric checks; **73** observed source themes; **47** eligible tactical themes (basic, advanced, checkmate patterns, selected special moves); **400,000** transactions, including **145,856** with zero motifs, **168,227** with one, **85,917** with two or more; **664** observed unordered candidate pairs. |
+| 3. ECLAT + selection | ECLAT uses vertical theme → transaction-ID sets and intersections, exactly two items. Minimum support **0.002 = 800/400,000**. **30** frequent singleton themes; **58** frequent unordered pairs; **116** directional raw rules. Independent direct pair counting found **zero missed/unexpected/mismatched pairs**. |
+| 4. Frozen holdout evaluation | All **58** pairs and **116** rules checked on **100,000** distinct test puzzles, no overlap; **55/58 = 94.83%** retained the 0.20% support threshold (200/100K); **zero undefined test confidences**; **12,304/100,000 = 12.304%** of test puzzles covered at least one selected pair. These are retention and coverage, **not accuracy**. |
+| 5. Website JSON export | **48** curated directed rules, **20** starting themes, **34** unique unordered curated pairs; **506** pair-specific genuine puzzle example entries across 34 keys; **zero invalid candidate puzzle sequences** reported; JSON validation passed. |
+
+The previous dataset and Colab notebooks are in Google Drive, not the website repository:
+- Notebook: `TactiChess_V2_ECLAT_500K.ipynb`
+- Drive root: `MyDrive/TactiChess_V2/`
+- Samples: `data/lichess_sample_500k.csv`, `data/train_400k.csv`, `data/test_100k.csv`
+- Training outputs: `outputs/frequent_pairs.csv`, `outputs/association_rules_all.csv`, `outputs/association_rules_curated.csv`
+- Evaluation: `outputs/pair_evaluation_100k.csv`, `outputs/rule_evaluation_100k.csv`, `outputs/evaluation_summary.csv`
+- Website exports: `exports/associations.json`, `exports/puzzles.json`, `exports/metadata.json`
+
+Do **not** copy raw 500K/400K/100K CSV datasets into the website repository.
+
+## 3. The 48 frozen rules
+
+- **58 frequent unordered pairs** yielded **116 directional rules** (`A → B` and `B → A`). They share joint count, support, and lift, but confidence depends on the source theme.
+- Selection was finalized **using training data only**: joint count ≥800, lift ≥**1.20**, exclude four semantically overlapping unordered pairs, rank by **confidence → joint count → lift** (descending) within each source theme, and keep **up to three recommendations per source theme**.
+- Excluded unordered pairs: `advancedPawn + promotion`; `discoveredAttack + discoveredCheck`; `discoveredCheck + doubleCheck`; `discoveredAttack + doubleCheck`.
+- This produced exactly **48 directional recommendations**, **34 unique unordered pairs**, and **20 starting themes**.
+- **Frozen** means neither membership, rank, selection thresholds, nor training metrics are to be changed based on the 100K holdout results. The site must display **training** metrics, not holdout metrics.
+- Example `fork → sacrifice`: joint count **5,259**, confidence ~**10.29%**, lift ~**1.38**, training support ~**1.31475%**.
+- Support = pair_count / 400,000; confidence = pair_count / source_count; lift = confidence / (related_count / 400,000). Store the raw fractional values, format only for display.
+
+## 4. Website JSON contract (already generated in Colab)
+
+Copy the **actual files** into `data/`. Do not regenerate, invent, or edit their numbers.
+
+- `data/associations.json` (~17.4 KB): object with `themes` (20 objects `{id,name,description}`) and `rules` (48 objects with `source_theme`, `related_theme`, `pair_key`, `source_count`, `related_count`, `pair_count`, `support`, `confidence`, `lift`). `pair_key` is the two theme IDs alphabetically sorted and joined by `|`.
+- `data/puzzles.json` (~293.3 KB): object keyed by `pair_key` (34 keys). Each value is a list of real example entries containing `puzzle_id`, `themes`, `rating`, `difficulty`, `original_fen`, `preview_fen`, `moves`, and `puzzle_url`. There are 506 total **entries**, not necessarily 506 distinct IDs. Candidate counts are up to 5 per pair per rating band.
+- `data/metadata.json` (~0.8 KB): project/source/provenance, sample and split sizes, ECLAT support, curated lift threshold, rating-band descriptions, limitations.
+- Rating groups used in exports: **Easy ≤1200**, **Medium 1201–1800**, **Hard >1800**. These are project-defined UI bands, not official Lichess classifications.
+- **Critical chess detail:** Official Lichess `FEN` is the position **before** the opponent's first recorded UCI move. `preview_fen` has that first move already applied and represents the position where the learner starts solving. Render `preview_fen`, not `original_fen`, for the displayed puzzle start. The second UCI move begins the user's solution. The frontend does not need to recompute this.
+- Practice links use `https://lichess.org/training/{puzzle_id}`. The sample generated URL was `https://lichess.org/training/2eQYf`. Manually QA that exported links open the intended puzzles.
+- Rules must map to examples by `pair_key`; both directions of a pair use the same puzzle example list. Filtering example ratings must **not** change global ECLAT metrics.
+
+## 5. Existing prototype
+
+Original ZIP: `tacticpair_website_prototype(1).zip`, containing `tacticpair_site/index.html` and `tacticpair_site/README.md`.
+
+- Static HTML site, with CSS and JavaScript inline in `index.html`, no framework/build pipeline.
+- Current JavaScript contains `themes`, `pairs`, and `boards` with **placeholder** content, including fabricated sample associations and boards; it does **not** yet load the JSON exports.
+- The existing support slider was designed for demo values; it must later be made accurate for real percentages if retained.
+- Proposed website root:
+
+```text
+TacticPair_website/
+  index.html
+  README.md
+  data/
+    associations.json
+    puzzles.json
+    metadata.json
+  docs/
+    TACTICPAIR_V2_CODEX_HANDOFF.md
+    DEVELOPMENT_DOCUMENTATION.md   (optional detailed record)
+```
+
+Use a simple local HTTP server to test JavaScript `fetch()` of JSON, not `file://` opening. Keep large research CSVs outside this repo.
+
+## 6. Current approval gate and next phases
+
+**Current task: Stage 6.1, not yet confirmed by user.** The user is transferring the website project to VS Code Codex and starting a private GitHub repository. Before making changes, inspect files and verify that the three actual JSON exports have been copied into `data/`. Report any missing files or schema mismatches. Do not claim the repo or website integration is complete until confirmed.
+
+**Next approved work requires a separate user go-ahead for each step:**
+
+1. **6.1 Prepare/audit**: inspect repo and verify files. No implementation changes yet.
+2. **6.2 JSON integration**: load actual JSON, replace demo tactics and associations. Preserve genuine training values.
+3. **6.3 Interactions**: selection, association sorting/support filter, difficulty filter, loading/empty/error states.
+4. **6.4 Puzzle preview**: show actual rating/themes and correct `preview_fen` on static board; verify puzzle practice links.
+5. **6.5 QA**: desktop/mobile, keyboard/accessibility, errors, data integrity, link and FEN checks.
+6. **6.6 Vercel**: static deployment with access protection on all deployments, verify signed-out browser is blocked and authorized reviewer can access.
+
+**Scope/gate rules:** Work on one explicitly approved step at a time. At the start, inspect and explain the minimum necessary changes. Ask before modifying files or proceeding to a new step. Keep code concise, readable, and maintainable; avoid unnecessary refactors, frameworks, servers, databases, or package installations. Do not create a playable chess engine in the MVP. Do not overwrite or modify the supplied JSON metrics.
+
+**Progress recording:** After each confirmed step, update the dated progress section of this handoff (or the detailed documentation) to distinguish completed work, results tested, remaining work, and limitations. Never claim a test or deployment succeeded without running/verifying it. GitHub history should track actual source changes.
+
+## 7. Authoritative supporting documentation
+
+The source record before transfer is `TacticPair_V2_Development_Documentation_v1.4.md`, which documents Stages 1–5 in detail and the start of Stage 6.1. The original approved requirements are `TacticPair_V2_Comprehensive_Development_Plan(1).md`.
+
+If those files are copied into `docs/`, read them for details. The current status and verified figures above take precedence over any older *planned* figure. Treat the actual JSON files as authoritative for runtime data, and do not assume their bytes are present until inspected locally.

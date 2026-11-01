@@ -1,0 +1,29 @@
+{
+  "project": "TacticPair V2",
+  "algorithm": "ECLAT",
+  "source": "Lichess Open Puzzle Database",
+  "source_updated": "2026-10-05",
+  "license": "CC0",
+  "total_sample": 500000,
+  "training_puzzles": 400000,
+  "testing_puzzles": 100000,
+  "sampling_seed": 42,
+  "split_seed": 43,
+  "minimum_support": 0.002,
+  "minimum_curated_lift": 1.2,
+  "maximum_itemset_size": 2,
+  "curated_rules": 48,
+  "unique_curated_pairs": 34,
+  "puzzle_source": "Training data",
+  "example_rating_bands": {
+    "Easy": "1200 or below",
+    "Medium": "1201 to 1800",
+    "Hard": "Above 1800"
+  },
+  "limitations": [
+    "Rules describe tag co-occurrence, not causation.",
+    "Mining runs offline, not on the website.",
+    "Practice examples are a limited sample.",
+    "Association metrics come from training data."
+  ]
+}
