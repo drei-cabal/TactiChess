@@ -676,7 +676,6 @@ input[type='range'] {
   margin-bottom: 9px;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 188px 19px;
   gap: 15px;
   align-items: center;
   text-align: left;
@@ -702,67 +701,10 @@ input[type='range'] {
   min-width: 0;
 }
 
-.pattern-graphic {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.mini-icon {
-  display: grid;
-  place-items: center;
-  height: 30px;
-  width: 30px;
-  border-radius: 9px;
-  background: #eaf3df;
-  color: #497146;
-  font-size: 20px;
-}
-
 .combo {
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.45px;
-}
-
-.combo small {
-  color: var(--muted);
-  margin: 0 5px;
-}
-
-.pattern-desc {
-  font-size: 11px;
-  color: var(--muted);
-  white-space: normal;
-}
-
-.metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  text-align: center;
-  gap: 6px;
-}
-
-.metrics strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 850;
-  color: #3d5a41;
-}
-
-.metrics small {
-  display: block;
-  font-size: 9px;
-  color: var(--muted);
-  font-weight: 650;
-  margin-top: 2px;
-}
-
-.chevron {
-  font-size: 22px;
-  color: var(--muted);
-  text-align: center;
 }
 
 .panel-sep {
@@ -1099,10 +1041,6 @@ input[type='range'] {
     padding: 7px;
   }
 
-  .pattern {
-    grid-template-columns: minmax(0, 1fr) 160px 15px;
-  }
-
   .card-top {
     padding: 13px;
   }
@@ -1314,39 +1252,12 @@ input[type='range'] {
   }
 
   .pattern {
-    grid-template-columns: minmax(0, 1fr) 112px 12px;
     gap: 8px;
     padding: 12px 10px;
   }
 
-  .mini-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 17px;
-  }
-
   .combo {
     font-size: 12px;
-  }
-
-  .pattern-desc {
-    font-size: 9px;
-  }
-
-  .metrics {
-    gap: 1px;
-  }
-
-  .metrics strong {
-    font-size: 10px;
-  }
-
-  .metrics small {
-    font-size: 8px;
-  }
-
-  .chevron {
-    font-size: 16px;
   }
 
   .puzzle-section {

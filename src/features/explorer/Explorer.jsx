@@ -21,10 +21,6 @@ export function Explorer({ dataset }) {
   const relatedTheme = themes.find((item) => item.id === selection.pair);
   const selectedRule = visibleRules.find((rule) => rule.related_theme === selection.pair);
   const examples = selectExamplePuzzles(dataset.puzzles, selectedRule, selection.difficulty);
-  const exampleCount = Object.values(dataset.puzzles).reduce(
-    (total, examples) => total + examples.length,
-    0
-  );
 
   function changeSelection(changes) {
     setPreviewPuzzle(null);
@@ -40,18 +36,13 @@ export function Explorer({ dataset }) {
             Discover tactic connections
           </h1>
           <p className="section-sub">
-            Choose a tactical theme to explore its most common associations.
+            Choose a tactic, learn what appears with it, then view a puzzle and solve it on Lichess.
           </p>
         </div>
-        <p className="guide-note">
-          {themes.length} themes · {rules.length} frozen directional rules ·{' '}
-          {dataset.metadata.unique_curated_pairs} pairs · {exampleCount} example entries
-        </p>
       </div>
       <div className="explorer">
         <ExplorationFilters
           themes={themes}
-          ratingBands={dataset.metadata.example_rating_bands}
           selection={selection}
           onChange={changeSelection}
           onReset={() => {
@@ -63,25 +54,13 @@ export function Explorer({ dataset }) {
           <div className="results-top">
             <div>
               <h2 className="panel-heading" style={{ margin: 0 }}>
-                Associated tactics{' '}
+                2. Pair it with another tactic{' '}
                 <span id="resultCount" className="results-count" role="status">
-                  {`${visibleRules.length} ${visibleRules.length === 1 ? 'pattern' : 'patterns'}`}
+                  {`${visibleRules.length} ${visibleRules.length === 1 ? 'connection' : 'connections'}`}
                 </span>
               </h2>
-              <p id="resultsSubtitle">Themes associated with {theme.name}</p>
+              <p id="resultsSubtitle">Tactics found in puzzles with {theme.name}.</p>
             </div>
-            <select
-              className="sort-select"
-              id="sort"
-              aria-label="Sort patterns"
-              value={selection.sort}
-              onChange={(event) => changeSelection({ sort: event.target.value })}
-            >
-              <option value="curated">Curated order</option>
-              <option value="lift">Highest lift</option>
-              <option value="support">Highest support</option>
-              <option value="confidence">Highest confidence</option>
-            </select>
           </div>
           <AssociationList
             themes={themes}
@@ -94,17 +73,20 @@ export function Explorer({ dataset }) {
           <div className="puzzle-section">
             <div className="puzzle-header">
               <div>
-                <h3>Matching examples</h3>
+                <h3>3. View a puzzle</h3>
                 <p id="practiceSubtitle">
                   {relatedTheme
-                    ? `Available examples · ${theme.name} + ${relatedTheme.name}`
-                    : 'Adjust filters to reveal patterns'}
+                    ? `Puzzles with ${theme.name} + ${relatedTheme.name}`
+                    : 'Choose a connection to see puzzles'}
                 </p>
               </div>
-              <span className="sample-label">STATIC PREVIEWS</span>
             </div>
             <PuzzleExamples
               examples={examples}
+              theme={theme}
+              relatedTheme={relatedTheme}
+              ratingBands={dataset.metadata.example_rating_bands}
+              onDifficultyChange={(difficulty) => changeSelection({ difficulty })}
               rule={selectedRule}
               difficulty={selection.difficulty}
               totalCount={selectedRule ? dataset.puzzles[selectedRule.pair_key].length : 0}
@@ -112,11 +94,7 @@ export function Explorer({ dataset }) {
               onPreview={setPreviewPuzzle}
             />
           </div>
-          <div className="insight-footer">
-            <span className="info-dot">i</span>
-            Metrics describe training-tag co-occurrence, not causation. Confidence follows the
-            displayed direction; rating filters never change these values.
-          </div>
+
         </div>
       </div>
       {previewPuzzle && (

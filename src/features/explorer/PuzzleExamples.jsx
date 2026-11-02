@@ -1,18 +1,47 @@
+import { PuzzleTags } from '../puzzles/PuzzleTags.jsx';
 import { StaticBoard } from '../puzzles/StaticBoard.jsx';
 
-export function PuzzleExamples({ examples, rule, difficulty, totalCount, themeNames, onPreview }) {
+export function PuzzleExamples({
+  examples, rule, difficulty, totalCount, themeNames, onPreview,
+  theme, relatedTheme, ratingBands, onDifficultyChange,
+}) {
   if (!rule) {
     return (
       <div id="puzzles" className="empty" role="status">
-        No associated tactic is selected.
+        Choose a connection above to see its example puzzles.
       </div>
     );
   }
 
   return (
     <div id="puzzles">
+      <div className="puzzle-context">
+        <p>Find the best continuation for the side to move. Each puzzle below is tagged with both
+          <strong> {theme.name}</strong> and <strong>{relatedTheme.name}</strong>.</p>
+        <dl>
+          <div><dt>{theme.name}</dt><dd>{theme.description}</dd></div>
+          <div><dt>{relatedTheme.name}</dt><dd>{relatedTheme.description}</dd></div>
+        </dl>
+        <p>Look for these ideas as you solve. The tags describe the puzzle's solution as a whole;
+          they do not say which tactic comes first.</p>
+      </div>
+      <div className="puzzle-difficulty">
+        <span className="control-label">Puzzle difficulty</span>
+        <div className="segment" id="difficulty" role="group"
+          aria-label="Puzzle difficulty" aria-describedby="difficultyHelp">
+          {['All', 'Easy', 'Medium', 'Hard'].map((level) => (
+            <button key={level} type="button" aria-pressed={difficulty === level}
+              className={difficulty === level ? 'active' : ''}
+              onClick={() => onDifficultyChange(level)}>{level}</button>
+          ))}
+        </div>
+        <p id="difficultyHelp" className="example-summary">
+          {difficulty === 'All' ? 'Choose Easy for lower-rated puzzles.' : `${difficulty}: ${ratingBands[difficulty]}.`}
+        </p>
+      </div>
+      <p className="example-summary">View the boards here; use Solve on Lichess to move the pieces.</p>
       <p id="exampleCount" className="example-summary" role="status">
-        {examples.length} of {totalCount} exported examples ·{' '}
+        {examples.length} of {totalCount} example puzzles ·{' '}
         {difficulty === 'All' ? 'All ratings' : difficulty}
       </p>
       {examples.length ? (
@@ -28,24 +57,24 @@ export function PuzzleExamples({ examples, rule, difficulty, totalCount, themeNa
               </div>
               <div className="card-bottom">
                 <h4 className="card-name">
-                  {puzzle.puzzle_id} · {puzzle.difficulty}
+                  {puzzle.difficulty} -{' '}
+                  {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'} to move
                 </h4>
                 <p className="example-summary">
-                  Rating {puzzle.rating.toLocaleString('en-US')} ·{' '}
-                  {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'} to move
+                  Puzzle rating {puzzle.rating.toLocaleString('en-US')}
                 </p>
-                <div className="card-tags">
-                  {puzzle.themes.map((theme) => (
-                    <span key={theme}>{themeNames.get(theme) ?? theme}</span>
-                  ))}
-                </div>
+                <p className="puzzle-task">
+                  Find the best continuation for {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'}.
+                  This puzzle brings together {theme.name} and {relatedTheme.name}.
+                </p>
+                <PuzzleTags puzzle={puzzle} themeNames={themeNames} />
                 <button
                   type="button"
                   className="card-cta"
-                  aria-label={`Preview puzzle ${puzzle.puzzle_id}`}
+                  aria-label={`Enlarge board for puzzle ${puzzle.puzzle_id}`}
                   onClick={() => onPreview(puzzle)}
                 >
-                  Preview position <span aria-hidden="true">↗</span>
+                  Enlarge board
                 </button>
                 <a
                   className="card-cta"
@@ -53,7 +82,7 @@ export function PuzzleExamples({ examples, rule, difficulty, totalCount, themeNa
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Practice on Lichess ↗
+                  Solve on Lichess ↗
                 </a>
               </div>
             </li>
@@ -61,11 +90,10 @@ export function PuzzleExamples({ examples, rule, difficulty, totalCount, themeNa
         </ul>
       ) : (
         <div className="empty">
-          No {difficulty === 'All' ? '' : `${difficulty} `}examples are exported for this pair. Try
-          another difficulty or choose a different association.
+          No {difficulty === 'All' ? '' : `${difficulty} `}example puzzles are available for this
+          connection. Try another difficulty or choose a different connection.
         </div>
       )}
-      <p className="example-summary">Static positions only. Solve each puzzle on Lichess.</p>
     </div>
   );
 }

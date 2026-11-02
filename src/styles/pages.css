@@ -222,3 +222,140 @@
     transition: none;
   }
 }
+
+/* Beginner guidance and optional evidence */
+.beginner-start {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border: 1px solid #98c879;
+  border-radius: 9px;
+  background: #eaf5dc;
+  color: var(--forest);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  text-align: left;
+}
+
+.beginner-start span,
+.connection-description {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.tactic-options summary,
+.advanced-filters summary,
+.connection-details summary,
+.puzzle-details summary,
+.research-details summary {
+  padding: 10px 0;
+  cursor: pointer;
+  color: var(--forest);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.tactic-options .theme-grid {
+  margin-top: 12px;
+}
+
+.advanced-filters {
+  margin-top: 18px;
+}
+
+.advanced-filters .sort-select {
+  width: 100%;
+  max-width: none;
+}
+
+.segment button {
+  font-size: 11px;
+}
+
+.results-top {
+  display: block;
+}
+
+.results-top #themeDescription,
+.results-top #resultsSubtitle {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.connection-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+  margin-bottom: 12px;
+}
+
+.connection-card .pattern {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  border-radius: 11px;
+  padding: 18px;
+}
+
+.connection-card .pattern-main {
+  flex: 1 1 280px;
+}
+
+.connection-action {
+  font-size: 13px;
+  font-weight: 750;
+  color: var(--forest);
+}
+
+.connection-details {
+  padding: 0 18px 6px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.connection-metrics {
+  margin: 16px 0;
+}
+
+.connection-metrics > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.connection-metrics dd {
+  margin: 0;
+  white-space: nowrap;
+  font-weight: 750;
+}
+
+.puzzle-details {
+  margin: 8px 0;
+}
+
+.card-bottom .card-name {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.card-cta {
+  min-height: 40px;
+  padding-bottom: 8px;
+}
+
+.research-details {
+  margin: 32px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.8;
+}

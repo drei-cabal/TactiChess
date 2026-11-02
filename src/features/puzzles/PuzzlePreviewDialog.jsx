@@ -1,3 +1,4 @@
+import { PuzzleTags } from './PuzzleTags.jsx';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { StaticBoard } from './StaticBoard.jsx';
@@ -53,7 +54,7 @@ export function PuzzlePreviewDialog({ puzzle, themeNames, onDismiss }) {
       }}
     >
       <div className="modal-header">
-        <h2 id="previewTitle">Puzzle {puzzle.puzzle_id}</h2>
+        <h2 id="previewTitle">Puzzle preview</h2>
         <button
           ref={closeButton}
           className="close"
@@ -71,14 +72,10 @@ export function PuzzlePreviewDialog({ puzzle, themeNames, onDismiss }) {
             {puzzle.difficulty} · Rating {puzzle.rating.toLocaleString('en-US')}
           </p>
           <p>{puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'} to move</p>
-          <div className="card-tags">
-            {puzzle.themes.map((theme) => (
-              <span key={theme}>{themeNames.get(theme) ?? theme}</span>
-            ))}
-          </div>
-          <p>Explore the position here, then solve the puzzle on Lichess.</p>
+          <p>Preview only: pieces cannot be moved here. Solve this position on Lichess.</p>
+          <PuzzleTags puzzle={puzzle} themeNames={themeNames} />
           <a className="primary" href={puzzle.puzzle_url} target="_blank" rel="noopener noreferrer">
-            Practice on Lichess ↗
+            Solve on Lichess ↗
           </a>
           <button className="card-cta" type="button" onClick={onDismiss}>
             Back to explorer

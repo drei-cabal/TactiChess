@@ -25,7 +25,7 @@ export function SiteHeader({ currentPage }) {
       <div className="navright">
         <span className="demo-pill">
           <i></i>
-          Training rules
+          Real puzzle data
         </span>
         <a className="navbtn" href="#/explore">
           Explore tactics ↗

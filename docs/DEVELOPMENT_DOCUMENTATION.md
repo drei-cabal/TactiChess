@@ -727,6 +727,28 @@ The approved six-step local frontend migration is complete. Research Stage 6 sti
 
 ---
 
+### 7.14 Beginner usability improvements (completed November 2, 2026)
+
+Scope: the user approved the recommended changes after a read-only beginner-perspective walkthrough. This is a local UX change, with no new dependency, frozen-data edit, Git mutation, or deployment.
+
+- Added a clear three-step explorer, a Start with Fork action, an expandable list retaining all 20 tactics, and the selected tactic definition beside the results. Related cards explain each tactic and express genuine directional confidence in a sentence rather than a move-like arrow.
+- Moved frequency filtering and sorting into Advanced filters. Default order preserves the original ranking. Connection details retains all original counts, support/confidence/lift, and direction/interpretation guidance; details controls are outside selection buttons.
+- Changed Method navigation to How to use without changing URLs. Rewrote Home and usage guidance in plain language; research and formulas remain available on demand and provenance/licensing remains on About.
+- Cards emphasize difficulty and side to move. Shared PuzzleTags reveals the original puzzle ID and readable tag labels under Puzzle details. Enlarge board and Solve on Lichess distinguish the static preview from external practice. The preview states that pieces cannot move; FENs, puzzle URLs, and original data remain unchanged.
+
+Validation:
+
+- `npm.cmd test`: 38/38 passed, including frozen export hashes, counts, formulas/rankings, rating selection, loader failures, board-model round trips, and artwork/notices.
+- `npm.cmd run build` and `git diff --check` passed. Formatted only changed source files with the existing VS Code Prettier installation.
+- Manually exercised the running Vite development site in Chrome: Home and How to use; opening all tactics and selecting Attraction; returning through Start with Fork; changing the selected connection; opening connection evidence; Easy filtering; raising frequency until zero connections; and reset restoring the original connections. Navigation preserved the current explorer selection.
+- Inspected desktop layout and Chrome responsive views at 390px and 320px. At 320px, inspected controls, wrapping connection cards, empty state, a real puzzle card and its native preview, and expanded readable puzzle tags/ID. Escape dismissed the preview and visibly returned focus to Enlarge board. Full Medium wording fits the narrow difficulty control.
+
+Limits: these checks are an agent walkthrough and selected local browser checks, not a study with beginner participants, a complete accessibility audit, or a new exhaustive puzzle/browser regression run. Production-preview runtime, screen-reader, physical-device, Firefox/WebKit, and deployed access were not checked in this step. The unchanged board/input model remains static.
+
+Design references: [W3C clear words](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o3p01-clear-words/), [Nielsen usability heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/), and [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/). Cognitive supplemental guidance is advisory, not an additional WCAG conformance requirement.
+
+---
+
 ## 8. Methodological safeguards and limitations
 
 1. Training and test records were split before analytical EDA. All theme choices, frequency thresholds, semantic exclusions, and ranking settings were made using training data and official theme definitions.

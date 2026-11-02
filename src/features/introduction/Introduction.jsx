@@ -7,19 +7,19 @@ export function Introduction({ dataset }) {
     <>
       <section className="hero" aria-label="Introduction">
         <div className="hero-copy">
-          <div className="eyebrow">Chess intelligence, simplified</div>
+          <div className="eyebrow">Explore chess tactics</div>
           <h1 id="home-title">
-            Find the pattern.
+            Learn the tactics.
             <br />
-            <span>Master the tactic.</span>
+            <span>Find your next puzzle.</span>
           </h1>
           <p className="lede">
-            Discover which chess tactics appear together, explore their connections, and find your
-            next practice focus. Powered by ECLAT association mining.
+            A tactic is a way to gain an advantage in chess. Learn what different tactics mean, see
+            which ones appear together in real puzzles, and practise on Lichess.
           </p>
           <div className="actions">
             <a href="#/explore" className="primary">
-              Explore tactic pairs
+              Explore tactics
               <span aria-hidden="true">↗</span>
             </a>
             <a href="#/method" className="plainlink">
@@ -60,7 +60,7 @@ export function Introduction({ dataset }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open on Lichess ↗
+                  Solve on Lichess ↗
                 </a>
               </>
             )}
@@ -86,7 +86,7 @@ export function Introduction({ dataset }) {
             <path d="m8 7 3 8m5-8-3 8" />
           </svg>
           <span>
-            <strong>ECLAT</strong> frequent itemset mining
+            <strong>Learn tactic meanings</strong>
           </span>
         </div>
         <span className="dot"></span>
@@ -96,24 +96,24 @@ export function Introduction({ dataset }) {
             <path d="m9 12 2 2 4-4" />
           </svg>
           <span>
-            <strong>Training-derived rules</strong>
-            {dataset && ` · ${dataset.associations.rules.length} curated recommendations`}
+            <strong>Explore real connections</strong>
+            {dataset && ` · ${dataset.associations.rules.length} connections`}
           </span>
         </div>
       </div>
       <section className="home-paths" aria-labelledby="home-paths-title">
         <div className="kicker">Your next move</div>
-        <h2 id="home-paths-title">Three ways into the position.</h2>
+        <h2 id="home-paths-title">Choose where to start.</h2>
         <div className="steps">
           <a className="step page-link" href="#/explore">
             <div className="step-number">01 / Explore</div>
             <h3>Follow a tactical connection ↗</h3>
-            <p>Choose a theme and discover its frozen, training-derived associations.</p>
+            <p>Start with Fork, learn its meaning, and see tactics found with it.</p>
           </a>
           <a className="step page-link" href="#/method">
             <div className="step-number">02 / Understand</div>
             <h3>Read the numbers ↗</h3>
-            <p>Get to know support, confidence, lift, and the direction of a rule.</p>
+            <p>Follow three simple steps from choosing a tactic to solving a puzzle.</p>
           </a>
           <a className="step page-link" href="#/about">
             <div className="step-number">03 / Inspect</div>

@@ -57,6 +57,7 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | `src/features/explorer/ExplorationFilters.jsx`   | Controlled theme, support, and example-difficulty inputs.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
 | `src/features/explorer/PuzzleExamples.jsx`       | Genuine puzzle cards, links, counts, and distinct empty states.             |
+| `src/features/puzzles/PuzzleTags.jsx` | Readable puzzle-tag labels and expandable puzzle identifiers/details. |
 | `src/features/puzzles/StaticBoard.jsx`           | Library lifecycle, static SVG, and accessible piece-location description.   |
 | `src/features/puzzles/PuzzlePreviewDialog.jsx`   | Native modal, dismissal, focus, and scroll-lock cleanup.                    |
 | `src/features/explorer/association-selectors.js` | Pure rule/example filtering, sorting, defaults, and selection fallback.     |
