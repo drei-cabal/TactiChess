@@ -1,5 +1,11 @@
 # TactiChess | Codex Project Handoff
 
+## Required Codex workflow
+
+Before starting work, read the local `AGENTS.md`, [Version control](VERSION_CONTROL.md), [Code style](CODE_STYLE.md), and the latest checkpoint in [Development documentation](DEVELOPMENT_DOCUMENTATION.md). Follow the version-control guide for branch handling, staged review, commits, pull requests, and recovery. Inspect and preserve existing work before making changes.
+
+File-edit approval does not authorize Git mutations or deployment. Follow the guide's explicit approval gates, honor approvals already given, and present the concrete proposed commit and actual validation before requesting commit approval. These current workflow instructions apply alongside the historical project record below.
+
 Updated: November 1, 2026  
 Project: TactiChess, offline ECLAT-powered chess tactic association explorer  
 Current status: Stages 1–5 completed. Stage 6.1 (local website preparation and repository inspection) is in progress and **has not yet been confirmed complete**.

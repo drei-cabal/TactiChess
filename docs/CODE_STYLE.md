@@ -2,6 +2,8 @@
 
 Use this guide when editing the frontend, whether you are a developer or an AI agent. Read the local `AGENTS.md` and the current checkpoint in [Development documentation](DEVELOPMENT_DOCUMENTATION.md) before making changes. For startup instructions, see [Running the project](RUNNING.md).
 
+Codex must also read and follow [Version control](VERSION_CONTROL.md) before starting a task or performing Git operations. It defines branch handling, staged review, commits, pull requests, recovery, and approval gates. Permission to edit files does not authorize Git mutations or deployment.
+
 ## Shared formatting
 
 The root `.prettierrc.json` defines the formatting rules:

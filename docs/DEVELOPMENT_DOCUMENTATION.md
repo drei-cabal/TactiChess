@@ -1,11 +1,13 @@
 # TactiChess
 ## Development and Research Documentation
 
-Document version: 1.10\
+Document version: 1.12\
 Last updated: November 2, 2026\
 Current status: Stages 1-5 completed; frontend migration Step 3 (frozen JSON loading, validation, real associations, and TactiChess branding) completed; Step 4 awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
+
+Codex must read the local `AGENTS.md`, [Version control](VERSION_CONTROL.md), [Code style](CODE_STYLE.md), and the latest checkpoint before starting work. Follow the version-control guide for repository operations and approval gates. Permission to edit files does not authorize Git mutations or deployment; preserve existing work and honor approvals already provided.
 
 ---
 
@@ -623,7 +625,17 @@ References checked: [Vite public directory](https://vite.dev/guide/assets.html#t
 
 Next approval gate: **frontend migration Step 4**, completing real example filtering, rating controls, selection, reset, and distinct empty states. Do not begin automatically.
 
-### 7.9 Upcoming work (not yet started)
+### 7.9 November 2, 2026: Version-control guide
+
+At the user's follow-up request, made the guide required reading in local `AGENTS.md`, the Codex handoff, code-style guidance, and this document. The guide remains the shared source for version-control procedures; the entry-point documents link to it and retain the same approval boundaries. This follow-up changes documentation only.
+
+The user requested online research and a practical version-control document. Added [Version control](VERSION_CONTROL.md) based on official Git and GitHub documentation, and linked it from the README and local agent guidance. The recommended workflow uses stable `main`, short-lived task branches, explicit staging review, focused commits, pull requests, and approved squash merges. It distinguishes recommendations from Git requirements and respects the project's separate approvals for repository mutations and deployment.
+
+The guide covers working-tree versus staged changes, branch/commit naming, actual project checks, frozen exports, dependency lockfiles, local exclusions, tracked-file behavior, conflicts, recovery, and proposed branch safeguards. A read-only audit found `main`, a configured `origin`, an ignored/untracked local `AGENTS.md`, and a tracked handoff despite an ignore entry. No ignore rules, tracking, Git configuration, branches, staging, commits, pushes, remote settings, CI, or deployment were changed.
+
+Documentation validation: formatted the new guide and README, checked local links and documented paths, reviewed command examples against official references, and ran `git diff --check`. No application code changed, so application tests and builds were not repeated. This documentation does not mark the preceding page-navigation draft's outstanding visual/browser checks complete, or authorize frontend migration Step 4.
+
+### 7.10 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.

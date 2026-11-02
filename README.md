@@ -22,6 +22,8 @@ npm.cmd run build
 
 Tests use Node's built-in test runner. There is no separate lint command. Follow [Code style](docs/CODE_STYLE.md) for formatting, component responsibilities, and browser checks.
 
+Follow [Version control](docs/VERSION_CONTROL.md) for branches, staged reviews, commits, pull requests, and safe recovery.
+
 ## Structure
 
 - `index.html`: document metadata and React mount point.
