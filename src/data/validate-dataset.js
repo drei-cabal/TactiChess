@@ -1,3 +1,5 @@
+import { Position } from 'cm-chessboard/src/model/Position.js';
+
 function requireValid(condition, message) {
   if (!condition) {
     throw new Error(`Invalid dataset: ${message}`);
@@ -9,6 +11,18 @@ const isText = (value) => typeof value === 'string' && value.trim().length > 0;
 const isCount = (value) => Number.isSafeInteger(value) && value > 0;
 const isPositive = (value) => Number.isFinite(value) && value > 0;
 const approximatelyEqual = (a, b) => Math.abs(a - b) < 1e-10;
+
+function isPreviewPosition(fen) {
+  const fields = fen.split(' ');
+  if (
+    fields.length !== 6 ||
+    !['w', 'b'].includes(fields[1]) ||
+    !/^([prnbqkPRNBQK1-8]+\/){7}[prnbqkPRNBQK1-8]+$/.test(fields[0])
+  ) {
+    return false;
+  }
+  return new Position(fen).getFen() === fields[0];
+}
 
 export function validateDataset({ associations, puzzles, metadata }) {
   requireValid(isObject(metadata), 'metadata.json must contain an object.');
@@ -143,6 +157,10 @@ export function validateDataset({ associations, puzzles, metadata }) {
         `Invalid puzzle fields in ${pairKey}.`
       );
       requireValid(!puzzleIds.has(puzzle.puzzle_id), `Duplicate puzzle in ${pairKey}.`);
+      requireValid(
+        isPreviewPosition(puzzle.preview_fen),
+        `Invalid preview FEN for puzzle ${puzzle.puzzle_id}.`
+      );
       puzzleIds.add(puzzle.puzzle_id);
       requireValid(
         isCount(puzzle.rating) &&

@@ -28,8 +28,8 @@ export function MethodPage() {
           <div className="step-number">03 /</div>
           <h2>Find your practice focus</h2>
           <p>
-            See how many exported examples match a pair. Static boards and Lichess practice links
-            are coming soon.
+            Browse the exported positions, inspect a larger static preview, and open the original
+            practice link on Lichess.
           </p>
         </article>
       </div>

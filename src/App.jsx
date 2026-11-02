@@ -38,7 +38,12 @@ export function App({ datasetState }) {
         tabIndex={-1}
         aria-labelledby={`${page?.id ?? 'not-found'}-title`}
       >
-        {page?.id === 'home' && <Introduction dataset={dataset} />}
+        {page?.id === 'home' &&
+          (dataset ? (
+            <Introduction dataset={dataset} />
+          ) : (
+            <DatasetStatus state={datasetState} headingId="home-title" />
+          ))}
         {/* Keep the explorer mounted so navigation preserves its selection. */}
         <div hidden={page?.id !== 'explore'}>
           {dataset ? (

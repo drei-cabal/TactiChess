@@ -1,9 +1,9 @@
 # TactiChess
 ## Development and Research Documentation
 
-Document version: 1.13\
+Document version: 1.15\
 Last updated: November 2, 2026\
-Current status: Stages 1-5 completed; frontend migration Step 4 (real example filtering and selection) completed; Step 5 static previews awaits separate approval\
+Current status: Stages 1-5 completed; approved frontend migration Steps 1-6 completed locally; protected deployment and release approvals remain pending\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
 
@@ -41,7 +41,7 @@ The algorithm discovers patterns in existing puzzle labels. It does not solve ch
 | 3 | ECLAT Mining and Rule Selection | Completed |
 | 4 | Held-Out Rule Evaluation | Completed |
 | 5 | Export Validated Results for the Website | Completed |
-| 6 | Website Integration and Vercel Validation | In progress: Step 6.1 |
+| 6 | Website Integration and Vercel Validation | Local integration and QA complete; protected deployment pending |
 
 This record will be revised after each stage is actually completed. Planned activities are not reported as results.
 
@@ -492,7 +492,7 @@ The user reported `STAGE 5 JSON VALIDATION PASSED`; all three files were saved. 
 
 ## 7. Stage 6: Website Integration and Vercel Validation
 
-Status: **In progress. The local audit and approved frontend migration Step 1 asset extraction are complete. Vite + React setup and genuine JSON integration have not started.**
+Status: **Local frontend migration Steps 1-6 are complete. Genuine data, filtering, static previews, page navigation, and local QA are implemented. Stage 6 remains open for separately approved protected Vercel deployment and access validation.**
 
 ### 7.1 Stage 6 objective
 
@@ -658,15 +658,72 @@ References consulted: [React state structure](https://react.dev/learn/choosing-t
 
 Next approval gate: **frontend migration Step 5**, integrating the approved static chessboard library, genuine `preview_fen` boards, preview dialogs, and unchanged puzzle links. Do not begin automatically.
 
-### 7.11 Upcoming work (not yet started)
+### 7.11 November 2, 2026: Frontend migration Step 5 completed
 
-- Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
-- Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
-- Step 6.4: Render the accurate preview positions saved as `preview_fen`, and open actual Lichess puzzle links.
-- Step 6.5: Check data integrity, accessibility, responsive layouts, and user flows.
-- Step 6.6: Deploy the static site on Vercel, protect all intended deployments, and test access for authorized and signed-out visitors.
+The user approved Step 5. Added the exact published `cm-chessboard` **8.15.4** package after verifying its registry integrity and contents. It adds one dependency with no runtime dependencies of its own. Existing React/Vite versions were retained. Installation reported zero vulnerabilities. No engine, move-validation library, backend, or playable board was added.
 
-Frontend migration Steps 1-4 are complete. Step 5 and all remaining Stage 6 work require separate approval.
+- `StaticBoard.jsx` encapsulates library creation, unanimated position/orientation updates, and destruction through refs and effects. It renders the supplied `preview_fen` exclusively, with the side to move at the bottom. Input is disabled. A shared artwork request prevents Strict Mode from duplicating the preflight download; unmounted components ignore its completion. Board destruction removes the library's observers and pending resize work.
+- Real example cards retain export order, genuine IDs/ratings/difficulty/themes, and unchanged `puzzle_url` links. Preview selection belongs to the explorer. Native `<dialog>` supplies modal behavior; Close, Back to explorer, Escape, and backdrop clicks dismiss it. Cleanup restores scroll state and the opening control's focus, or the main landmark if that control has disappeared. Hash navigation closes an open dialog and does not reopen it on return.
+- Accessible piece-location lists use cm-chessboard's position model and English piece descriptions rather than a custom board parser or engine. They contain no movement form. Compact card/hero descriptions remain available to assistive technology; the dialog offers an expandable description. A missing or invalid artwork response leaves a visible error, genuine piece descriptions, and original practice links. Reloading retries the shared artwork request.
+- The hero now shows the first exported puzzle for Fork's first curated recommendation, with matching ID, rating, side-to-move caption, and Lichess link. Removed the decorative array, invented position markers/bars, and their obsolete styles. Reused existing card/modal styling and added scoped chessboard styles for the library and native dialog.
+- Boundary validation now checks the preview's basic FEN structure and side to move, using the library's placement round-trip to reject malformed ranks. This validates display input only; it does not prove chess legality, solve positions, or replay moves. Original exports remain unchanged, including `original_fen` and move arrays, which are not displayed by the frontend.
+
+Artwork and licenses:
+
+Verified the actual pinned `assets/pieces/standard.svg`, rather than relying on the README's historical filename. Its embedded notice identifies Wikimedia Commons standard SVG pieces by **Cburnett** and **Rfc1394**, modified by **Stefan Haack**, under **CC BY-SA 3.0**. Copied it without changes to `public/chess/standard.svg`; SHA-256 **b85bba95342a9483420999cedeb1c503e6db16cdd7a0da1f3a228549a13134c5**. Retained embedded notices, copied the renderer's full MIT license, added a distributed artwork notice, and displayed attribution/links on About. These files are formatter-excluded. The differently licensed Staunty asset is not copied or used. This does not assign an MIT license to the whole TactiChess application.
+
+Validation performed:
+
+- `npm.cmd test`: **38/38 passed**, including frozen hashes/counts/formulas/rankings, preview-FEN rejection, unchanged artwork identity and notices, and library-model round-trips with readable pieces for all 506 exported entries. Every preview placement differs from its original placement.
+- `npm.cmd run build` passed. Final output: HTML **0.79 kB**, CSS **26.89 kB** (**6.36 kB gzip**), JavaScript **286.82 kB** (**86.25 kB gzip**), plus the separate unchanged JSON and copied artwork/notices. The sprite is **23,131 bytes**. Existing dependency pins were retained; only the approved package and corresponding lockfile entry were added.
+- Production preview passed **4,745 browser assertions** across desktop 1440, narrow 390, and small 320-pixel widths. Every one of the 506 pair-specific entries was rendered and checked for exact preview piece locations, side-to-move orientation, 64 squares, a single SVG, accessible descriptions, real labels/themes, and unchanged protected links. Checks also covered filters with fixed metrics, repeated mount/unmount cycles, observer cleanup, hero identity, attribution, mobile overflow, and single JSON requests.
+- Native dialog checks covered initial focus, native Tab behavior excluding background controls, blocked background-control focus, Escape/Close/Back/backdrop dismissal, focus restoration, scroll cleanup, and route-change dismissal. Browser chrome remains keyboard-accessible as part of native browser behavior; no custom Tab trap was added. Missing-artwork responses were intercepted only in the temporary harness; real descriptions/links remained and reload restored the boards. No application JavaScript exceptions occurred.
+- Development Strict Mode passed **1,585 assertions**, exercising the same renderer/dialog behavior and a temporary isolated component probe. Updating its FEN reused the existing SVG, changed its piece locations exactly to the new preview, and returned observer counts to baseline after unmount. Desktop, Home, and small-screen dialog screenshots were inspected.
+- Public Lichess pages for **rPLaY** (Black to move) and **acE1D** (White to move) returned HTTP 200 with matching puzzle IDs/side-to-move metadata. Their linked board thumbnails were retrieved and visually compared with the exported/rendered positions. This was a public-page/thumbnail comparison, not a claim to have solved or interacted with those puzzles.
+- All original JSON SHA-256 hashes and built copies remain unchanged. The sprite and notices are identical in source and build output. Application navigation, rule selectors, dataset loader, Git ignores, version-control guide, and handoff remained unchanged. Formatter, local-documentation links, and diff-whitespace checks passed. No branch operations, staging, commits, pushes, or deployment occurred.
+
+Limitations: browser verification used isolated headless Chrome rather than physical devices, other engines, or a manual screen-reader session. Full contrast/accessibility review and the broader page-navigation QA remain part of Step 6. No runtime chess legality checking or engine is included. Temporary downloads, browser profiles, test scripts/screenshots, and the two test servers were removed after verification.
+
+References: [cm-chessboard repository/API](https://github.com/shaack/cm-chessboard), [pinned npm package](https://www.npmjs.com/package/cm-chessboard/v/8.15.4), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), [React effects](https://react.dev/learn/synchronizing-with-effects), and [native dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog).
+
+Next approval gate: **frontend migration Step 6**, broader quality assurance and documentation. Git operations and deployment remain separately approved actions.
+
+### 7.12 Frontend migration Step 6: Final local QA and documentation (completed November 2, 2026)
+
+Scope: the user approved the final local QA/documentation step. Existing uncommitted Step 5 work was preserved. No new project dependency, data change, Git mutation, or deployment was authorized or performed.
+
+Corrections:
+
+- Darkened secondary text, tags, badges, footer text, and light-background links within the existing green palette. Hero links retain their light color. The layout, imagery, responsive breakpoints, and sticky header remain intact.
+- Corrected Explorer's heading order and the inherited serif/spacing styles on panel and Method headings. Named the Home context group explicitly and fixed spacing in the artwork credit.
+- Added contrasting keyboard focus rings to the slider and position-description summary, retained focus for sorting, and increased the reset target to at least 24px. The two-color ring remains visible on light and dark backgrounds.
+- Overrode the library's coordinate text selector correctly. Computed frame-coordinate colors are now `#14362b` on `#e0ddcc`, a 9.66:1 contrast ratio. The previous parent-only fill was overridden by the library.
+- Home now uses the existing accessible loading/error component until the dataset succeeds. A failed download no longer leaves Home describing a position as still loading; the real error and Reload page action are visible.
+- Removed obsolete single-page Method, demo-card number, and old board/dialog selectors. Updated existing startup, style, handoff, and agent guidance rather than adding another document.
+
+Actual verification:
+
+- **38/38 Node tests passed**, including original export hashes/counts, training formulas, frozen ordering/exclusions, references, rating boundaries, nonmutating selectors, empty examples, loader failures, and the exact licensed artwork.
+- **Production build passed** with pinned dependencies. The three JSON files and distributed artwork/license notices match their source bytes. `npm audit --json` reported **zero known vulnerabilities** in the existing lockfile at this check; this is not a security guarantee.
+- Isolated **headless Chrome 156.0.8078.74** passed **2,501 browser assertions** across production preview and development Strict Mode. These covered all 20 themes, 48 directions, all 506 pair-specific examples (including pairs displayed in both directions), actual piece maps from `preview_fen`, orientation, unchanged links/metrics, rating bands, support empty states, and reset. Navigation and filtering caused no further JSON downloads.
+- Page checks covered all four pages, legacy hashes, unknown routes, active navigation, document titles, one visible labelled page heading, unique IDs, scroll/focus changes, browser history, and preserved Explorer selection.
+- Native-dialog checks covered initial focus, inert background, Tab behavior, expanded position descriptions, Escape/Close/Back/backdrop dismissal, focus restoration, scroll-lock cleanup, route-change dismissal, reopening, and repeated Strict Mode filtering/dialog cycles. Active ResizeObserver counts matched the remaining rendered boards after cleanup. No uncaught browser runtime exceptions were observed.
+- Request interception verified loading, missing/malformed/invalid-schema JSON, network failure, missing/invalid artwork, accessible fallbacks, and successful reload recovery. Source exports were never edited for these tests. Empty-example behavior uses the focused selector tests; the genuine export has examples in all rating bands.
+- **126 layout/sticky-header checks** passed across all 20 themes at widths **320, 390, 768, 801, 1024, and 1440px**. No horizontal page overflow, overlapping rule metrics, or clipped theme labels was found. Desktop and mobile screenshots of all four pages were inspected; reduced-motion behavior was checked. A 320px CSS viewport checks reflow size, not physical-device rendering or actual browser zoom behavior.
+- Temporary **axe-core 4.14.0 (MPL-2.0)**, downloaded outside the repository, ran **26 scans**: four pages at four widths plus the open dialog, unknown page, loading state, JSON failures, artwork failures, and a final About-page scan after the credit-spacing fix. No violations were reported for the selected WCAG 2 A/AA, 2.1 AA, 2.2 AA, and best-practice rules. Incomplete contrast results concerned decorative symbols, single-character coordinates, and the transformed hero; their relevant colors and screenshots were reviewed separately. The coordinate contrast correction above came from that follow-up review.
+- Formatter, local documentation links, and diff-whitespace checks passed. Temporary audit downloads, scripts, screenshots, isolated Chrome profile, and the two task-owned servers were removed after checking.
+
+Limits: this was local headless Chromium verification. A manual assistive-technology session, physical devices, Firefox/WebKit, actual browser zoom, and deployed signed-out/authorized-user access were not tested. Automated accessibility scans and screenshot inspection do not establish complete WCAG conformance. Step 5's representative public Lichess-page/thumbnail comparison remains the external-position evidence; this step did not repeat every public puzzle-page request.
+
+Guidance consulted: [axe-core repository and license](https://github.com/dequelabs/axe-core), [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), and [WAI modal-dialog guidance](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). The audit engine was temporary test tooling and was not copied into the site or added to the lockfile.
+
+### 7.13 Remaining release work (not yet approved)
+
+The approved six-step local frontend migration is complete. Research Stage 6 still includes deployment and access validation; these are separate from frontend migration Step 6.
+
+- Review the complete uncommitted diff, including the preserved Step 5 work, before any separately approved branch/staging/commit/push operation. Follow the version-control guide.
+- Before release, complete or explicitly accept the unverified manual screen-reader, device, other-engine, and zoom checks listed above.
+- With separate deployment approval, configure protected static Vercel hosting, verify all intended deployment URLs, and test authorized and signed-out access. A private repository alone does not protect the hosted site.
 
 ---
 

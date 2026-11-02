@@ -123,6 +123,21 @@ for (const [name, mutate, expected] of [
     /puzzle fields/,
   ],
   [
+    'invalid preview position',
+    (data) => {
+      Object.values(data.puzzles)[0][0].preview_fen = '8/8/8/8/8/8/8/9 w - - 0 1';
+    },
+    /preview FEN/,
+  ],
+  [
+    'invalid preview side to move',
+    (data) => {
+      const puzzle = Object.values(data.puzzles)[0][0];
+      puzzle.preview_fen = puzzle.preview_fen.replace(' b ', ' x ');
+    },
+    /preview FEN/,
+  ],
+  [
     'incorrect rating band',
     (data) => {
       Object.values(data.puzzles)[0][0].difficulty = 'Hard';

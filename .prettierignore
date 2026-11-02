@@ -1,5 +1,7 @@
 # Keep frozen exports and local agent instructions unchanged.
 public/data/
+public/chess/
+public/licenses/
 AGENTS.md
 docs/TACTICHESS_CODEX_HANDOFF.md
 node_modules/

@@ -1,0 +1,26 @@
+TactiChess chess artwork attribution
+
+Asset: /chess/standard.svg
+Source: cm-chessboard 8.15.4, assets/pieces/standard.svg
+https://www.npmjs.com/package/cm-chessboard/v/8.15.4
+https://github.com/shaack/cm-chessboard
+
+The pieces are copies of the Wikimedia Commons standard SVG chess pieces:
+https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces/Standard
+
+Authors, as credited in the original SVG:
+Cburnett: https://en.wikipedia.org/wiki/User:Cburnett
+Rfc1394: https://en.wikipedia.org/wiki/User:Rfc1394
+
+Modified by Stefan Haack (shaack) for use in cm-chessboard:
+https://shaack.com
+
+License: Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/
+
+TactiChess copies the sprite without changes and retains its embedded notices.
+Distribute adaptations of this artwork under the same license and retain attribution.
+The artwork license is separate from the application's code and dataset licenses.
+
+cm-chessboard code: MIT; see cm-chessboard-MIT.txt in this directory.
+The Staunty artwork is not copied or used by TactiChess.

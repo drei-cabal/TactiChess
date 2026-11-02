@@ -1,7 +1,7 @@
 export function ExplorationFilters({ themes, ratingBands, selection, onChange, onReset }) {
   return (
     <aside className="panel control-panel" aria-label="Exploration filters">
-      <h3 className="panel-heading">Your exploration</h3>
+      <h2 className="panel-heading">Your exploration</h2>
       <p className="panel-description">
         Start with one tactic. Explore related themes from the frozen training rules.
       </p>

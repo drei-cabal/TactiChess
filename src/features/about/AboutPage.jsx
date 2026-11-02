@@ -20,6 +20,38 @@ export function AboutPage({ dataset }) {
           tags using offline ECLAT mining and makes the frozen results available to explore.
         </p>
       </div>
+      <p className="artwork-credit">
+        Chessboards:{' '}
+        <a href="https://github.com/shaack/cm-chessboard" target="_blank" rel="noopener noreferrer">
+          cm-chessboard
+        </a>{' '}
+        (<a href={`${import.meta.env.BASE_URL}licenses/cm-chessboard-MIT.txt`}>MIT</a>). Wikimedia
+        pieces by{' '}
+        <a
+          href="https://en.wikipedia.org/wiki/User:Cburnett"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Cburnett
+        </a>{' '}
+        and{' '}
+        <a
+          href="https://en.wikipedia.org/wiki/User:Rfc1394"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Rfc1394
+        </a>
+        , adapted by Stefan Haack, under{' '}
+        <a
+          href="https://creativecommons.org/licenses/by-sa/3.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          CC BY-SA 3.0
+        </a>
+        . <a href={`${import.meta.env.BASE_URL}licenses/chess-artwork.txt`}>Artwork notices</a>.
+      </p>
       <dl className="dataset-stats">
         {statistics.map(([count, label]) => (
           <div className="panel" key={label}>

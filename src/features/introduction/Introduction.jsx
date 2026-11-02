@@ -1,6 +1,8 @@
-import { DecorativeBoard } from './DecorativeBoard.jsx';
+import { StaticBoard } from '../puzzles/StaticBoard.jsx';
 
 export function Introduction({ dataset }) {
+  const heroRule = dataset?.associations.rules.find((rule) => rule.source_theme === 'fork');
+  const heroPuzzle = heroRule ? dataset.puzzles[heroRule.pair_key][0] : null;
   return (
     <>
       <section className="hero" aria-label="Introduction">
@@ -26,33 +28,46 @@ export function Introduction({ dataset }) {
             </a>
           </div>
         </div>
-        <div className="hero-art" aria-hidden="true">
+        <div className="hero-art">
           <div className="board-orbit"></div>
           <div className="board-frame">
-            <div id="heroBoard" className="board">
-              <DecorativeBoard />
+            <div id="heroBoard">
+              {heroPuzzle ? (
+                <StaticBoard
+                  previewFen={heroPuzzle.preview_fen}
+                  label={`Featured training puzzle ${heroPuzzle.puzzle_id}`}
+                  compact
+                />
+              ) : (
+                <p className="board-loading">The training position loads with the dataset.</p>
+              )}
             </div>
-            <i className="board-marker marker-1"></i>
-            <i className="board-marker marker-2"></i>
           </div>
           <div className="floating-insight">
-            <small>Board illustration</small>
+            <small>Training puzzle</small>
             <div className="fi-name">
-              TactiChess <span style={{ color: '#61934b' }}>↗</span>
+              {heroPuzzle ? `Puzzle ${heroPuzzle.puzzle_id}` : 'TactiChess'}
             </div>
-            <div className="fi-note">Decorative position only</div>
-            <div className="fi-bars">
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-            </div>
+            {heroPuzzle && (
+              <>
+                <div className="fi-note">
+                  {heroPuzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'} to move ·
+                  Rating {heroPuzzle.rating.toLocaleString('en-US')}
+                </div>
+                <a
+                  className="fi-note"
+                  href={heroPuzzle.puzzle_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open on Lichess ↗
+                </a>
+              </>
+            )}
           </div>
         </div>
       </section>
-      <div className="source-strip" aria-label="Project context">
+      <div className="source-strip" role="group" aria-label="Project context">
         <div>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="3" />

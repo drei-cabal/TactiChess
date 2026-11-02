@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { PuzzlePreviewDialog } from '../puzzles/PuzzlePreviewDialog.jsx';
 import { AssociationList } from './AssociationList.jsx';
 import {
   createInitialSelection,
@@ -12,6 +13,9 @@ import { PuzzleExamples } from './PuzzleExamples.jsx';
 export function Explorer({ dataset }) {
   const { themes, rules } = dataset.associations;
   const [selection, setSelection] = useState(() => createInitialSelection(rules));
+  const [previewPuzzle, setPreviewPuzzle] = useState(null);
+  const dismissPreview = useCallback(() => setPreviewPuzzle(null), []);
+  const themeNames = new Map(themes.map((theme) => [theme.id, theme.name]));
   const visibleRules = selectVisibleRules(rules, selection);
   const theme = themes.find((item) => item.id === selection.theme);
   const relatedTheme = themes.find((item) => item.id === selection.pair);
@@ -23,6 +27,7 @@ export function Explorer({ dataset }) {
   );
 
   function changeSelection(changes) {
+    setPreviewPuzzle(null);
     setSelection((previous) => updateSelection(rules, previous, changes));
   }
 
@@ -49,17 +54,20 @@ export function Explorer({ dataset }) {
           ratingBands={dataset.metadata.example_rating_bands}
           selection={selection}
           onChange={changeSelection}
-          onReset={() => setSelection(createInitialSelection(rules))}
+          onReset={() => {
+            setPreviewPuzzle(null);
+            setSelection(createInitialSelection(rules));
+          }}
         />
         <div className="results-col panel">
           <div className="results-top">
             <div>
-              <h3 className="panel-heading" style={{ margin: 0 }}>
+              <h2 className="panel-heading" style={{ margin: 0 }}>
                 Associated tactics{' '}
                 <span id="resultCount" className="results-count" role="status">
                   {`${visibleRules.length} ${visibleRules.length === 1 ? 'pattern' : 'patterns'}`}
                 </span>
-              </h3>
+              </h2>
               <p id="resultsSubtitle">Themes associated with {theme.name}</p>
             </div>
             <select
@@ -93,13 +101,15 @@ export function Explorer({ dataset }) {
                     : 'Adjust filters to reveal patterns'}
                 </p>
               </div>
-              <span className="sample-label">PREVIEWS PENDING</span>
+              <span className="sample-label">STATIC PREVIEWS</span>
             </div>
             <PuzzleExamples
               examples={examples}
               rule={selectedRule}
               difficulty={selection.difficulty}
               totalCount={selectedRule ? dataset.puzzles[selectedRule.pair_key].length : 0}
+              themeNames={themeNames}
+              onPreview={setPreviewPuzzle}
             />
           </div>
           <div className="insight-footer">
@@ -109,6 +119,13 @@ export function Explorer({ dataset }) {
           </div>
         </div>
       </div>
+      {previewPuzzle && (
+        <PuzzlePreviewDialog
+          puzzle={previewPuzzle}
+          themeNames={themeNames}
+          onDismiss={dismissPreview}
+        />
+      )}
     </section>
   );
 }

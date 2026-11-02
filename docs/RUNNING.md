@@ -19,7 +19,7 @@ The commands below use `npm.cmd` to avoid PowerShell execution-policy problems w
 
 ## Install and start
 
-Open the repository folder in VS Code, then open **Terminal ? New Terminal**. Run from the folder containing `package.json`:
+Open the repository folder in VS Code, then open **Terminal > New Terminal**. Run from the folder containing `package.json`:
 
 ```powershell
 npm.cmd ci
@@ -50,7 +50,7 @@ npm.cmd run preview
 - `build` writes the production assets to `dist/`.
 - `preview` serves the most recent build, normally at `http://127.0.0.1:4173/`. Rebuild after source changes; preview does not rebuild automatically.
 
-A successful build checks module imports and JSX compilation. Also exercise themes, sorting, support and difficulty filtering, selection fallback, reset, navigation, keyboard focus, loading/errors, and desktop/narrow layouts in the browser. There is no separate lint command at this checkpoint.
+A successful build checks module imports and JSX compilation. Also exercise filters, reset, navigation, preview opening/dismissal and focus, loading/errors, and desktop/narrow layouts in the browser. There is no separate lint command at this checkpoint.
 
 Do not open `index.html` using `file://`. To host a completed build elsewhere, serve the contents of `dist/`, not the source folder. Deployment and access protection remain separately approved steps; `vite preview` is for local verification.
 
@@ -60,9 +60,28 @@ The design and responsive sticky header are preserved. The explorer fetches `/da
 
 The explorer shows 20 themes and 48 frozen training-derived rules. Initial/reset state is Fork, its first exported recommendation, All difficulties, minimum support 0.20%, and curated order. Support is displayed to three decimal places, confidence to two, and lift to two with a multiplier sign. Filtering never recalculates metrics.
 
-Matching examples show their genuine puzzle IDs, ratings, and difficulty labels. All/Easy/Medium/Hard filters preserve export order and show the matching count against the full pair total. Easy includes ratings up to 1200, Medium includes 1201-1800, and Hard starts at 1801. These filters never change association support, confidence, lift, or counts. Static FEN boards and practice links follow in Step 5. The hero board is explicitly decorative. No fabricated associations or practice cards are used as a loading/error fallback.
+Matching examples show their genuine puzzle IDs, ratings, and difficulty labels. All/Easy/Medium/Hard filters preserve export order and show the matching count against the full pair total. Easy includes ratings up to 1200, Medium includes 1201-1800, and Hard starts at 1801. These filters never change association support, confidence, lift, or counts. Each card now renders its genuine `preview_fen` as a static SVG board and keeps its original Lichess URL. The moving side is at the bottom. Preview position opens a native dialog with a larger board and an expandable piece-location list; Escape, Close, Back to explorer, or a backdrop click dismisses it and restores focus. The hero uses a real exported position and matching caption. No fabricated associations or positions are used as a loading/error fallback. Moves are disabled; solve puzzles on Lichess.
 
-If a JSON file is missing, malformed, or fails validation, the page shows an error with **Reload page**. Restore the original export and reload. Do not repair counts or metrics by editing the JSON. The tests protect the original SHA-256 hashes. A production build can compile even when data is missing, so run both tests and browser checks.
+If a JSON file is missing, malformed, or fails validation, Home, Explorer, and About show an error with **Reload page**. Restore the original export and reload. Do not repair counts or metrics by editing the JSON. The tests protect the original SHA-256 hashes. A production build can compile even when data is missing, so run both tests and browser checks.
+
+## Chessboard assets
+
+The installed `cm-chessboard@8.15.4` supplies the renderer and CSS. `public/chess/standard.svg` is the verified Wikimedia sprite copied unchanged from that package; Vite copies it and `public/licenses/` into the build. The About page gives attribution. Do not replace it with the separately licensed Staunty set or reformat the third-party asset/notice files.
+
+Missing artwork produces a readable position fallback, not a fake board. Restore `public/chess/standard.svg` from the approved pinned package, rebuild if using preview, and reload. The asset request is shared during one page session, including failures; reloading retries it. JSON is still loaded once independently of filtering and previews.
+
+## Browser regression checks
+
+After `npm.cmd test` and `npm.cmd run build`, use the production-preview URL:
+
+1. Visit Home, Explorer, Method, and About; refresh a page, use browser Back/Forward, and check the active navigation link. Explorer selections should survive page navigation.
+2. Use themes, sorting, support, and every difficulty. Verify matching examples and unchanged metrics, then reset. Raising Fork support to 2.20% should show the no-association state.
+3. Use the keyboard for the skip link, theme buttons, support slider, sort control, and previews. Check visible focus. Open a description, dismiss with Escape/Close/Back/backdrop, and check focus returns to the opener.
+4. Check 320px, 390px, tablet, and desktop widths, including long theme names. Keep the header sticky and avoid horizontal scrolling. Check the browser's reduced-motion preference.
+5. Compare white- and black-to-move positions with the export; the moving side belongs at the bottom. Verify the supplied Lichess links and About artwork notices.
+6. To simulate failures, use browser developer tools request blocking or local response overrides for `/data/*.json` and `/chess/standard.svg`; leave source exports unchanged. Check loading/error messages or the position-description fallback, remove the override, then reload.
+
+Step 6 used temporary axe-core 4.14.0 scans without adding a project dependency. Repeat an accessibility scan after UI changes, then review results that require human judgment. Automated scans do not replace manual screen-reader, device, or other-browser testing. The actual results and limits are recorded in [Development documentation](DEVELOPMENT_DOCUMENTATION.md).
 
 ## Troubleshooting
 

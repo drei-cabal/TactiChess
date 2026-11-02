@@ -6,9 +6,9 @@ Before starting work, read the local `AGENTS.md`, [Version control](VERSION_CONT
 
 File-edit approval does not authorize Git mutations or deployment. Follow the guide's explicit approval gates, honor approvals already given, and present the concrete proposed commit and actual validation before requesting commit approval. These current workflow instructions apply alongside the historical project record below.
 
-Updated: November 1, 2026  
+Updated: November 2, 2026
 Project: TactiChess, offline ECLAT-powered chess tactic association explorer  
-Current status: Stages 1–5 completed. Stage 6.1 (local website preparation and repository inspection) is in progress and **has not yet been confirmed complete**.
+Current status: Stages 1-5 and approved local frontend migration Steps 1-6 are complete. Research Stage 6 remains open for separately approved protected deployment/access validation. See development checkpoint 7.12 for actual checks and limits.
 
 ## 1. Goal and scope
 
@@ -18,7 +18,7 @@ Build a responsive, static website where a learner selects a chess tactic, sees 
 - Mine and present **two-item tactical pairs only**; no triples.
 - This is association discovery, **not** chess move prediction, classification accuracy, causal inference, or proof of educational effectiveness.
 - MVP excludes accounts/profiles, databases, backend APIs, and a playable chess engine. A correct static board preview and Lichess practice link suffice.
-- Preserve the existing prototype's design where practical. Keep custom code and changes minimal. The current single-file site is a migration starting point, not the desired final architecture; evaluate modular Vite + Preact or native JS modules before implementation.
+- Preserve the existing prototype's design where practical. Keep custom code and changes minimal. The approved implementation uses Vite + React, JavaScript/JSX, ordinary CSS, native hash navigation and dialogs, and cm-chessboard for static previews.
 - Use the user-approved development plan and completed documentation for research decisions. Do not silently change model parameters or JSON metrics.
 
 ## 2. Completed research and data pipeline
@@ -53,56 +53,37 @@ Do **not** copy raw 500K/400K/100K CSV datasets into the website repository.
 
 ## 4. Website JSON contract (already generated in Colab)
 
-Copy the **actual files** into `data/`. Do not regenerate, invent, or edit their numbers.
+The **actual exports** are in `public/data/`. Do not regenerate, invent, or edit their numbers.
 
-- `data/associations.json` (~17.4 KB): object with `themes` (20 objects `{id,name,description}`) and `rules` (48 objects with `source_theme`, `related_theme`, `pair_key`, `source_count`, `related_count`, `pair_count`, `support`, `confidence`, `lift`). `pair_key` is the two theme IDs alphabetically sorted and joined by `|`.
-- `data/puzzles.json` (~293.3 KB): object keyed by `pair_key` (34 keys). Each value is a list of real example entries containing `puzzle_id`, `themes`, `rating`, `difficulty`, `original_fen`, `preview_fen`, `moves`, and `puzzle_url`. There are 506 total **entries**, not necessarily 506 distinct IDs. Candidate counts are up to 5 per pair per rating band.
-- `data/metadata.json` (~0.8 KB): project/source/provenance, sample and split sizes, ECLAT support, curated lift threshold, rating-band descriptions, limitations.
+- `public/data/associations.json` (~17.4 KB): object with `themes` (20 objects `{id,name,description}`) and `rules` (48 objects with `source_theme`, `related_theme`, `pair_key`, `source_count`, `related_count`, `pair_count`, `support`, `confidence`, `lift`). `pair_key` is the two theme IDs alphabetically sorted and joined by `|`.
+- `public/data/puzzles.json` (~293.3 KB): object keyed by `pair_key` (34 keys). Each value is a list of real example entries containing `puzzle_id`, `themes`, `rating`, `difficulty`, `original_fen`, `preview_fen`, `moves`, and `puzzle_url`. There are 506 total **entries**, not necessarily 506 distinct IDs. Candidate counts are up to 5 per pair per rating band.
+- `public/data/metadata.json` (~0.8 KB): project/source/provenance, sample and split sizes, ECLAT support, curated lift threshold, rating-band descriptions, limitations.
 - Rating groups used in exports: **Easy ≤1200**, **Medium 1201–1800**, **Hard >1800**. These are project-defined UI bands, not official Lichess classifications.
 - **Critical chess detail:** Official Lichess `FEN` is the position **before** the opponent's first recorded UCI move. `preview_fen` has that first move already applied and represents the position where the learner starts solving. Render `preview_fen`, not `original_fen`, for the displayed puzzle start. The second UCI move begins the user's solution. The frontend does not need to recompute this.
 - Practice links use `https://lichess.org/training/{puzzle_id}`. The sample generated URL was `https://lichess.org/training/2eQYf`. Manually QA that exported links open the intended puzzles.
 - Rules must map to examples by `pair_key`; both directions of a pair use the same puzzle example list. Filtering example ratings must **not** change global ECLAT metrics.
 
-## 5. Existing prototype
+## 5. Original prototype and current frontend
 
 Original ZIP: `tacticpair_website_prototype(1).zip`, containing `tacticpair_site/index.html` and `tacticpair_site/README.md`.
 
-- Static HTML site, with CSS and JavaScript inline in `index.html`, no framework/build pipeline.
-- Current JavaScript contains `themes`, `pairs`, and `boards` with **placeholder** content, including fabricated sample associations and boards; it does **not** yet load the JSON exports.
-- The existing support slider was designed for demo values; it must later be made accurate for real percentages if retained.
-- Proposed website root:
+The original prototype used inline CSS/JavaScript and fabricated demo associations/boards. The approved six-step migration replaced that implementation while retaining the design and sticky header.
 
-```text
-TactiChess/
-  index.html
-  README.md
-  data/
-    associations.json
-    puzzles.json
-    metadata.json
-  docs/
-    TACTICHESS_CODEX_HANDOFF.md
-    DEVELOPMENT_DOCUMENTATION.md   (optional detailed record)
-```
+Current entry points are `index.html`, `src/main.jsx`, and `src/App.jsx`. Page navigation is in `src/navigation.js`; components, features, styles, loading, and validation have focused modules under `src/`. Frozen exports are in `public/data/`, artwork/notices are in `public/chess/` and `public/licenses/`, and Node tests are in `tests/`. See [Code style](CODE_STYLE.md) for the module map.
 
-Use a simple local HTTP server to test JavaScript `fetch()` of JSON, not `file://` opening. Keep large research CSVs outside this repo.
+Use the Vite commands in [Running the project](RUNNING.md), not `file://` or a source-folder Python server. Keep large research CSVs outside this repository.
 
 ## 6. Current approval gate and next phases
 
-**Current task: Stage 6.1, not yet confirmed by user.** The user is transferring the website project to VS Code Codex and starting a private GitHub repository. Before making changes, inspect files and verify that the three actual JSON exports have been copied into `data/`. Report any missing files or schema mismatches. Do not claim the repo or website integration is complete until confirmed.
+Approved frontend migration Steps 1-6 are complete locally: asset extraction, React/Vite setup, genuine JSON integration, filtering, static previews, and final local QA/documentation. The actual evidence is in development checkpoints 7.6-7.12. This does not mark protected deployment as complete.
 
-**Next approved work requires a separate user go-ahead for each step:**
+Preserve the existing uncommitted work. No branch/staging/commit/push/deployment action is authorized by implementation approval. Present the concrete diff, proposed commit, checks, and limits before seeking Git approval. Follow [Version control](VERSION_CONTROL.md).
 
-1. **6.1 Prepare/audit**: inspect repo and verify files. No implementation changes yet.
-2. **6.2 JSON integration**: load actual JSON, replace demo tactics and associations. Preserve genuine training values.
-3. **6.3 Interactions**: selection, association sorting/support filter, difficulty filter, loading/empty/error states.
-4. **6.4 Puzzle preview**: show actual rating/themes and correct `preview_fen` on static board; verify puzzle practice links.
-5. **6.5 QA**: desktop/mobile, keyboard/accessibility, errors, data integrity, link and FEN checks.
-6. **6.6 Vercel**: static deployment with access protection on all deployments, verify signed-out browser is blocked and authorized reviewer can access.
+Before release, complete or explicitly accept the remaining manual screen-reader, physical-device, Firefox/WebKit, and browser-zoom checks. Deploy only after separate approval, then verify protected access for signed-out and authorized visitors on every intended deployment URL.
 
-**Scope/gate rules:** Work on one explicitly approved step at a time. At the start, inspect and explain the minimum necessary changes. Ask before modifying files or proceeding to a new step. Keep custom code concise, readable, and maintainable. Evaluate a small modular frontend framework or native ES modules and reusable libraries against maintenance and dependency costs. Avoid servers, databases, and unnecessary packages. Do not create a playable chess engine in the MVP. Do not overwrite or modify the supplied JSON metrics.
+Keep the approved framework/dependencies and JSON schemas. ECLAT stays offline; boards render only `preview_fen`, use unchanged practice URLs, and disable moves. Never change frozen rules or recompute metrics when filtering examples. Artwork attribution and license notices must remain available.
 
-**Progress recording:** After each confirmed step, update the dated progress section of this handoff (or the detailed documentation) to distinguish completed work, results tested, remaining work, and limitations. Never claim a test or deployment succeeded without running/verifying it. GitHub history should track actual source changes.
+Update the existing development record after approved work, distinguishing actual checks from plans and unverified behavior. Do not infer permission for a new feature, dependency, Git operation, or release from this checkpoint.
 
 ## 7. Authoritative supporting documentation
 
@@ -110,6 +91,8 @@ The source record before transfer is `TacticPair_V2_Development_Documentation_v1
 
 If those files are copied into `docs/`, read them for details. The current status and verified figures above take precedence over any older *planned* figure. Treat the actual JSON files as authoritative for runtime data, and do not assume their bytes are present until inspected locally.
 
-## 7. Updated frontend architecture decision (November 1, 2026)
+## 8. Historical architecture-audit request (November 1, 2026)
+
+This paragraph records the original audit request; the completed implementation and current approval gates above supersede its pending-work wording.
 
 The user has renamed the project **TactiChess**. The old prototype and historic Colab/Drive filenames may retain older names, but frontend branding and future repository files must use TactiChess. Stage 6.1 now includes an evidence-based architecture review before any implementation: separate markup, styles, and JavaScript into appropriate modules/components, consider Vite + Preact vs Vite + vanilla modules, and search official documentation and maintained GitHub libraries for reusable static chessboard rendering. Favor minimum custom code and clean responsibilities over copying the entire single-file prototype. No changes are approved until the audit and plan are reviewed. Local `AGENTS.md` governs behavior and is not intended for Git tracking.

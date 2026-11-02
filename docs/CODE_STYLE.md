@@ -37,7 +37,7 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 - Update state immutably, using functional updates when the next value depends on the previous value.
 - Give mapped components stable domain keys so controls retain focus.
 - Handle control events through JSX props. Use effects only for browser integration, and clean up listeners, focus, and scroll locks.
-- Render only validated exports for associations and counts. Keep the temporary hero decoration clearly labeled until the real-preview step.
+- Render only validated exports for associations, counts, and positions. Always pass `preview_fen` to boards; keep links exactly as exported.
 - Keep components together when they share one responsibility. Split only genuine boundaries; do not extract every decorative element.
 
 ## Current module map
@@ -46,16 +46,19 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | ------------------------------------------------ | --------------------------------------------------------------------------- |
 | `src/main.jsx`                                   | Mount React; start one dataset-loading operation outside effects.           |
 | `src/App.jsx`                                    | Compose page sections and accessible loading/error states.                  |
+| `src/navigation.js`                              | Native hash-page definitions and navigation subscription.                   |
 | `src/components/SiteNavigation.jsx`              | Header and footer.                                                          |
 | `src/data/load-dataset.js`                       | Fetch the three static exports; report network/JSON failures.               |
 | `src/data/validate-dataset.js`                   | Validate fields, numeric contracts, references, and totals once.            |
 | `src/features/introduction/Introduction.jsx`     | Hero and source context.                                                    |
-| `src/features/introduction/DecorativeBoard.jsx`  | Preserve the explicitly decorative hero board until real previews.          |
-| `src/features/about/AboutPage.jsx`               | Method, source, and provenance.                                             |
-| `src/features/explorer/Explorer.jsx`             | Shared selection state, real counts, and pending previews.                  |
+| `src/features/method/MethodPage.jsx`             | Exploring steps and metric explanations.                                    |
+| `src/features/about/AboutPage.jsx`               | Dataset, source, licenses, and provenance.                                  |
+| `src/features/explorer/Explorer.jsx`             | Shared filter and preview selection state, with fixed training metrics.     |
 | `src/features/explorer/ExplorationFilters.jsx`   | Controlled theme, support, and example-difficulty inputs.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
-| `src/features/explorer/PuzzleExamples.jsx`       | Matching example metadata, counts, and distinct empty states.               |
+| `src/features/explorer/PuzzleExamples.jsx`       | Genuine puzzle cards, links, counts, and distinct empty states.             |
+| `src/features/puzzles/StaticBoard.jsx`           | Library lifecycle, static SVG, and accessible piece-location description.   |
+| `src/features/puzzles/PuzzlePreviewDialog.jsx`   | Native modal, dismissal, focus, and scroll-lock cleanup.                    |
 | `src/features/explorer/association-selectors.js` | Pure rule/example filtering, sorting, defaults, and selection fallback.     |
 | `public/data/`                                   | Original JSON exports copied unchanged into production output.              |
 | `tests/dataset.test.js`                          | Original hashes, data contracts, rankings/exclusions, and loading failures. |
@@ -88,7 +91,7 @@ Examples:
 /* Explorer filters */
 ```
 
-Keep comments accurate. The remaining hero array is decorative; only the validated exports supply real association data.
+Keep comments accurate. The hero and example boards use genuine exported positions; do not describe them as demo arrays.
 
 ## Format and verify
 
@@ -102,13 +105,17 @@ Keep comments accurate. The remaining hero array is decorative; only the validat
    git diff --check
    ```
 
-4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support and rating filtering, selection fallback, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check previews when that step is implemented. See [Running the project](RUNNING.md).
+4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support and rating filtering, selection fallback, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check preview orientation, position descriptions, native-dialog focus, and original practice links. See [Running the project](RUNNING.md).
 5. Review the diff and update the existing development record with actual checks and limitations. Preserve unrelated user edits.
 
 Node's built-in runner tests pure logic; Vite validates JSX and module compilation. There is no separate lint command or project-installed formatter. Do not describe these checks as a complete accessibility audit or physical-device test.
 
 ## Frozen data and approval boundaries
 
-Leave every byte in `public/data/associations.json`, `public/data/puzzles.json`, and `public/data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; real board integration will use `preview_fen` and the supplied `puzzle_url`.
+Leave every byte in `public/data/associations.json`, `public/data/puzzles.json`, and `public/data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; boards use `preview_fen` and the supplied `puzzle_url`.
 
-Step 4 authorized real example filtering and selection behavior. Boards, preview dialogs, and Lichess practice links (Step 5), additional packages, staging or commits, pushes, and deployment require their own approvals. Filtering must not mutate exports or change global metrics. The exported difficulty field is validated against rating boundaries once at loading; selectors use that validated field and `pair_key` without duplicating rating classification. Do not add preview state before there is an approved preview interaction. Agents must report only checks actually run.
+Step 5 authorized the exact `cm-chessboard@8.15.4` dependency, unchanged Wikimedia `standard.svg`, static previews, native preview dialog, and original Lichess links. Move input and board animations remain disabled. `StaticBoard` gives the library exclusive ownership of its ref container; React owns the surrounding labels and accessible description. Effects must destroy boards and clean up modal listeners, focus, and scroll locks during Strict Mode and unmounts. Use the library's position model and English piece names rather than building a chess engine or a second FEN renderer.
+
+Never render `original_fen`, display solution moves, or replace missing artwork with a fabricated board. Keep the accessible position description and real link available on artwork failure. The original artwork and notices in `public/chess/` and `public/licenses/` are formatter-excluded and verified by tests. Preserve attribution on About and the distributed license notices.
+
+Frontend migration Steps 1-6 are complete locally. Further dependency changes, Git mutations, and deployment require their own approvals. Filtering must never mutate the exports or recalculate global metrics. Agents must report only checks actually run.
