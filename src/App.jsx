@@ -4,6 +4,7 @@ import { SiteFooter, SiteHeader } from './components/SiteNavigation.jsx';
 import { AboutPage } from './features/about/AboutPage.jsx';
 import { Explorer } from './features/explorer/Explorer.jsx';
 import { Introduction } from './features/introduction/Introduction.jsx';
+import { ThemeLibrary } from './features/library/ThemeLibrary.jsx';
 import { MethodPage } from './features/method/MethodPage.jsx';
 import { usePage } from './navigation.js';
 
@@ -53,6 +54,13 @@ export function App({ datasetState }) {
           )}
         </div>
         {page?.id === 'method' && <MethodPage />}
+        <div hidden={page?.id !== 'themes'}>
+          {dataset ? (
+            <ThemeLibrary dataset={dataset} />
+          ) : (
+            <DatasetStatus state={datasetState} headingId="themes-title" />
+          )}
+        </div>
         {page?.id === 'about' &&
           (dataset ? (
             <AboutPage dataset={dataset} />

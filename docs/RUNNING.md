@@ -66,6 +66,8 @@ If a JSON file is missing, malformed, or fails validation, Home, Explorer, and A
 
 How to use follows the current gallery-first interface: choose an example, enlarge the preview, and solve on Lichess. Separate guidance covers Change tactics, View puzzles, Back to puzzles, Reset to Fork, and puzzle-card labels. Statistics and research formulas stay in an optional native disclosure. Open Explorer links lead to the existing gallery without resetting its selection.
 
+Themes opens `#/themes`, a scrollable library of all 20 exported themes. Every beginner explanation and recognition prompt is visible immediately, grouped into Tactical motifs, Advanced ideas, Checkmate patterns, and Special moves using Lichess category membership. Category buttons jump to the corresponding heading without filtering or hiding descriptions. Cards use two columns on desktop and one on narrow screens. Each card offers an optional View 2 board examples disclosure; boards are mounted only while that disclosure is open. Examples remain two distinct lower-rated exported puzzles for the theme's curated pairs. Enlarge board opens a larger static preview with position details and Back to theme library. Theme tags may describe later moves in the solution; the guide does not annotate or reveal solution moves. Original board positions, puzzle links, and research metrics remain unchanged.
+
 About introduces the project and Lichess source first, explains the four genuine dataset counts, and keeps practical limitations visible. View the research details expands the original sample/split counts, method, thresholds, and metadata limitations. Chessboard and artwork credits remain in a labelled section with the original license links.
 
 ## Chessboard assets
@@ -78,12 +80,13 @@ Missing artwork produces a readable position fallback, not a fake board. Restore
 
 After `npm.cmd test` and `npm.cmd run build`, use the production-preview URL:
 
-1. Visit Home, Explorer, Method, and About; refresh a page, use browser Back/Forward, and check the active navigation link. Explorer selections should survive page navigation.
+1. Visit Home, Explorer, Themes, Method, and About; refresh a page, use browser Back/Forward, and check the active navigation link. Explorer selections and open theme-library disclosures should survive page navigation.
 2. Use the tactic menu, select different pairs, and try every difficulty. Verify that pair descriptions, matching examples, and selected evidence update together while metrics stay unchanged; then reset to Fork.
 3. Use the keyboard for the skip link, tactic menu, pair buttons, evidence disclosure, difficulty controls, and previews. Check visible focus. Open a description, dismiss with Escape/Close/Back/backdrop, and check focus returns to the opener.
 4. Check 320px, 390px, tablet, and desktop widths, including long theme names. Keep the header sticky and avoid horizontal scrolling. Check the browser's reduced-motion preference.
 5. Compare white- and black-to-move positions with the export; the moving side belongs at the bottom. Verify the supplied Lichess links and About artwork notices.
 6. To simulate failures, use browser developer tools request blocking or local response overrides for `/data/*.json` and `/chess/standard.svg`; leave source exports unchanged. Check loading/error messages or the position-description fallback, remove the override, then reload.
+7. In Themes, scroll through all 20 descriptions and use the four category jumps. Confirm keyboard focus reaches the category heading below the sticky header. Open and close optional board examples by mouse and keyboard; check both genuine positions, preview dismissal, library return text, and restored focus on desktop and narrow screens.
 
 Step 6 used temporary axe-core 4.14.0 scans without adding a project dependency. Repeat an accessibility scan after UI changes, then review results that require human judgment. Automated scans do not replace manual screen-reader, device, or other-browser testing. The actual results and limits are recorded in [Development documentation](DEVELOPMENT_DOCUMENTATION.md).
 

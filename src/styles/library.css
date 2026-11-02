@@ -1,0 +1,303 @@
+/* A reading-first catalog; board examples are optional. */
+.library-page {
+  padding-top: 20px;
+}
+
+.library-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 24px;
+  padding: 26px 30px;
+  border-radius: 16px;
+  background: var(--forest);
+  color: white;
+}
+
+.library-intro .kicker {
+  color: var(--lime);
+}
+
+.library-intro p {
+  max-width: 650px;
+  margin: 12px 0 0;
+  color: #e0eada;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.library-bookmark {
+  flex-shrink: 0;
+  border-left: 1px solid #6f896e;
+  padding-left: 28px;
+  color: var(--lime);
+  font:
+    italic 21px/1.4 Georgia,
+    serif;
+}
+
+.library-bookmark > span {
+  display: block;
+  font-size: 40px;
+  font-style: normal;
+}
+
+.library-browse-intro > p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.library-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.library-categories button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #b5c9aa;
+  border-radius: 10px;
+  background: white;
+  color: var(--forest);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.library-categories button:hover {
+  background: var(--mint);
+  border-color: #669041;
+}
+
+.library-categories button > span {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--mint);
+}
+
+.library-category {
+  margin-top: 36px;
+}
+
+.library-category-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.library-category-number {
+  padding-top: 4px;
+  color: #496f35;
+  font:
+    italic 26px/1.3 Georgia,
+    serif;
+}
+
+.library-category h2 {
+  font-size: 29px;
+  letter-spacing: -0.7px;
+  scroll-margin-top: 24px;
+}
+
+.library-category h2:focus-visible {
+  outline: 3px solid #376b42;
+  outline-offset: 5px;
+}
+
+.library-category-heading p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.library-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px;
+}
+
+.library-theme-card {
+  min-width: 0;
+  padding: 24px;
+}
+
+.library-theme-card > h3 {
+  margin: 0;
+  color: var(--forest);
+  font:
+    normal 24px/1.3 Georgia,
+    serif;
+  letter-spacing: -0.4px;
+}
+
+.library-meaning {
+  margin: 12px 0 18px;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.library-cue {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 3px solid #98c879;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.library-cue strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--forest);
+  font-size: 12px;
+}
+
+.library-board-details {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.library-board-details > summary {
+  min-height: 44px;
+  padding-top: 14px;
+  color: var(--forest);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.library-example-help {
+  margin: 10px 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.library-examples {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.library-examples .card-top .position-preview {
+  max-width: 240px;
+}
+
+.library-examples h4 {
+  margin: 0;
+  font-size: 13px;
+}
+
+.library-examples .card-bottom > p {
+  margin: 6px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.library-examples .card-cta {
+  min-height: 44px;
+  font-size: 12px;
+}
+
+.library-next,
+.library-source {
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.library-next a,
+.library-source a {
+  color: var(--forest);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.puzzle-dialog.library-preview {
+  width: min(980px, calc(100% - 32px));
+}
+
+.library-preview .modal-body {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+}
+
+.library-preview .position-preview {
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+/* Make room for the fifth navigation link. */
+@media (max-width: 1120px) {
+  .header .demo-pill {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .library-theme-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .library-intro {
+    padding: 22px;
+  }
+
+  .library-bookmark {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .library-preview .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 530px) {
+  .library-theme-card {
+    padding: 20px;
+  }
+
+  .library-categories {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .library-categories button {
+    gap: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .library-examples {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .header .topnav {
+    gap: 0;
+    font-size: 11px;
+  }
+
+  .header .topnav a {
+    padding-inline: 6px;
+  }
+}

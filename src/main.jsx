@@ -6,6 +6,7 @@ import 'cm-chessboard/assets/chessboard.css';
 import './styles/site.css';
 import './styles/pages.css';
 import './styles/chess.css';
+import './styles/library.css';
 
 const root = createRoot(document.getElementById('root'));
 

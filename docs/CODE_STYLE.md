@@ -53,6 +53,8 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | `src/features/introduction/Introduction.jsx`     | Hero and source context.                                                    |
 | `src/features/method/MethodPage.jsx`             | Exploring steps and metric explanations.                                    |
 | `src/features/about/AboutPage.jsx`               | Dataset, source, licenses, and provenance.                                  |
+| `src/features/library/ThemeLibrary.jsx`          | Scrollable theme descriptions by category, with optional board examples. |
+| `src/features/library/theme-catalog.js`          | Learning copy, Lichess category membership, and distinct lower-rated examples. |
 | `src/features/explorer/Explorer.jsx`             | Puzzle-first layout, pair context, shared selection/preview state, and fixed metrics.     |
 | `src/features/explorer/ExplorationFilters.jsx`   | Controlled tactic menu, selected definition, and reset.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |

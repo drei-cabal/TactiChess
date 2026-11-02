@@ -3,7 +3,13 @@ import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { StaticBoard } from './StaticBoard.jsx';
 
-export function PuzzlePreviewDialog({ puzzle, themeNames, onDismiss }) {
+export function PuzzlePreviewDialog({
+  puzzle,
+  themeNames,
+  onDismiss,
+  returnLabel = 'Back to explorer',
+  className = '',
+}) {
   const dialog = useRef(null);
   const closeButton = useRef(null);
 
@@ -33,7 +39,7 @@ export function PuzzlePreviewDialog({ puzzle, themeNames, onDismiss }) {
   return createPortal(
     <dialog
       ref={dialog}
-      className="modal puzzle-dialog"
+      className={`modal puzzle-dialog ${className}`}
       aria-labelledby="previewTitle"
       onCancel={(event) => {
         event.preventDefault();
@@ -78,7 +84,7 @@ export function PuzzlePreviewDialog({ puzzle, themeNames, onDismiss }) {
             Solve on Lichess ↗
           </a>
           <button className="card-cta" type="button" onClick={onDismiss}>
-            Back to explorer
+            {returnLabel}
           </button>
         </div>
       </div>

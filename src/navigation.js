@@ -3,6 +3,7 @@ import { useSyncExternalStore } from 'react';
 export const pages = [
   { id: 'home', href: '#/', label: 'Home', title: 'Find the connection in every tactic' },
   { id: 'explore', href: '#/explore', label: 'Explorer', title: 'Explore tactic connections' },
+  { id: 'themes', href: '#/themes', label: 'Themes', title: 'Theme library' },
   { id: 'method', href: '#/method', label: 'How to use', title: 'How to use TactiChess' },
   { id: 'about', href: '#/about', label: 'About', title: 'The data behind TactiChess' },
 ];

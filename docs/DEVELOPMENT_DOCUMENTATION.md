@@ -1,8 +1,8 @@
 # TactiChess
 ## Development and Research Documentation
 
-Document version: 1.15\
-Last updated: November 2, 2026\
+Document version: 1.17\
+Last updated: November 3, 2026\
 Current status: Stages 1-5 completed; approved frontend migration Steps 1-6 completed locally; protected deployment and release approvals remain pending\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
@@ -824,6 +824,46 @@ Validation:
 Limits: local content/layout and selected browser checks, not a new end-to-end external Lichess solving test, exhaustive production-preview check, screen-reader/device/other-engine audit, or participant usability study.
 
 Guidance: [W3C step-by-step instructions](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o4p07-step-instructions/) and [Nielsen help/documentation](https://www.nngroup.com/articles/help-and-documentation/). These support concrete, concise instructions matching the task; they do not establish complete accessibility conformance.
+
+---
+
+### 7.19 Beginner theme library (completed November 3, 2026)
+
+Scope: the user requested a new theme catalog with novice-friendly descriptions, board examples, and attention to HCI and user experience. Added Themes to the existing hash navigation and reused the approved React/CSS architecture, dataset loader, static boards, and native preview dialog. No packages, frozen exports, Git history, or deployment configuration were changed.
+
+- The library lists the 20 themes from the validated export. Separate learning copy explains each idea and gives a recognition prompt. Search matches names, definitions, and learning copy, reports the matching count, and offers an explicit empty state and Clear search action.
+- Desktop pairs a searchable theme list with a focused guide. Narrow screens use a labelled native theme menu and a direct Read guide action, avoiding a second scrolling list. Selection is identified by text, a check mark, and styling. Guide navigation moves focus to its heading; theme/search state survives page navigation. The existing sticky header accommodates the fifth link.
+- Each theme gets two distinct genuine puzzles selected through its curated pair keys, including either direction, ordered by ascending exported rating. Only the displayed examples are ordered; rule metrics, research rankings, and source files remain unchanged. Boards use `preview_fen`, show the side to move, retain readable position descriptions, and link to the supplied Lichess URLs.
+- Existing preview behavior is reused with a library-specific return label and larger desktop board. The guide explains that tags may describe later solution moves. Prompts are general theme guidance, not annotations claiming to identify a specific move or square in a puzzle.
+
+Validation:
+
+- `npm.cmd test`: 42/42 passed, including the existing 38 data/selector/artwork checks and four catalog checks covering all 20 descriptions, search boundaries, distinct original examples for every theme, both rule directions, rating order, missing examples, and nonmutation. Frozen SHA-256 checks passed.
+- Production build, diff whitespace checks, and source/production export hash comparisons passed. Changed source files were formatted with the existing VS Code Prettier installation.
+- Inspected the local production preview in Chrome on desktop and at 320px/390px responsive widths. Checked search for Pin, updated Pin copy and black-to-move boards, native keyboard selection through Zugzwang, an unmatched search, recovery controls, and the native preview with its library return action. Checked the narrow navigation and stacked layout.
+
+Limits: selected local Chrome checks, not a participant usability study, full accessibility audit, screen-reader test, physical-device test, or cross-engine verification. No playable board, solution annotations, model changes, or deployment were added.
+
+Guidance: [Lichess theme definitions](https://lichess.org/training/themes), [W3C accessible writing](https://www.w3.org/WAI/tips/writing/), and [React shared-state guidance](https://react.dev/learn/sharing-state-between-components). Existing components and browser controls were sufficient; no additional UI, search, router, or chess library was needed.
+
+---
+
+### 7.20 Description-first theme catalog (completed November 3, 2026)
+
+Scope: the user clarified that Themes should focus on descriptions and display the catalog through scrolling or categories. Replaced the search-and-selection workspace with a reading-first page; preserved the prior beginner copy, genuine examples, shared previews, frozen exports, and unrelated work.
+
+- All 20 theme descriptions and recognition prompts now appear directly in the page, with two columns on desktop and one on narrow screens. Removed search, the theme selector, the selected lesson panel, and their unused logic/styles.
+- Organized themes by the official Lichess category membership, with readable section names: Tactical motifs (10), Advanced ideas (7), Checkmate patterns (2), and Special moves (1). Category buttons jump to labelled headings and move keyboard focus without changing the page route or hiding any descriptions.
+- Each theme has an optional native View 2 board examples disclosure. Boards are mounted only while the disclosure is open, preserving a description-led initial view. Both examples, original ratings/FENs/links, and the larger native preview remain available. The grouping test verifies complete, duplicate-free coverage of the 20 exported themes and preservation of original objects/order.
+
+Validation:
+
+- Updated test suite: 42/42 passed, including frozen export hashes, category coverage, original example references, and nonmutation. Production build, source formatting, and diff-whitespace checks passed.
+- Inspected the running development site in Chrome at desktop, 390px, and 320px. The browser accessibility tree exposed all 20 theme headings without choosing or searching. Checked category jumps, readable stacked descriptions, native example expansion, two genuine Pillsbury's Mate boards/links, and Space-key disclosure closing. Category headings remained below the sticky header.
+
+Limits: no new dependencies, research-data changes, Git history changes, or deployment. Category labels organize the learning content; they do not recalculate associations or assign new puzzle difficulties. No participant study, screen-reader/device audit, or cross-engine validation is claimed.
+
+References: [Lichess categories](https://lichess.org/training/themes) and [W3C heading structure](https://www.w3.org/WAI/tutorials/page-structure/headings/).
 
 ---
 
