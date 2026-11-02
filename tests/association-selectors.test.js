@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import {
   createInitialSelection,
+  selectExamplePuzzles,
   selectVisibleRules,
   updateSelection,
 } from '../src/features/explorer/association-selectors.js';
@@ -10,6 +11,7 @@ import {
 const { rules } = JSON.parse(
   await readFile(new URL('../public/data/associations.json', import.meta.url))
 );
+const puzzles = JSON.parse(await readFile(new URL('../public/data/puzzles.json', import.meta.url)));
 
 test('initial and reset states select Fork and its first exported recommendation', () => {
   const initial = createInitialSelection(rules);
@@ -80,4 +82,97 @@ test('difficulty state cannot modify the global training metrics', () => {
     assert.deepEqual(selectVisibleRules(rules, selection), selectVisibleRules(rules, initial));
   }
   assert.deepEqual(rules, snapshot);
+});
+
+test('every rule selects its pair examples in export order without mutating the dataset', () => {
+  const snapshot = structuredClone(puzzles);
+  for (const rule of rules) {
+    const selected = selectExamplePuzzles(puzzles, rule, 'All');
+    assert.deepEqual(selected, puzzles[rule.pair_key]);
+    assert.notEqual(selected, puzzles[rule.pair_key]);
+    assert.ok(selected.every((puzzle, index) => puzzle === puzzles[rule.pair_key][index]));
+  }
+  assert.deepEqual(puzzles, snapshot);
+});
+
+test('difficulty filters return exactly the examples inside the exported rating boundaries', () => {
+  for (const rule of rules) {
+    const all = puzzles[rule.pair_key];
+    for (const [difficulty, matchesRating] of [
+      ['Easy', (rating) => rating <= 1200],
+      ['Medium', (rating) => rating >= 1201 && rating <= 1800],
+      ['Hard', (rating) => rating >= 1801],
+    ]) {
+      assert.deepEqual(
+        selectExamplePuzzles(puzzles, rule, difficulty),
+        all.filter((puzzle) => matchesRating(puzzle.rating))
+      );
+    }
+  }
+});
+
+test('both directions of a curated pair use the same example entries', () => {
+  for (const rule of rules) {
+    const reverse = rules.find(
+      (candidate) =>
+        candidate.source_theme === rule.related_theme &&
+        candidate.related_theme === rule.source_theme
+    );
+    if (reverse) {
+      assert.deepEqual(
+        selectExamplePuzzles(puzzles, rule, 'All'),
+        selectExamplePuzzles(puzzles, reverse, 'All')
+      );
+    }
+  }
+});
+
+test('no association and no examples in a difficulty return empty lists', () => {
+  assert.deepEqual(selectExamplePuzzles(puzzles, null, 'All'), []);
+  const rule = rules[0];
+  // Use a real subset to exercise a band missing from an otherwise valid pair.
+  const hardOnly = {
+    [rule.pair_key]: puzzles[rule.pair_key].filter((puzzle) => puzzle.difficulty === 'Hard'),
+  };
+  assert.deepEqual(selectExamplePuzzles(hardOnly, rule, 'Easy'), []);
+  assert.deepEqual(selectExamplePuzzles(hardOnly, rule, 'All'), hardOnly[rule.pair_key]);
+});
+
+test('changing difficulty preserves association selection, ordering, and original metric objects', () => {
+  const initial = updateSelection(rules, createInitialSelection(rules), {
+    pair: 'attraction',
+    sort: 'lift',
+  });
+  const visible = selectVisibleRules(rules, initial);
+  for (const difficulty of ['Easy', 'Medium', 'Hard', 'All']) {
+    const next = updateSelection(rules, initial, { difficulty });
+    assert.equal(next.pair, 'attraction');
+    assert.deepEqual(selectVisibleRules(rules, next), visible);
+    assert.ok(selectVisibleRules(rules, next).every((rule, index) => rule === visible[index]));
+  }
+});
+
+test('reset restores every control and all examples after combined filter changes', () => {
+  const changed = updateSelection(rules, createInitialSelection(rules), {
+    theme: 'pin',
+    pair: 'deflection',
+    difficulty: 'Hard',
+    support: 0.3,
+    sort: 'lift',
+  });
+  assert.equal(changed.difficulty, 'Hard');
+  const reset = createInitialSelection(rules);
+  const rule = selectVisibleRules(rules, reset).find((item) => item.related_theme === reset.pair);
+  assert.equal(reset.difficulty, 'All');
+  assert.equal(
+    selectExamplePuzzles(puzzles, rule, reset.difficulty).length,
+    puzzles['fork|sacrifice'].length
+  );
+  assert.deepEqual(reset, {
+    theme: 'fork',
+    difficulty: 'All',
+    support: 0.2,
+    sort: 'curated',
+    pair: 'sacrifice',
+  });
 });

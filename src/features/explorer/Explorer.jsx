@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { AssociationList } from './AssociationList.jsx';
 import {
   createInitialSelection,
+  selectExamplePuzzles,
   selectVisibleRules,
   updateSelection,
 } from './association-selectors.js';
 import { ExplorationFilters } from './ExplorationFilters.jsx';
+import { PuzzleExamples } from './PuzzleExamples.jsx';
 
 export function Explorer({ dataset }) {
   const { themes, rules } = dataset.associations;
@@ -14,6 +16,7 @@ export function Explorer({ dataset }) {
   const theme = themes.find((item) => item.id === selection.theme);
   const relatedTheme = themes.find((item) => item.id === selection.pair);
   const selectedRule = visibleRules.find((rule) => rule.related_theme === selection.pair);
+  const examples = selectExamplePuzzles(dataset.puzzles, selectedRule, selection.difficulty);
   const exampleCount = Object.values(dataset.puzzles).reduce(
     (total, examples) => total + examples.length,
     0
@@ -43,16 +46,17 @@ export function Explorer({ dataset }) {
       <div className="explorer">
         <ExplorationFilters
           themes={themes}
+          ratingBands={dataset.metadata.example_rating_bands}
           selection={selection}
           onChange={changeSelection}
           onReset={() => setSelection(createInitialSelection(rules))}
         />
-        <div className="results-col panel" aria-live="polite">
+        <div className="results-col panel">
           <div className="results-top">
             <div>
               <h3 className="panel-heading" style={{ margin: 0 }}>
                 Associated tactics{' '}
-                <span id="resultCount" className="results-count">
+                <span id="resultCount" className="results-count" role="status">
                   {`${visibleRules.length} ${visibleRules.length === 1 ? 'pattern' : 'patterns'}`}
                 </span>
               </h3>
@@ -82,7 +86,7 @@ export function Explorer({ dataset }) {
           <div className="puzzle-section">
             <div className="puzzle-header">
               <div>
-                <h3>Practice positions</h3>
+                <h3>Matching examples</h3>
                 <p id="practiceSubtitle">
                   {relatedTheme
                     ? `Available examples · ${theme.name} + ${relatedTheme.name}`
@@ -91,13 +95,12 @@ export function Explorer({ dataset }) {
               </div>
               <span className="sample-label">PREVIEWS PENDING</span>
             </div>
-            <div id="puzzles" className="puzzles">
-              <div className="empty" style={{ gridColumn: '1/-1' }}>
-                {selectedRule
-                  ? `${dataset.puzzles[selectedRule.pair_key].length} exported examples are available for this pair. Board previews and Lichess practice links are coming soon.`
-                  : 'No associated tactic is selected.'}
-              </div>
-            </div>
+            <PuzzleExamples
+              examples={examples}
+              rule={selectedRule}
+              difficulty={selection.difficulty}
+              totalCount={selectedRule ? dataset.puzzles[selectedRule.pair_key].length : 0}
+            />
           </div>
           <div className="insight-footer">
             <span className="info-dot">i</span>

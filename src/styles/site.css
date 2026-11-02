@@ -1025,6 +1025,41 @@ input[type='range'] {
   flex: none;
 }
 
+/* Exported puzzle examples */
+.example-summary {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.example-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.example-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  font-size: 12px;
+}
+
+.example-entry + .example-entry {
+  border-top: 1px solid var(--line);
+}
+
+.example-entry small {
+  display: block;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
 /* Method and footer */
 .how {
   padding: 77px 0 64px;

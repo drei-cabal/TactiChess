@@ -51,11 +51,12 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | `src/data/validate-dataset.js`                   | Validate fields, numeric contracts, references, and totals once.            |
 | `src/features/introduction/Introduction.jsx`     | Hero and source context.                                                    |
 | `src/features/introduction/DecorativeBoard.jsx`  | Preserve the explicitly decorative hero board until real previews.          |
-| `src/features/about/ProjectInfo.jsx`             | Method, source, and provenance.                                             |
+| `src/features/about/AboutPage.jsx`               | Method, source, and provenance.                                             |
 | `src/features/explorer/Explorer.jsx`             | Shared selection state, real counts, and pending previews.                  |
-| `src/features/explorer/ExplorationFilters.jsx`   | Theme and support inputs; disabled pending rating controls.                 |
+| `src/features/explorer/ExplorationFilters.jsx`   | Controlled theme, support, and example-difficulty inputs.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
-| `src/features/explorer/association-selectors.js` | Pure filtering, sorting, defaults, and selection fallback.                  |
+| `src/features/explorer/PuzzleExamples.jsx`       | Matching example metadata, counts, and distinct empty states.               |
+| `src/features/explorer/association-selectors.js` | Pure rule/example filtering, sorting, defaults, and selection fallback.     |
 | `public/data/`                                   | Original JSON exports copied unchanged into production output.              |
 | `tests/dataset.test.js`                          | Original hashes, data contracts, rankings/exclusions, and loading failures. |
 | `tests/association-selectors.test.js`            | Nonmutating selection and sorting contracts.                                |
@@ -101,7 +102,7 @@ Keep comments accurate. The remaining hero array is decorative; only the validat
    git diff --check
    ```
 
-4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support filtering, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check previews when that step is implemented. See [Running the project](RUNNING.md).
+4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support and rating filtering, selection fallback, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check previews when that step is implemented. See [Running the project](RUNNING.md).
 5. Review the diff and update the existing development record with actual checks and limitations. Preserve unrelated user edits.
 
 Node's built-in runner tests pure logic; Vite validates JSX and module compilation. There is no separate lint command or project-installed formatter. Do not describe these checks as a complete accessibility audit or physical-device test.
@@ -110,4 +111,4 @@ Node's built-in runner tests pure logic; Vite validates JSX and module compilati
 
 Leave every byte in `public/data/associations.json`, `public/data/puzzles.json`, and `public/data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; real board integration will use `preview_fen` and the supplied `puzzle_url`.
 
-Step 3 authorized relocating and loading the unchanged exports, validating their contracts, replacing demo associations with genuine values, and updating branding. Existing association controls were adapted to the real fields and units. Rating-based example filtering (Step 4), real boards and puzzle links (Step 5), additional packages, staging or commits, pushes, and deployment require their own approvals. Agents must report only checks actually run.
+Step 4 authorized real example filtering and selection behavior. Boards, preview dialogs, and Lichess practice links (Step 5), additional packages, staging or commits, pushes, and deployment require their own approvals. Filtering must not mutate exports or change global metrics. The exported difficulty field is validated against rating boundaries once at loading; selectors use that validated field and `pair_key` without duplicating rating classification. Do not add preview state before there is an approved preview interaction. Agents must report only checks actually run.

@@ -1,9 +1,9 @@
 # TactiChess
 ## Development and Research Documentation
 
-Document version: 1.12\
+Document version: 1.13\
 Last updated: November 2, 2026\
-Current status: Stages 1-5 completed; frontend migration Step 3 (frozen JSON loading, validation, real associations, and TactiChess branding) completed; Step 4 awaits separate approval\
+Current status: Stages 1-5 completed; frontend migration Step 4 (real example filtering and selection) completed; Step 5 static previews awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
 
@@ -635,7 +635,30 @@ The guide covers working-tree versus staged changes, branch/commit naming, actua
 
 Documentation validation: formatted the new guide and README, checked local links and documented paths, reviewed command examples against official references, and ran `git diff --check`. No application code changed, so application tests and builds were not repeated. This documentation does not mark the preceding page-navigation draft's outstanding visual/browser checks complete, or authorize frontend migration Step 4.
 
-### 7.10 Upcoming work (not yet started)
+### 7.10 November 2, 2026: Frontend migration Step 4 completed
+
+The user approved Step 4. Enabled the existing All/Easy/Medium/Hard controls and added a pure example selector using the chosen directional rule's `pair_key`. The selector filters the validated export's difficulty field, preserves export order and original puzzle objects, and never changes association metrics. Boundary validation already checks difficulty against ratings: Easy at 1200 or below, Medium at 1201-1800, and Hard from 1801. No duplicate classification algorithm or new package was needed.
+
+- The explorer retains one selection state for theme, association, difficulty, support, and sorting. Visible rules and examples are derived rather than stored as duplicate arrays. Selection remains on a visible rule; if filtering removes it, the first remaining rule in the current sort is selected, or selection clears when there are no rules. Reset restores Fork, its first exported recommendation, All difficulties, 0.20% support, and curated order.
+- `PuzzleExamples.jsx` displays the genuine matching IDs, ratings, and difficulty labels, plus filtered and total pair-entry counts. It has distinct no-association and no-matching-difficulty states. This metadata list makes filtering inspectable before Step 5; it does not render boards, moves, FENs, preview buttons, or practice links.
+- Stable control keys and controlled React inputs retain focus during filtering. Difficulty descriptions use metadata's exported rating bands, and the support slider exposes its percentage to assistive technology. Live announcements are limited to result counts and status messages rather than the entire example list.
+- Existing page navigation is preserved. Navigating away from the explorer and back retains its filters and association selection. The original decorative hero remains unchanged. No preview state or dialog was added before an actual preview interaction exists.
+
+Validation performed:
+
+- `npm.cmd test`: **33/33 tests passed**. Six new tests cover every rule's example order and object preservation, difficulty filtering against actual numeric ratings, reverse-direction pair lookup, empty results using a real restricted subset, difficulty-independent metrics/selection, and combined-filter reset. Existing tests retain frozen hash/count/schema/formula/ranking/exclusion checks and exact rating-boundary cases at 1200/1201 and 1800/1801.
+- `npm.cmd run build` passed: HTML **0.79 kB**, CSS **20.40 kB** (**5.62 kB gzip**), JavaScript **247.42 kB** (**76.35 kB gzip**). Existing dependency manifests and lockfile are unchanged.
+- Isolated headless Chrome passed **786 development Strict Mode assertions** and **2,358 production-preview assertions**. Production viewports were 1440, 390, and 320 pixels wide. Every one of the 48 rules was checked in all four difficulty modes for exact example membership/order, displayed ratings/bands, matching counts, preserved association selection, and unchanged metrics.
+- Browser checks also covered combined filters, sorting and selection fallback, no-association empty state and recovery, complete reset, stable keyboard focus, native Enter activation, preserved state across page navigation, one fetch per JSON export, sticky header, visible mobile navigation, and absence of horizontal page overflow. No JavaScript exceptions occurred. Default desktop and 320-pixel screenshots were captured separately from scrolled keyboard-test views and inspected.
+- Original JSON and built-copy SHA-256 hashes remain unchanged. Loaders, validation, application navigation, package manifests, lockfile, ignores, handoff, and version-control guide were unchanged. Formatting, local documentation links, and `git diff --check` passed. No branch operations, staging, commits, pushes, package installs, or deployment occurred.
+
+Limitations: checks used headless Chrome, not physical devices, other browser engines, or a manual screen reader. Every current exported pair has examples in each difficulty band, so the no-matching-difficulty selector path was tested with a clearly scoped real-data subset; no frozen file or browser dataset was fabricated to create that case. Genuine boards, preview selection/dialogs, Lichess practice links, and real hero position remain Step 5. This step does not claim completion of the earlier page-navigation draft's broader outstanding QA.
+
+References consulted: [React state structure](https://react.dev/learn/choosing-the-state-structure) and [stable list keys](https://react.dev/learn/rendering-lists). Temporary verification files and the two test servers were removed after checking.
+
+Next approval gate: **frontend migration Step 5**, integrating the approved static chessboard library, genuine `preview_fen` boards, preview dialogs, and unchanged puzzle links. Do not begin automatically.
+
+### 7.11 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
@@ -643,7 +666,7 @@ Documentation validation: formatted the new guide and README, checked local link
 - Step 6.5: Check data integrity, accessibility, responsive layouts, and user flows.
 - Step 6.6: Deploy the static site on Vercel, protect all intended deployments, and test access for authorized and signed-out visitors.
 
-Frontend migration Steps 1, 2, and 3 are complete. Step 4 and all remaining Stage 6 work require separate approval.
+Frontend migration Steps 1-4 are complete. Step 5 and all remaining Stage 6 work require separate approval.
 
 ---
 

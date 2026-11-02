@@ -26,3 +26,14 @@ export function updateSelection(rules, selection, changes) {
   }
   return next;
 }
+
+export function selectExamplePuzzles(puzzles, rule, difficulty) {
+  if (!rule) {
+    return [];
+  }
+
+  // Difficulty bands are checked against ratings at the loading boundary.
+  return puzzles[rule.pair_key].filter(
+    (puzzle) => difficulty === 'All' || puzzle.difficulty === difficulty
+  );
+}

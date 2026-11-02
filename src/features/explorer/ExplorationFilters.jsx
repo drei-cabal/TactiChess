@@ -1,4 +1,4 @@
-export function ExplorationFilters({ themes, selection, onChange, onReset }) {
+export function ExplorationFilters({ themes, ratingBands, selection, onChange, onReset }) {
   return (
     <aside className="panel control-panel" aria-label="Exploration filters">
       <h3 className="panel-heading">Your exploration</h3>
@@ -32,7 +32,13 @@ export function ExplorationFilters({ themes, selection, onChange, onReset }) {
       </p>
       <hr className="control-divider" />
       <div className="control-label">Puzzle difficulty</div>
-      <div className="segment" id="difficulty" role="group" aria-label="Puzzle difficulty">
+      <div
+        className="segment"
+        id="difficulty"
+        role="group"
+        aria-label="Puzzle difficulty"
+        aria-describedby="difficultyHelp"
+      >
         {['All', 'Easy', 'Medium', 'Hard'].map((difficulty) => (
           <button
             key={difficulty}
@@ -40,13 +46,19 @@ export function ExplorationFilters({ themes, selection, onChange, onReset }) {
             className={selection.difficulty === difficulty ? 'active' : ''}
             data-difficulty={difficulty}
             aria-pressed={selection.difficulty === difficulty}
-            disabled
+            aria-label={difficulty}
+            title={ratingBands[difficulty] ?? 'All exported ratings'}
+            onClick={() => onChange({ difficulty })}
           >
             {difficulty === 'Medium' ? 'Med' : difficulty}
           </button>
         ))}
       </div>
-      <p className="tiny-note">Rating filters will be available with puzzle previews.</p>
+      <p id="difficultyHelp" className="tiny-note">
+        {selection.difficulty === 'All'
+          ? 'All exported ratings. Difficulty filters examples only.'
+          : `${selection.difficulty}: ${ratingBands[selection.difficulty]}. Association metrics stay fixed.`}
+      </p>
       <div className="slider-row">
         <span>Minimum support</span>
         <strong id="supportValue">{selection.support.toFixed(2)}%</strong>
@@ -54,6 +66,7 @@ export function ExplorationFilters({ themes, selection, onChange, onReset }) {
       <input
         id="support"
         aria-label="Minimum support threshold"
+        aria-valuetext={`${selection.support.toFixed(2)}%`}
         type="range"
         min="0.20"
         max="2.20"

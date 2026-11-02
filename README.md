@@ -37,12 +37,12 @@ Follow [Version control](docs/VERSION_CONTROL.md) for branches, staged reviews, 
 
 ## Current checkpoint
 
-Frontend migration Step 3 is complete. The application loads the three exports once at startup and validates them before showing 20 themes, 48 directional rules, 34 curated pairs, and 506 pair-specific puzzle entries. Support, confidence, lift, and training counts come directly from the frozen exports. Missing or invalid files show an accessible error and a page-reload action.
+Frontend migration Step 4 is complete. The application loads the three exports once at startup and validates them before showing 20 themes, 48 directional rules, 34 curated pairs, and 506 pair-specific puzzle entries. Support, confidence, lift, and training counts come directly from the frozen exports. Missing or invalid files show an accessible error and a page-reload action.
 
 The JSON files moved byte-for-byte from `data/` to `public/data/`; Vite serves them at the same `/data/*.json` URLs and copies them unchanged into `dist/data/`. Keep them out of source imports and never reformat or regenerate them. The lockfile and dependency versions are unchanged.
 
-The initial/reset selection is Fork and its first curated recommendation, with minimum support 0.20% and curated export order. Existing association controls work with the real values. Rating controls are explicitly disabled while puzzle previews are pending. Synthetic practice cards and their demo associations have been removed. The hero retains its explicitly labeled decorative board until the approved real-preview step.
+The initial/reset selection is Fork and its first curated recommendation, with minimum support 0.20% and curated export order. Association controls and rating filters use the real values. All/Easy/Medium/Hard filter examples only, and the matching IDs, ratings, and bands appear in export order. Synthetic practice cards and their demo associations have been removed. The hero retains its explicitly labeled decorative board until the approved real-preview step.
 
-Step 4 will complete rating-based example filtering and selection behavior; Step 5 will add genuine static `preview_fen` boards and unchanged Lichess links. Neither step, Git commits, pushes, nor deployment is authorized by Step 3.
+Difficulty bands are Easy at 1200 or below, Medium at 1201-1800, and Hard above 1800. Selection stays on a visible association; otherwise it falls back to the first visible rule. Reset restores every control. Step 5 will add genuine static `preview_fen` boards and unchanged Lichess links, with separate approval. Git mutations and deployment remain separately gated.
 
 See [Development documentation](docs/DEVELOPMENT_DOCUMENTATION.md) for completed checks and remaining approval gates. No backend, accounts, database, or environment secrets are required.
