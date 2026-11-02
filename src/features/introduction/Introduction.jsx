@@ -1,13 +1,12 @@
-import { boards } from '../explorer/demo-data.js';
-import { DemoBoard } from '../puzzles/DemoBoard.jsx';
+import { DecorativeBoard } from './DecorativeBoard.jsx';
 
-export function Introduction() {
+export function Introduction({ dataset }) {
   return (
     <>
       <section className="hero" aria-label="Introduction">
         <div className="hero-copy">
           <div className="eyebrow">Chess intelligence, simplified</div>
-          <h1>
+          <h1 id="home-title">
             Find the pattern.
             <br />
             <span>Master the tactic.</span>
@@ -17,11 +16,11 @@ export function Introduction() {
             next practice focus. Powered by ECLAT association mining.
           </p>
           <div className="actions">
-            <a href="#discover" className="primary">
+            <a href="#/explore" className="primary">
               Explore tactic pairs
               <span aria-hidden="true">↗</span>
             </a>
-            <a href="#how" className="plainlink">
+            <a href="#/method" className="plainlink">
               See how it works
               <span aria-hidden="true">→</span>
             </a>
@@ -31,17 +30,17 @@ export function Introduction() {
           <div className="board-orbit"></div>
           <div className="board-frame">
             <div id="heroBoard" className="board">
-              <DemoBoard position={boards[1]} />
+              <DecorativeBoard />
             </div>
             <i className="board-marker marker-1"></i>
             <i className="board-marker marker-2"></i>
           </div>
           <div className="floating-insight">
-            <small>Pattern discovery</small>
+            <small>Board illustration</small>
             <div className="fi-name">
-              Fork + Pin <span style={{ color: '#61934b' }}>↗</span>
+              TactiChess <span style={{ color: '#61934b' }}>↗</span>
             </div>
-            <div className="fi-note">Illustrative association</div>
+            <div className="fi-note">Decorative position only</div>
             <div className="fi-bars">
               <i></i>
               <i></i>
@@ -82,10 +81,34 @@ export function Introduction() {
             <path d="m9 12 2 2 4-4" />
           </svg>
           <span>
-            <strong>Demo associations</strong>, not trained results
+            <strong>Training-derived rules</strong>
+            {dataset && ` · ${dataset.associations.rules.length} curated recommendations`}
           </span>
         </div>
       </div>
+      <section className="home-paths" aria-labelledby="home-paths-title">
+        <div className="kicker">Your next move</div>
+        <h2 id="home-paths-title">Three ways into the position.</h2>
+        <div className="steps">
+          <a className="step page-link" href="#/explore">
+            <div className="step-number">01 / Explore</div>
+            <h3>Follow a tactical connection ↗</h3>
+            <p>Choose a theme and discover its frozen, training-derived associations.</p>
+          </a>
+          <a className="step page-link" href="#/method">
+            <div className="step-number">02 / Understand</div>
+            <h3>Read the numbers ↗</h3>
+            <p>Get to know support, confidence, lift, and the direction of a rule.</p>
+          </a>
+          <a className="step page-link" href="#/about">
+            <div className="step-number">03 / Inspect</div>
+            <h3>Meet the dataset ↗</h3>
+            <p>
+              See where the puzzles come from, how they were split, and the limits of the results.
+            </p>
+          </a>
+        </div>
+      </section>
     </>
   );
 }

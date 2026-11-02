@@ -1,9 +1,9 @@
 # TactiChess
 ## Development and Research Documentation
 
-Document version: 1.9\
+Document version: 1.10\
 Last updated: November 2, 2026\
-Current status: Stages 1–5 completed; local audit, asset extraction, readability cleanup, and native-module separation completed; Vite + React setup awaits separate approval\
+Current status: Stages 1-5 completed; frontend migration Step 3 (frozen JSON loading, validation, real associations, and TactiChess branding) completed; Step 4 awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
 
@@ -598,7 +598,32 @@ Implementation references: [React integration guidance](https://react.dev/learn/
 
 Next approval gate: **frontend migration Step 3**, loading and validating the unchanged exports, replacing demo themes/associations with real values, and applying TactiChess branding. Do not begin it automatically.
 
-### 7.8 Upcoming work (not yet started)
+### 7.8 November 2, 2026: Frontend migration Step 3 completed
+
+The user approved Step 3: integrate the frozen exports while retaining the current design. The three files moved byte-for-byte from `data/` to `public/data/`; Vite serves them at `/data/*.json` and copies them unchanged into `dist/data/`. Their schemas, provenance, historical project value inside metadata, rankings, exclusions, numeric values, FEN strings, move lists, and puzzle URLs were not edited.
+
+- `src/main.jsx` starts one concurrent loading operation outside React component effects, passes loading/success/failure status to `App`, and never substitutes demo associations. Each export is fetched once per page load, including development Strict Mode. Native `fetch`, `Promise.all`, and Vite's public-directory handling were sufficient; no packages or configuration changes were added.
+- A focused loader reports network, HTTP, and JSON-parsing failures with the affected filename. Boundary validation checks required fields, finite positive metrics, training-count formulas, theme/pair references, duplicate directions, metadata parameters, difficulty bands, Lichess URL identity, and the expected 20 themes, 48 rules, 34 pairs, and 506 entries. Validation returns the original objects without changing them. Loading and error states are accessible; errors offer a full page reload.
+- Replaced demo themes and associations with exported names/descriptions, directional training rules, support, confidence, lift, and source/related/joint counts. Visible product branding and metadata now say TactiChess. The page also shows the genuine dataset totals and source/license/date provenance. Frozen metadata still retains its historical project name internally.
+- Adapted existing association controls to the actual fields and fractional metrics. Initial/reset state is Fork and its first exported recommendation (Sacrifice), minimum support 0.20%, and curated order. Optional lift/support/confidence sorts operate on copies, preserve ties, and do not change the frozen export order. Display formatting is support to three decimal places, confidence to two, and lift to two with a multiplier sign. No ranking was recomputed from holdout results.
+- Removed fabricated association arrays, synthetic practice cards, and their unused preview code. The practice area shows a pending-preview message with the real matching entry count from the selected rule's `pair_key`. Rating controls are explicitly disabled at this checkpoint. The original hero decoration remains clearly labeled as decorative; genuine `preview_fen` rendering and Lichess practice links remain Step 5.
+- Preserved the existing stylesheet apart from two data-display corrections: count descriptions wrap rather than truncate, and the dataset summary stays visible below the heading on narrow screens. Colors, breakpoints, responsive structure, and the sticky header remain. README, run instructions, module/style guidance, and local agent guidance reflect the new data location and approval gate.
+
+Validation performed:
+
+- `npm.cmd test`: **27/27 passed**. Tests cover original SHA-256 hashes, exact dataset totals, required fields/references, formulas, frozen rankings/exclusions, rating boundaries 1200/1201 and 1800/1801, unsafe links, missing data, nonmutation, curated/sorted order and ties, default/reset behavior, selection fallback, and loader network/HTTP/parse errors.
+- `npm.cmd run build` passed. Final Vite output: HTML **0.79 kB**, CSS **17.65 kB** (**4.97 kB gzip**), JavaScript **238.83 kB** (**74.43 kB gzip**). JSON remains separate static files: associations **17,843 bytes**, puzzles **300,314 bytes**, metadata **802 bytes**. Source and built copies all match the original hashes recorded by the tests.
+- Development Strict Mode passed **633 browser assertions**. The final production preview passed **639 browser assertions**, including the added count-visibility/wrapping checks. Viewports were **1440 x 2600**, **500 x 3800**, and **320 x 4200**. Every exported directional rule was visited and checked against its three formatted metrics, three training counts, and matching pair-entry count. Other checks covered all 20 themes, exact fetch counts, controls/defaults, stable focus, empty results and recovery, support boundaries, no horizontal overflow or label/metric overlap, sticky scrolling, and anchor spacing.
+- Intercepted requests only in the temporary browser harness to verify accessible loading, missing-file (404), malformed-JSON, invalid-schema, and network-failure states. All failed without demo fallback; the reload action recovered after restoring normal responses. No JavaScript exceptions occurred. Desktop/narrow screenshots were inspected, including 320-pixel rendering of the genuine names and counts.
+- Formatter and `git diff --check` passed. Package manifests, lockfile, existing ignore entries, `docs/.gitignore`, and the handoff stayed unchanged. No install, staging, commit, push, or deployment occurred. Temporary verification files and servers were removed after checking; an existing service on port 5173 was left untouched.
+
+Limitations: browser checks used isolated headless Chrome, not a physical phone, other browser engines, or a manual screen reader. FEN legality/rendering and artwork are not part of this step; no playable board or engine was added. Rating-based example filtering remains for Step 4. Practice cards, preview dialogs, genuine hero position, and puzzle links remain for Step 5. Historical progress sections below retain the original Stage 6 research numbering, which differs from the frontend migration steps.
+
+References checked: [Vite public directory](https://vite.dev/guide/assets.html#the-public-directory), [React root ownership](https://react.dev/reference/react-dom/client/createRoot), and [native Fetch error handling](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+
+Next approval gate: **frontend migration Step 4**, completing real example filtering, rating controls, selection, reset, and distinct empty states. Do not begin automatically.
+
+### 7.9 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
@@ -606,7 +631,7 @@ Next approval gate: **frontend migration Step 3**, loading and validating the un
 - Step 6.5: Check data integrity, accessibility, responsive layouts, and user flows.
 - Step 6.6: Deploy the static site on Vercel, protect all intended deployments, and test access for authorized and signed-out visitors.
 
-Frontend migration Steps 1 and 2 are complete. Step 3 and all remaining Stage 6 work require separate approval.
+Frontend migration Steps 1, 2, and 3 are complete. Step 4 and all remaining Stage 6 work require separate approval.
 
 ---
 

@@ -1,5 +1,5 @@
 # Keep frozen exports and local agent instructions unchanged.
-data/
+public/data/
 AGENTS.md
 docs/TACTICHESS_CODEX_HANDOFF.md
 node_modules/

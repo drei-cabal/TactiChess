@@ -518,7 +518,8 @@ select:focus-visible {
   margin-bottom: 10px;
 }
 
-h2 {
+h2,
+.page-heading {
   font:
     normal 38px/1.2 Georgia,
     'Times New Roman',
@@ -818,9 +819,7 @@ input[type='range'] {
 .pattern-desc {
   font-size: 11px;
   color: #89978b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .metrics {
@@ -1063,7 +1062,8 @@ input[type='range'] {
   margin-bottom: 18px;
 }
 
-.step h3 {
+.step h3,
+.step h2 {
   font-size: 14px;
   font-weight: 800;
   margin: 0 0 8px;
@@ -1317,8 +1317,13 @@ input[type='range'] {
     row-gap: 10px;
   }
 
+  .section-top {
+    display: block;
+  }
+
   .guide-note {
-    display: none;
+    max-width: none;
+    text-align: left;
   }
 
   .explorer {

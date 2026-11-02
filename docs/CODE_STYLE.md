@@ -31,34 +31,37 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 - Give functions action names and use project terms for variables.
 - Use braces for conditionals, including single-statement branches.
 - Keep pure selection logic separate from rendering and browser effects.
-- The explorer owns selection and preview state. Derive visible lists from that state instead of storing duplicate arrays.
+- The explorer owns selection state. Derive visible lists from that state instead of storing duplicate arrays.
 - Update state immutably, using functional updates when the next value depends on the previous value.
 - Give mapped components stable domain keys so controls retain focus.
 - Handle control events through JSX props. Use effects only for browser integration, and clean up listeners, focus, and scroll locks.
-- Keep demo content clearly labeled until genuine integration is approved.
-- Keep components together when they share one responsibility, such as `PuzzleList` and its local `PuzzleCard`. Do not extract decorative elements into separate files.
+- Render only validated exports for associations and counts. Keep the temporary hero decoration clearly labeled until the real-preview step.
+- Keep components together when they share one responsibility. Split only genuine boundaries; do not extract every decorative element.
 
 ## Current module map
 
-| Module                                         | Responsibility                                             |
-| ---------------------------------------------- | ---------------------------------------------------------- |
-| `src/main.jsx`                                 | Mount React and import the stylesheet.                     |
-| `src/App.jsx`                                  | Compose page landmarks and sections.                       |
-| `src/components/SiteNavigation.jsx`            | Header and footer.                                         |
-| `src/features/introduction/Introduction.jsx`   | Hero and source context.                                   |
-| `src/features/about/ProjectInfo.jsx`           | Method and project information.                            |
-| `src/features/explorer/Explorer.jsx`           | Shared explorer/preview state and feature composition.     |
-| `src/features/explorer/ExplorationFilters.jsx` | Controlled theme, difficulty, and support inputs.          |
-| `src/features/explorer/AssociationList.jsx`    | Association buttons and demo metrics.                      |
-| `src/features/explorer/demo-data.js`           | Unchanged demo themes, associations, and board arrays.     |
-| `src/features/explorer/demo-selectors.js`      | Pure filtering, sorting, defaults, and selection fallback. |
-| `src/features/puzzles/PuzzleList.jsx`          | Demo example selection and cards.                          |
-| `src/features/puzzles/DemoBoard.jsx`           | Render an existing position array as squares.              |
-| `src/features/puzzles/PuzzlePreviewDialog.jsx` | Preview portal, dismissal, focus, and scroll-lock cleanup. |
-| `tests/demo-selectors.test.js`                 | Demo state and selector contracts.                         |
-| `vite.config.js`                               | Standard Vite React plugin setup.                          |
+| Module                                           | Responsibility                                                              |
+| ------------------------------------------------ | --------------------------------------------------------------------------- |
+| `src/main.jsx`                                   | Mount React; start one dataset-loading operation outside effects.           |
+| `src/App.jsx`                                    | Compose page sections and accessible loading/error states.                  |
+| `src/components/SiteNavigation.jsx`              | Header and footer.                                                          |
+| `src/data/load-dataset.js`                       | Fetch the three static exports; report network/JSON failures.               |
+| `src/data/validate-dataset.js`                   | Validate fields, numeric contracts, references, and totals once.            |
+| `src/features/introduction/Introduction.jsx`     | Hero and source context.                                                    |
+| `src/features/introduction/DecorativeBoard.jsx`  | Preserve the explicitly decorative hero board until real previews.          |
+| `src/features/about/ProjectInfo.jsx`             | Method, source, and provenance.                                             |
+| `src/features/explorer/Explorer.jsx`             | Shared selection state, real counts, and pending previews.                  |
+| `src/features/explorer/ExplorationFilters.jsx`   | Theme and support inputs; disabled pending rating controls.                 |
+| `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
+| `src/features/explorer/association-selectors.js` | Pure filtering, sorting, defaults, and selection fallback.                  |
+| `public/data/`                                   | Original JSON exports copied unchanged into production output.              |
+| `tests/dataset.test.js`                          | Original hashes, data contracts, rankings/exclusions, and loading failures. |
+| `tests/association-selectors.test.js`            | Nonmutating selection and sorting contracts.                                |
+| `vite.config.js`                                 | Standard Vite React plugin setup.                                           |
 
-Dependencies flow from page composition to features and their focused components. The preview receives selection through props, and the board receives a position array. Pure selectors have no DOM or React dependencies. Do not add classes, inheritance, generic loaders, or dependency-injection frameworks merely to claim SOLID compliance.
+`main.jsx` passes loading, success, or failure status into `App`. Only a completely validated dataset reaches the explorer; loading never silently falls back to demo associations. Components receive the original JSON objects through props. Pure selectors have no DOM, fetch, or React dependencies. Keep dependency direction explicit and interfaces small.
+
+Use native `fetch` and Vite's public directory. Do not add schema libraries, generic repositories, dependency-injection frameworks, or duplicated data copies for these three fixed exports. Startup validation checks consistency; it does not mine, tune, or replace metrics.
 
 ## CSS
 
@@ -75,14 +78,14 @@ Explain a reason, limitation, or section in simple words. Do not describe every 
 Examples:
 
 ```js
-// Listen on the container because its buttons are rebuilt.
+// Start once per page load, outside Strict Mode component effects.
 ```
 
 ```css
 /* Explorer filters */
 ```
 
-Keep comments accurate. The current arrays are demo content; they must not be described as genuine mined output.
+Keep comments accurate. The remaining hero array is decorative; only the validated exports supply real association data.
 
 ## Format and verify
 
@@ -96,13 +99,13 @@ Keep comments accurate. The current arrays are demo content; they must not be de
    git diff --check
    ```
 
-4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, filters, reset, previews, dismissal, keyboard focus, and desktop/narrow layouts. See [Running the project](RUNNING.md).
+4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support filtering, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check previews when that step is implemented. See [Running the project](RUNNING.md).
 5. Review the diff and update the existing development record with actual checks and limitations. Preserve unrelated user edits.
 
 Node's built-in runner tests pure logic; Vite validates JSX and module compilation. There is no separate lint command or project-installed formatter. Do not describe these checks as a complete accessibility audit or physical-device test.
 
 ## Frozen data and approval boundaries
 
-Leave every byte in `data/associations.json`, `data/puzzles.json`, and `data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; real board integration will use `preview_fen` and the supplied `puzzle_url`.
+Leave every byte in `public/data/associations.json`, `public/data/puzzles.json`, and `public/data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; real board integration will use `preview_fen` and the supplied `puzzle_url`.
 
-Step 2 authorized the pinned React/Vite dependencies and component migration only. JSON integration (Step 3), genuine filtering, real boards, additional packages, staging or commits, pushes, and deployment require their own approvals. Agents must follow the currently approved scope and report only checks actually run.
+Step 3 authorized relocating and loading the unchanged exports, validating their contracts, replacing demo associations with genuine values, and updating branding. Existing association controls were adapted to the real fields and units. Rating-based example filtering (Step 4), real boards and puzzle links (Step 5), additional packages, staging or commits, pushes, and deployment require their own approvals. Agents must report only checks actually run.

@@ -1,11 +1,9 @@
-import { themes } from './demo-data.js';
-
-export function ExplorationFilters({ selection, onChange, onReset }) {
+export function ExplorationFilters({ themes, selection, onChange, onReset }) {
   return (
     <aside className="panel control-panel" aria-label="Exploration filters">
       <h3 className="panel-heading">Your exploration</h3>
       <p className="panel-description">
-        Start with one tactic. We'll show related themes and sample practice positions.
+        Start with one tactic. Explore related themes from the frozen training rules.
       </p>
       <div className="control-label">
         Choose a tactic
@@ -18,14 +16,20 @@ export function ExplorationFilters({ selection, onChange, onReset }) {
             type="button"
             className={`theme-chip ${theme.id === selection.theme ? 'active' : ''}`}
             data-theme={theme.id}
+            title={theme.description}
             aria-pressed={theme.id === selection.theme}
             onClick={() => onChange({ theme: theme.id, pair: null })}
           >
-            <span className="sym">{theme.icon}</span>
-            {theme.label}
+            <span className="sym" aria-hidden="true">
+              ♞
+            </span>
+            {theme.name}
           </button>
         ))}
       </div>
+      <p id="themeDescription" className="tiny-note">
+        {themes.find((theme) => theme.id === selection.theme).description}
+      </p>
       <hr className="control-divider" />
       <div className="control-label">Puzzle difficulty</div>
       <div className="segment" id="difficulty" role="group" aria-label="Puzzle difficulty">
@@ -36,29 +40,30 @@ export function ExplorationFilters({ selection, onChange, onReset }) {
             className={selection.difficulty === difficulty ? 'active' : ''}
             data-difficulty={difficulty}
             aria-pressed={selection.difficulty === difficulty}
-            onClick={() => onChange({ difficulty })}
+            disabled
           >
             {difficulty === 'Medium' ? 'Med' : difficulty}
           </button>
         ))}
       </div>
+      <p className="tiny-note">Rating filters will be available with puzzle previews.</p>
       <div className="slider-row">
         <span>Minimum support</span>
-        <strong id="supportValue">{selection.support}%</strong>
+        <strong id="supportValue">{selection.support.toFixed(2)}%</strong>
       </div>
       <input
         id="support"
         aria-label="Minimum support threshold"
         type="range"
-        min="5"
-        max="20"
-        step="1"
+        min="0.20"
+        max="2.20"
+        step="0.01"
         value={selection.support}
         onChange={(event) => onChange({ support: Number(event.target.value) })}
       />
       <p className="tiny-note">
-        ⓘ In the final website, associations will be calculated from a real Lichess puzzle sample
-        using ECLAT in Google Colab.
+        Support is the share of all 400,000 training puzzles containing both themes. Mining ran
+        offline in Colab; these metrics stay fixed.
       </p>
       <button className="reset" type="button" id="reset" onClick={onReset}>
         ↺ Reset all filters

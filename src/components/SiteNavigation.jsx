@@ -1,25 +1,33 @@
-export function SiteHeader() {
+import { pages } from '../navigation.js';
+
+export function SiteHeader({ currentPage }) {
   return (
     <header id="siteHeader" className="header container">
-      <a className="brand" href="#home" aria-label="TacticPair home">
+      <a className="brand" href="#/" aria-label="TactiChess home">
         <span className="brand-mark" aria-hidden="true">
           ♞
         </span>
         <span>
-          Tactic<em>Pair</em>
+          Tacti<em>Chess</em>
         </span>
       </a>
       <nav className="topnav" aria-label="Main navigation">
-        <a href="#discover">Discover</a>
-        <a href="#how">How it works</a>
-        <a href="#about">About</a>
+        {pages.map((page) => (
+          <a
+            key={page.id}
+            href={page.href}
+            aria-current={page.id === currentPage ? 'page' : undefined}
+          >
+            {page.label}
+          </a>
+        ))}
       </nav>
       <div className="navright">
         <span className="demo-pill">
           <i></i>
-          Prototype mode
+          Training rules
         </span>
-        <a className="navbtn" href="#discover">
+        <a className="navbtn" href="#/explore">
           Explore tactics ↗
         </a>
       </div>
@@ -27,15 +35,22 @@ export function SiteHeader() {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ currentPage }) {
   return (
     <footer id="siteFooter" className="footer container">
       <span>
-        <strong>♞ TacticPair</strong> · Student machine learning prototype
+        <strong>♞ TactiChess</strong> · Student machine learning prototype
       </span>
-      <nav>
-        <a href="#discover">Explorer</a>
-        <a href="#how">Method</a>
+      <nav aria-label="Footer navigation">
+        {pages.map((page) => (
+          <a
+            key={page.id}
+            href={page.href}
+            aria-current={page.id === currentPage ? 'page' : undefined}
+          >
+            {page.label}
+          </a>
+        ))}
         <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener noreferrer">
           Data source ↗
         </a>

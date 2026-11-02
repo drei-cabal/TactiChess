@@ -27,15 +27,20 @@ Tests use Node's built-in test runner. There is no separate lint command. Follow
 - `index.html`: document metadata and React mount point.
 - `src/main.jsx` and `src/App.jsx`: startup and page composition.
 - `src/components/`: header and footer.
-- `src/features/`: introduction, explorer, demo previews, and project information.
+- `src/features/`: introduction, explorer, and project information.
 - `src/styles/site.css`: existing design and responsive sticky header.
-- `data/`: three frozen JSON exports, unchanged and not yet connected.
-- `tests/`: demo selection and filtering contracts.
+- `src/data/`: one-time loading and boundary validation.
+- `public/data/`: three unchanged frozen JSON exports, served at `/data/`.
+- `tests/`: frozen-data integrity, loader failures, and association-selection contracts.
 
 ## Current checkpoint
 
-Frontend migration Step 2 is complete: Vite + React now owns the existing design and interactions, including theme selection, sorting, support and difficulty filters, reset, and board previews. Exact dependency versions and transitive versions are recorded in `package.json` and `package-lock.json`.
+Frontend migration Step 3 is complete. The application loads the three exports once at startup and validates them before showing 20 themes, 48 directional rules, 34 curated pairs, and 506 pair-specific puzzle entries. Support, confidence, lift, and training counts come directly from the frozen exports. Missing or invalid files show an accessible error and a page-reload action.
 
-The interface still displays explicitly labeled demo metrics and board layouts, including its preserved prototype branding. Genuine exports contain 20 themes, 48 directional rules, 34 pairs, and 506 puzzle entries. JSON loading and TactiChess branding belong to the separately approved Step 3; real filtering and static `preview_fen` boards follow later. The exports are not included in the current production bundle.
+The JSON files moved byte-for-byte from `data/` to `public/data/`; Vite serves them at the same `/data/*.json` URLs and copies them unchanged into `dist/data/`. Keep them out of source imports and never reformat or regenerate them. The lockfile and dependency versions are unchanged.
+
+The initial/reset selection is Fork and its first curated recommendation, with minimum support 0.20% and curated export order. Existing association controls work with the real values. Rating controls are explicitly disabled while puzzle previews are pending. Synthetic practice cards and their demo associations have been removed. The hero retains its explicitly labeled decorative board until the approved real-preview step.
+
+Step 4 will complete rating-based example filtering and selection behavior; Step 5 will add genuine static `preview_fen` boards and unchanged Lichess links. Neither step, Git commits, pushes, nor deployment is authorized by Step 3.
 
 See [Development documentation](docs/DEVELOPMENT_DOCUMENTATION.md) for completed checks and remaining approval gates. No backend, accounts, database, or environment secrets are required.

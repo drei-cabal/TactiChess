@@ -1,4 +1,14 @@
-// Existing demo arrays use letters rather than genuine exported positions.
+// Temporary hero decoration, not a validated puzzle or association preview.
+const position = [
+  'r.b..rk.',
+  'ppp..ppp',
+  '..n.qn..',
+  '...p....',
+  '...P...B',
+  '..P.QN..',
+  'PP...PPP',
+  'R...R.K.',
+];
 const pieceMap = {
   r: '♜',
   n: '♞',
@@ -14,7 +24,7 @@ const pieceMap = {
   P: '♙',
 };
 
-export function DemoBoard({ position }) {
+export function DecorativeBoard() {
   return position.flatMap((row, rowIndex) =>
     [...row].map((piece, columnIndex) => (
       <span

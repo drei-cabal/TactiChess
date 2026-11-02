@@ -1,12 +1,10 @@
-import { themes } from './demo-data.js';
-
-export function AssociationList({ theme, pairs, selectedPair, onSelect }) {
-  if (!pairs.length) {
+export function AssociationList({ themes, theme, rules, selectedPair, onSelect }) {
+  if (!rules.length) {
     return (
       <div id="patterns" className="result-list">
         <div className="empty">
-          No demo patterns meet the selected support threshold. Lower the threshold or choose
-          another tactic.
+          No associations meet the selected support threshold. Lower the threshold or choose another
+          tactic.
         </div>
       </div>
     );
@@ -14,40 +12,48 @@ export function AssociationList({ theme, pairs, selectedPair, onSelect }) {
 
   return (
     <div id="patterns" className="result-list">
-      {pairs.map((pair) => {
-        const relatedTheme = themes.find((item) => item.id === pair.id);
+      {rules.map((rule) => {
+        const relatedTheme = themes.find((item) => item.id === rule.related_theme);
         return (
           <button
-            key={pair.id}
+            key={`${rule.source_theme}|${rule.related_theme}`}
             type="button"
-            className={`pattern ${selectedPair === pair.id ? 'selected' : ''}`}
-            data-pair={pair.id}
-            aria-pressed={selectedPair === pair.id}
-            onClick={() => onSelect(pair.id)}
+            className={`pattern ${selectedPair === rule.related_theme ? 'selected' : ''}`}
+            data-pair={rule.related_theme}
+            aria-pressed={selectedPair === rule.related_theme}
+            onClick={() => onSelect(rule.related_theme)}
           >
             <div className="pattern-main">
               <div className="pattern-graphic">
-                <span className="mini-icon">{theme.icon}</span>
-                <span className="mini-icon">{relatedTheme.icon}</span>
+                <span className="mini-icon" aria-hidden="true">
+                  ♞
+                </span>
+                <span className="mini-icon" aria-hidden="true">
+                  ♞
+                </span>
                 <span className="combo">
-                  {`${theme.label} `}
-                  <small>+</small>
-                  {` ${relatedTheme.label}`}
+                  {`${theme.name} `}
+                  <small>→</small>
+                  {` ${relatedTheme.name}`}
                 </span>
               </div>
-              <div className="pattern-desc">Select to preview matching puzzle cards</div>
+              <div className="pattern-desc">
+                {rule.pair_count.toLocaleString('en-US')} together ·{' '}
+                {rule.source_count.toLocaleString('en-US')} source ·{' '}
+                {rule.related_count.toLocaleString('en-US')} related
+              </div>
             </div>
             <div className="metrics">
               <span>
-                <strong>{pair.support.toFixed(1)}%</strong>
+                <strong>{(rule.support * 100).toFixed(3)}%</strong>
                 <small>Support</small>
               </span>
               <span>
-                <strong>{pair.confidence}%</strong>
+                <strong>{(rule.confidence * 100).toFixed(2)}%</strong>
                 <small>Confidence</small>
               </span>
               <span>
-                <strong>{pair.lift.toFixed(2)}×</strong>
+                <strong>{rule.lift.toFixed(2)}×</strong>
                 <small>Lift</small>
               </span>
             </div>

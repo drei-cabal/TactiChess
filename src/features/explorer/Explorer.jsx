@@ -1,106 +1,111 @@
-import { useCallback, useState } from 'react';
-import { PuzzleList } from '../puzzles/PuzzleList.jsx';
-import { PuzzlePreviewDialog } from '../puzzles/PuzzlePreviewDialog.jsx';
+import { useState } from 'react';
 import { AssociationList } from './AssociationList.jsx';
-import { themes } from './demo-data.js';
 import {
   createInitialSelection,
-  selectVisiblePairs,
-  updateDemoSelection,
-} from './demo-selectors.js';
+  selectVisibleRules,
+  updateSelection,
+} from './association-selectors.js';
 import { ExplorationFilters } from './ExplorationFilters.jsx';
 
-export function Explorer() {
-  const [selection, setSelection] = useState(createInitialSelection);
-  const [preview, setPreview] = useState(null);
-  const visiblePairs = selectVisiblePairs(selection);
+export function Explorer({ dataset }) {
+  const { themes, rules } = dataset.associations;
+  const [selection, setSelection] = useState(() => createInitialSelection(rules));
+  const visibleRules = selectVisibleRules(rules, selection);
   const theme = themes.find((item) => item.id === selection.theme);
   const relatedTheme = themes.find((item) => item.id === selection.pair);
-  const closePreview = useCallback(() => setPreview(null), []);
+  const selectedRule = visibleRules.find((rule) => rule.related_theme === selection.pair);
+  const exampleCount = Object.values(dataset.puzzles).reduce(
+    (total, examples) => total + examples.length,
+    0
+  );
 
   function changeSelection(changes) {
-    setSelection((previous) => updateDemoSelection(previous, changes));
+    setSelection((previous) => updateSelection(rules, previous, changes));
   }
 
   return (
-    <>
-      <section id="discover">
-        <div className="section-top">
-          <div>
-            <div className="kicker">The explorer</div>
-            <h2>Discover tactic connections</h2>
-            <p className="section-sub">
-              Choose a tactical theme to explore its most common associations.
-            </p>
-          </div>
-          <p className="guide-note">
-            Patterns below are illustrative until the Colab ECLAT output is connected.
+    <section id="discover">
+      <div className="section-top">
+        <div>
+          <div className="kicker">The explorer</div>
+          <h1 id="explore-title" className="page-heading">
+            Discover tactic connections
+          </h1>
+          <p className="section-sub">
+            Choose a tactical theme to explore its most common associations.
           </p>
         </div>
-        <div className="explorer">
-          <ExplorationFilters
-            selection={selection}
-            onChange={changeSelection}
-            onReset={() => setSelection(createInitialSelection())}
+        <p className="guide-note">
+          {themes.length} themes · {rules.length} frozen directional rules ·{' '}
+          {dataset.metadata.unique_curated_pairs} pairs · {exampleCount} example entries
+        </p>
+      </div>
+      <div className="explorer">
+        <ExplorationFilters
+          themes={themes}
+          selection={selection}
+          onChange={changeSelection}
+          onReset={() => setSelection(createInitialSelection(rules))}
+        />
+        <div className="results-col panel" aria-live="polite">
+          <div className="results-top">
+            <div>
+              <h3 className="panel-heading" style={{ margin: 0 }}>
+                Associated tactics{' '}
+                <span id="resultCount" className="results-count">
+                  {`${visibleRules.length} ${visibleRules.length === 1 ? 'pattern' : 'patterns'}`}
+                </span>
+              </h3>
+              <p id="resultsSubtitle">Themes associated with {theme.name}</p>
+            </div>
+            <select
+              className="sort-select"
+              id="sort"
+              aria-label="Sort patterns"
+              value={selection.sort}
+              onChange={(event) => changeSelection({ sort: event.target.value })}
+            >
+              <option value="curated">Curated order</option>
+              <option value="lift">Highest lift</option>
+              <option value="support">Highest support</option>
+              <option value="confidence">Highest confidence</option>
+            </select>
+          </div>
+          <AssociationList
+            themes={themes}
+            theme={theme}
+            rules={visibleRules}
+            selectedPair={selection.pair}
+            onSelect={(pair) => changeSelection({ pair })}
           />
-          <div className="results-col panel" aria-live="polite">
-            <div className="results-top">
+          <div className="panel-sep"></div>
+          <div className="puzzle-section">
+            <div className="puzzle-header">
               <div>
-                <h3 className="panel-heading" style={{ margin: 0 }}>
-                  Associated tactics{' '}
-                  <span id="resultCount" className="results-count">
-                    {`${visiblePairs.length} ${visiblePairs.length === 1 ? 'pattern' : 'patterns'}`}
-                  </span>
-                </h3>
-                <p id="resultsSubtitle">Themes associated with {theme.label}</p>
+                <h3>Practice positions</h3>
+                <p id="practiceSubtitle">
+                  {relatedTheme
+                    ? `Available examples · ${theme.name} + ${relatedTheme.name}`
+                    : 'Adjust filters to reveal patterns'}
+                </p>
               </div>
-              <select
-                className="sort-select"
-                id="sort"
-                aria-label="Sort patterns"
-                value={selection.sort}
-                onChange={(event) => changeSelection({ sort: event.target.value })}
-              >
-                <option value="lift">Highest lift</option>
-                <option value="support">Highest support</option>
-                <option value="confidence">Highest confidence</option>
-              </select>
+              <span className="sample-label">PREVIEWS PENDING</span>
             </div>
-            <AssociationList
-              theme={theme}
-              pairs={visiblePairs}
-              selectedPair={selection.pair}
-              onSelect={(pair) => changeSelection({ pair })}
-            />
-            <div className="panel-sep"></div>
-            <div className="puzzle-section">
-              <div className="puzzle-header">
-                <div>
-                  <h3>Sample practice positions</h3>
-                  <p id="practiceSubtitle">
-                    {relatedTheme
-                      ? `Illustrative board layouts · ${theme.label} + ${relatedTheme.label}`
-                      : 'Adjust filters to reveal patterns'}
-                  </p>
-                </div>
-                <span className="sample-label">DESIGN PREVIEW</span>
+            <div id="puzzles" className="puzzles">
+              <div className="empty" style={{ gridColumn: '1/-1' }}>
+                {selectedRule
+                  ? `${dataset.puzzles[selectedRule.pair_key].length} exported examples are available for this pair. Board previews and Lichess practice links are coming soon.`
+                  : 'No associated tactic is selected.'}
               </div>
-              <PuzzleList
-                theme={theme}
-                relatedTheme={relatedTheme}
-                difficulty={selection.difficulty}
-                onPreview={setPreview}
-              />
-            </div>
-            <div className="insight-footer">
-              <span className="info-dot">i</span>
-              Board previews and statistics are demonstrative, not validated Lichess puzzles or
-              mined output.
             </div>
           </div>
+          <div className="insight-footer">
+            <span className="info-dot">i</span>
+            Metrics describe training-tag co-occurrence, not causation. Confidence follows the
+            displayed direction; rating filters never change these values.
+          </div>
         </div>
-      </section>
-      <PuzzlePreviewDialog preview={preview} onClose={closePreview} />
-    </>
+      </div>
+    </section>
   );
 }
