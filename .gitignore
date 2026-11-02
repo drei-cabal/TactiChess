@@ -1,6 +1,41 @@
-Agents.md
-docs\TACTICHESS_CODEX_HANDOFF.md
+# Local agent instructions.
+/AGENTS.md
 
-# Local dependencies and production output.
+# Dependencies, generated output, and caches.
 node_modules/
 dist/
+coverage/
+.vite/
+.cache/
+
+# Local environment values; keep the shareable template.
+.env
+.env.*
+!.env.example
+*.local
+
+# Private certificates and keys.
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs and temporary QA artifacts.
+*.log
+/.tmp/
+/tmp/
+/playwright-report/
+/test-results/
+/playwright-artifacts-*/
+/playwright_chromiumdev_profile-*/
+
+# Raw research datasets belong outside the website repository.
+lichess_db_puzzle*.csv*
+lichess_sample_*.csv*
+train_400k.csv*
+test_100k.csv*
+
+# Operating-system files.
+.DS_Store
+Thumbs.db
+Desktop.ini
