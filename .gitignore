@@ -1,2 +1,6 @@
 Agents.md
 docs\TACTICHESS_CODEX_HANDOFF.md
+
+# Local dependencies and production output.
+node_modules/
+dist/

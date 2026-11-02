@@ -1,35 +1,41 @@
-# TactiChess website prototype
+# TactiChess
 
-A responsive frontend demo for an ECLAT-powered chess tactics discovery website. The HTML entry point contains document metadata and page landmarks. `src/main.js` assembles the page from native JavaScript modules and starts the explorer. Styles remain in `src/styles/site.css`. No package installation or build tooling is required at this step.
+A static chess tactic association explorer built with Vite, React, JavaScript/JSX, and ordinary CSS. ECLAT runs offline in Colab; this website does not run mining or a chess engine.
 
-## Open the prototype
+## Run locally
 
-See [Run TactiChess locally](docs/RUNNING.md) for prerequisites, VS Code instructions, and troubleshooting.
+Install Node.js matching `^20.19.0 || >=22.12.0` (verified with 24.13.0), then run from the repository root:
 
-From the repository root, start a local HTTP server:
-
-```sh
-python -m http.server 8765 --bind 127.0.0.1
+```powershell
+npm.cmd ci
+npm.cmd run dev
 ```
 
-Open `http://127.0.0.1:8765/` in a modern browser. Keep `index.html` and the entire `src/` directory together; native module imports require the local HTTP server. Opening the HTML directly as `file://` is unsupported. Stop the server with Ctrl+C.
+Open the local URL printed by Vite, normally `http://127.0.0.1:5173/`. On macOS/Linux, use `npm` instead of `npm.cmd`. See [Running the project](docs/RUNNING.md) for production-preview commands and troubleshooting.
 
-## Working demo interactions
+## Check changes
 
-For frontend conventions shared by developers and AI agents, see [Code style](docs/CODE_STYLE.md).
+```powershell
+npm.cmd test
+npm.cmd run build
+```
 
-- Select a chess tactic to change related patterns.
-- Sort associations by lift, support, or confidence.
-- Set a minimum support threshold.
-- Filter sample puzzle positions by difficulty.
-- Select associations and open modal chessboard previews.
+Tests use Node's built-in test runner. There is no separate lint command. Follow [Code style](docs/CODE_STYLE.md) for formatting, component responsibilities, and browser checks.
 
-## Important: sample data only
+## Structure
 
-The association values in JavaScript `pairs`, and all board previews in `boards`, are illustrative and not the output of an ECLAT training run. The boards have not been validated as solvable chess puzzles.
+- `index.html`: document metadata and React mount point.
+- `src/main.jsx` and `src/App.jsx`: startup and page composition.
+- `src/components/`: header and footer.
+- `src/features/`: introduction, explorer, demo previews, and project information.
+- `src/styles/site.css`: existing design and responsive sticky header.
+- `data/`: three frozen JSON exports, unchanged and not yet connected.
+- `tests/`: demo selection and filtering contracts.
 
-## Integration status
+## Current checkpoint
 
-Stages 1–5 are complete, and the genuine exports are already in `data/associations.json`, `data/puzzles.json`, and `data/metadata.json`. The website does **not** load them yet; ECLAT runs offline in Colab.
+Frontend migration Step 2 is complete: Vite + React now owns the existing design and interactions, including theme selection, sorting, support and difficulty filters, reset, and board previews. Exact dependency versions and transitive versions are recorded in `package.json` and `package-lock.json`.
 
-Asset extraction, readability cleanup, and a responsibility-based native-module split are complete. Navigation, introduction, explorer, project information, and preview markup are separate; demo data, board rendering, and dialog behavior have clear owners. See the [module map](docs/CODE_STYLE.md#current-module-map). The next separately approved step introduces Vite + React. Real associations, filtering, and static `preview_fen` boards follow in later approved steps.
+The interface still displays explicitly labeled demo metrics and board layouts, including its preserved prototype branding. Genuine exports contain 20 themes, 48 directional rules, 34 pairs, and 506 puzzle entries. JSON loading and TactiChess branding belong to the separately approved Step 3; real filtering and static `preview_fen` boards follow later. The exports are not included in the current production bundle.
+
+See [Development documentation](docs/DEVELOPMENT_DOCUMENTATION.md) for completed checks and remaining approval gates. No backend, accounts, database, or environment secrets are required.

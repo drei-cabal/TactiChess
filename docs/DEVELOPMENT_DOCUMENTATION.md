@@ -1,7 +1,7 @@
-# TacticPair V2
+# TactiChess
 ## Development and Research Documentation
 
-Document version: 1.8\
+Document version: 1.9\
 Last updated: November 2, 2026\
 Current status: Stages 1–5 completed; local audit, asset extraction, readability cleanup, and native-module separation completed; Vite + React setup awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
@@ -11,7 +11,7 @@ Google Drive project folder: `MyDrive/TactiChess_V2/`
 
 ## 1. Project overview
 
-TacticPair V2 is an unsupervised chess tactic association explorer. It uses ECLAT to find pairs of tactical tags that frequently occur together in Lichess chess puzzles. A user will select a tactic and view related tactics, the strength of their observed associations, and real examples of puzzles containing both themes.
+TactiChess is an unsupervised chess tactic association explorer. It uses ECLAT to find pairs of tactical tags that frequently occur together in Lichess chess puzzles. A user will select a tactic and view related tactics, the strength of their observed associations, and real examples of puzzles containing both themes.
 
 The algorithm discovers patterns in existing puzzle labels. It does not solve chess positions, predict good moves, establish causality, or measure a player's improvement.
 
@@ -574,7 +574,31 @@ The user approved a sticky header before Step 2. The header now stays at the top
 
 Eight headless Chrome assertions passed at both desktop and narrow-screen widths: sticky positioning, background, responsive height, scrolling, anchor visibility, overlay layering, preview dismissal, and the initial top-of-page layout. The stylesheet formatter check and `git diff --check` passed. HTML, all JavaScript modules, frozen JSON, and unrelated user files remained unchanged. No packages or Step 2 work were added; temporary verification files were removed.
 
-### 7.7 Upcoming work (not yet started)
+### 7.7 November 2, 2026: Frontend migration Step 2 completed
+
+The user approved Step 2 only: minimal Vite + React setup and a component migration preserving the existing design and demo behavior. No scaffolding template was copied. The original CSS and demo arrays remain byte-identical, including the responsive sticky header. The HTML shell now mounts one React root; `src/main.jsx` enables Strict Mode, and `src/App.jsx` composes the page.
+
+- Verified the exact approved versions against the npm registry before installation: `react` and `react-dom` **19.3.1**, Vite **8.3.5**, and `@vitejs/plugin-react` **6.1.2**. All four declare MIT licenses. Their Node requirements and peer requirements are compatible with the installed Node **24.13.0** and npm **11.6.2**. No React Compiler, board library, router, state library, TypeScript, or UI framework was added.
+- Added `package.json`, lockfile version 3, and the standard Vite React plugin configuration. Scripts provide loopback-only development serving, static production builds, local production preview, and Node's built-in test runner. The installation reported zero vulnerabilities. Generated `node_modules/` and `dist/` are ignored, preserving existing ignore entries.
+- Converted page markup to JSX components. Explorer state is shared by controlled filters and result components; pure selectors handle demo sorting, filtering, defaults, and selection fallback without mutating source data. Stable keys preserve control identity and focus. Superseded native DOM-rendering modules and delegated listeners were removed.
+- The demo preview is rendered through a React portal. Its effect handles Escape, scroll locking, initial focus, and cleanup, including restoring the opening control's focus. The existing overlay design and dismissal paths remain. Native `<dialog>` and genuine FEN-board integration remain part of the later preview step.
+- Updated README, [run instructions](RUNNING.md), [code style and module map](CODE_STYLE.md), and the local agent guidance. Source startup now requires Vite; the previous Python-only source-server instructions have been replaced.
+
+Validation performed:
+
+- `npm.cmd test`: **7/7 tests passed**, covering demo defaults/reset, descending sorts, inclusive support boundaries, nonmutation, selection fallback, empty results/recovery, theme changes, and difficulty-independent metrics.
+- `npm.cmd run build` passed. Final output: HTML **0.77 kB**, CSS **17.64 kB** (**4.96 kB gzip**), and JavaScript **237.47 kB** (**73.56 kB gzip**), as reported by Vite. The JSON exports are not imported or copied into this build.
+- The pre-migration baseline passed **66/66** browser assertions. React development mode and the production preview each passed the expanded **80/80** assertions at desktop **1440 ? 2300** and narrow **500 ? 3800** viewports. Checks covered all existing controls, sorting, filters, empty states, reset, preview dismissal, repeated reopening, focus retention/restoration, external-link protection, sticky scrolling, anchor spacing, overlay layering, and absence of genuine-data requests. No JavaScript exceptions or application resource errors were observed; the baseline static server's missing favicon was unrelated to application behavior.
+- Compared and inspected desktop/narrow screenshots. Visible text, hero-board contents, and measured page-section positions and dimensions matched the baseline. The final captures differed by **38 pixels per viewport**, confined to the small result-count text; this is visual parity, not a byte-identical screenshot claim. JSX whitespace corrections preserved the original inline wording and spacing.
+- All three frozen JSON SHA-256 hashes, the stylesheet, demo arrays, `docs/.gitignore`, and the handoff remained unchanged. Existing root ignore entries were retained. Formatter and patch-whitespace checks passed.
+
+Limitations: checks used isolated headless Chrome, not a physical phone, cross-browser matrix, or manual screen-reader session. The existing custom preview's complete keyboard containment and native-dialog conversion remain later preview/accessibility work. There is no separate lint command. The interface still displays labeled demo metrics, synthetic boards, and preserved prototype branding; it is not yet a genuine data explorer. Temporary browser files were removed after verification. No staging, commits, pushes, deployment, or Step 3 integration occurred.
+
+Implementation references: [React integration guidance](https://react.dev/learn/add-react-to-an-existing-project), [React root ownership](https://react.dev/reference/react-dom/client/createRoot), and [Vite setup and requirements](https://vite.dev/guide/). The actual package manifests and generated lockfile record the installed versions.
+
+Next approval gate: **frontend migration Step 3**, loading and validating the unchanged exports, replacing demo themes/associations with real values, and applying TactiChess branding. Do not begin it automatically.
+
+### 7.8 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
@@ -582,7 +606,7 @@ Eight headless Chrome assertions passed at both desktop and narrow-screen widths
 - Step 6.5: Check data integrity, accessibility, responsive layouts, and user flows.
 - Step 6.6: Deploy the static site on Vercel, protect all intended deployments, and test access for authorized and signed-out visitors.
 
-The approved asset extraction is complete. The next frontend migration step and all remaining Stage 6 work require separate approval.
+Frontend migration Steps 1 and 2 are complete. Step 3 and all remaining Stage 6 work require separate approval.
 
 ---
 

@@ -13,49 +13,52 @@ The root `.prettierrc.json` defines the formatting rules:
 - Use semicolons in JavaScript and trailing commas where the formatter adds them.
 - Separate functions and related sections with a blank line.
 
-Use the same conventions for JSX when the separately approved React migration begins.
+Use the same conventions for JSX. Component files use the `.jsx` extension.
 
-## HTML and templates
+## HTML and JSX
 
-- Keep `index.html` limited to document metadata, page landmarks, the no-JavaScript message, and the module entry point. Page-section markup belongs to the corresponding view module.
-- Indent children inside their parent elements.
-- Put long attribute lists on separate lines.
-- Expand large HTML template strings so their nesting is visible.
-- Preserve element IDs, classes, attributes, and visible wording during formatting work.
-- Check whitespace around inline text. A line break between words or inline elements can add a visible space. Use a narrowly placed `<!-- prettier-ignore -->` when text must stay joined, as with the existing brand name.
+- Keep `index.html` limited to metadata, the React mount point, a no-JavaScript message, and the entry script.
+- Use JSX components for page markup. React owns rendered elements; do not rebuild them with `innerHTML`, `dangerouslySetInnerHTML`, or manual class changes.
+- Use `className`, camelCase DOM properties, and style objects where existing inline styles must be preserved.
+- Put long attribute lists on separate lines and indent children inside their parents.
+- Preserve IDs, CSS classes, visible wording, and page landmarks during structural changes.
+- JSX trims some line-break whitespace. Use explicit `{' '}` where inline text needs a space. Keep the existing joined brand text joined.
 
-HTML formatting is configured to expand nested elements. Review screenshots after formatting; the formatter does not know the display rules in the external stylesheet.
+## JavaScript and React
 
-## JavaScript
-
-Keep `src/main.js` focused on composing the page and starting features. Within a feature, keep state and lookups before rendering functions and event listeners. Demo content belongs in its own clearly labeled module.
+Keep `src/main.jsx` focused on mounting React in Strict Mode and importing styles. `App.jsx` composes page sections. Use PascalCase component names, camelCase variables, and ordinary props and callbacks.
 
 - Give functions action names and use project terms for variables.
 - Use braces for conditionals, including single-statement branches.
-- Put separate operations on separate lines.
-- Keep functions focused and use early returns when they make the flow clearer.
-- During readability-only changes, preserve calculations, event behavior, defaults, and data.
-- Keep generated markup readable without adding a template library solely for formatting.
-
-For the planned React migration, use PascalCase component names, camelCase variables, and ordinary props and callbacks. Introduce React files only in the approved migration step.
+- Keep pure selection logic separate from rendering and browser effects.
+- The explorer owns selection and preview state. Derive visible lists from that state instead of storing duplicate arrays.
+- Update state immutably, using functional updates when the next value depends on the previous value.
+- Give mapped components stable domain keys so controls retain focus.
+- Handle control events through JSX props. Use effects only for browser integration, and clean up listeners, focus, and scroll locks.
+- Keep demo content clearly labeled until genuine integration is approved.
+- Keep components together when they share one responsibility, such as `PuzzleList` and its local `PuzzleCard`. Do not extract decorative elements into separate files.
 
 ## Current module map
 
-| Module                                           | Responsibility                                                 |
-| ------------------------------------------------ | -------------------------------------------------------------- |
-| `src/main.js`                                    | Compose the page and connect feature entry points.             |
-| `src/components/site-navigation.js`              | Header and footer navigation markup.                           |
-| `src/features/introduction/introduction-view.js` | Hero and source-context markup.                                |
-| `src/features/about/project-info-view.js`        | Method and project-information markup.                         |
-| `src/features/explorer/explorer-view.js`         | Explorer controls and result-panel markup.                     |
-| `src/features/explorer/explorer.js`              | Explorer state, list rendering, filters, and related events.   |
-| `src/features/explorer/demo-data.js`             | Existing demo themes, associations, and board arrays.          |
-| `src/features/puzzles/demo-board.js`             | Pure rendering of an existing demo board array.                |
-| `src/features/puzzles/puzzle-preview.js`         | Preview markup, opening, dismissal, focus, and scroll locking. |
+| Module                                         | Responsibility                                             |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| `src/main.jsx`                                 | Mount React and import the stylesheet.                     |
+| `src/App.jsx`                                  | Compose page landmarks and sections.                       |
+| `src/components/SiteNavigation.jsx`            | Header and footer.                                         |
+| `src/features/introduction/Introduction.jsx`   | Hero and source context.                                   |
+| `src/features/about/ProjectInfo.jsx`           | Method and project information.                            |
+| `src/features/explorer/Explorer.jsx`           | Shared explorer/preview state and feature composition.     |
+| `src/features/explorer/ExplorationFilters.jsx` | Controlled theme, difficulty, and support inputs.          |
+| `src/features/explorer/AssociationList.jsx`    | Association buttons and demo metrics.                      |
+| `src/features/explorer/demo-data.js`           | Unchanged demo themes, associations, and board arrays.     |
+| `src/features/explorer/demo-selectors.js`      | Pure filtering, sorting, defaults, and selection fallback. |
+| `src/features/puzzles/PuzzleList.jsx`          | Demo example selection and cards.                          |
+| `src/features/puzzles/DemoBoard.jsx`           | Render an existing position array as squares.              |
+| `src/features/puzzles/PuzzlePreviewDialog.jsx` | Preview portal, dismissal, focus, and scroll-lock cleanup. |
+| `tests/demo-selectors.test.js`                 | Demo state and selector contracts.                         |
+| `vite.config.js`                               | Standard Vite React plugin setup.                          |
 
-Apply single responsibility through these feature boundaries. Views contain trusted, local markup; the explorer owns its state; the board renderer receives a position; the dialog owns its own events. The explorer receives only an `openPreview` callback, so it does not need to know the dialog's DOM structure. The dialog receives its board renderer rather than importing explorer state.
-
-Keep imports explicit and dependencies one-way. Do not add classes, inheritance, interfaces, generic loaders, or a component framework just to claim SOLID compliance. The current function-based design has no subtype hierarchy that needs a substitution contract. The approved React migration remains a later step.
+Dependencies flow from page composition to features and their focused components. The preview receives selection through props, and the board receives a position array. Pure selectors have no DOM or React dependencies. Do not add classes, inheritance, generic loaders, or dependency-injection frameworks merely to claim SOLID compliance.
 
 ## CSS
 
@@ -83,22 +86,23 @@ Keep comments accurate. The current arrays are demo content; they must not be de
 
 ## Format and verify
 
-1. In VS Code, use the Prettier extension and **Format Document** (**Shift+Alt+F** on Windows). Select Prettier if asked which formatter to use. It reads the project configuration.
-2. Format the frontend files you changed. `.prettierignore` excludes the frozen `data/` exports and local agent instructions; keep those exclusions in place.
-3. Check JavaScript syntax and patch whitespace from the repository root:
+1. In VS Code, use the existing Prettier extension and **Format Document** (**Shift+Alt+F** on Windows). It reads the root project configuration.
+2. Format only changed source files. `.prettierignore` excludes frozen exports, local agent instructions, generated output, and the lockfile. Do not install another formatter just for a small edit.
+3. From the repository root, run:
 
    ```powershell
-   Get-ChildItem src -Recurse -Filter *.js | ForEach-Object { node --check $_.FullName }
+   npm.cmd test
+   npm.cmd run build
    git diff --check
    ```
 
-4. Run the project and check theme selection, sorting, filters, reset, previews, and dismissal. Compare desktop and narrow-screen layouts when HTML or CSS changes.
-5. Review the diff. Update the existing development record with actual checks and limitations. Preserve unrelated user edits.
+4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, filters, reset, previews, dismissal, keyboard focus, and desktop/narrow layouts. See [Running the project](RUNNING.md).
+5. Review the diff and update the existing development record with actual checks and limitations. Preserve unrelated user edits.
 
-There is currently no project-installed formatter, lint command, or build command. Use an existing formatter installation; adding packages belongs to a separately approved tooling step. The syntax command requires Node.js, while running the current static page only requires the tools described in the run guide.
+Node's built-in runner tests pure logic; Vite validates JSX and module compilation. There is no separate lint command or project-installed formatter. Do not describe these checks as a complete accessibility audit or physical-device test.
 
 ## Frozen data and approval boundaries
 
 Leave every byte in `data/associations.json`, `data/puzzles.json`, and `data/metadata.json` unchanged during formatting and structural refactors. ECLAT stays offline; real board integration will use `preview_fen` and the supplied `puzzle_url`.
 
-The completed readability and native-module refactors do not authorize Step 2, data integration, package installation, Git staging or commits, pushes, or deployment. Agents must follow the currently approved scope and report the files changed and checks actually run.
+Step 2 authorized the pinned React/Vite dependencies and component migration only. JSON integration (Step 3), genuine filtering, real boards, additional packages, staging or commits, pushes, and deployment require their own approvals. Agents must follow the currently approved scope and report only checks actually run.

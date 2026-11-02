@@ -1,108 +1,74 @@
 # Run TactiChess locally
 
-TactiChess is a static HTML, CSS, and native JavaScript module prototype. No build step, npm install, or backend is required. You only need a modern browser and a local static-file server.
-
-Native module imports in `src/main.js` do not work through `file://`, so you must serve `index.html` over HTTP rather than opening it directly.
+The frontend uses Vite + React. Development requires Node.js and npm; Python/PHP static servers cannot compile the source JSX. The built `dist/` folder contains static files and does not require a backend.
 
 ## Requirements
 
+- Node.js `^20.19.0 || >=22.12.0`, matching the pinned Vite and React plugin requirements. Step 2 was checked with Node 24.13.0 and npm 11.6.2.
 - A modern web browser.
-- One of: Python 3 (`python`, `py`, or `python3`), Node.js (`npx http-server` or `node`), or PHP (`php -S`).
+- Internet access for the first dependency installation. No accounts, API keys, or `.env` file are needed.
 
-## Start the project
-
-Run from the repository root (the folder containing `index.html`, `src/`, and `data/`).
-
-### Option 1: Python (recommended, cross-platform)
+Check the installed tools:
 
 ```powershell
-python -m http.server 8765 --bind 127.0.0.1
+node --version
+npm.cmd --version
 ```
 
-If `python` is not found, try:
+The commands below use `npm.cmd` to avoid PowerShell execution-policy problems with `npm.ps1`. On macOS/Linux, use `npm`.
+
+## Install and start
+
+Open the repository folder in VS Code, then open **Terminal ? New Terminal**. Run from the folder containing `package.json`:
 
 ```powershell
-py -3 -m http.server 8765 --bind 127.0.0.1
+npm.cmd ci
+npm.cmd run dev
 ```
 
-On macOS/Linux:
+`npm ci` installs the exact lockfile versions. Repeat it after pulling dependency changes, rather than changing versions manually. Keep the lockfile; no global Vite installation is needed.
 
-```bash
-python3 -m http.server 8765 --bind 127.0.0.1
-```
+Open the local URL Vite prints, normally `http://127.0.0.1:5173/`. Keep the terminal running. Saving source files updates the page automatically. Stop the server with **Ctrl+C** in that terminal.
 
-### Option 2: Node.js
-
-```bash
-npx http-server -p 8765 -a 127.0.0.1
-```
-
-Or with plain Node:
-
-```bash
-node -e "require('http').createServer((_,res)=>res.end(require('fs').readFileSync('index.html'))).listen(8765,'127.0.0.1')"
-```
-
-### Option 3: PHP
-
-```bash
-php -S 127.0.0.1:8765
-```
-
-### Option 4: Port already in use
-
-If port 8765 is taken, pick another port and open the matching URL:
+To choose a different port:
 
 ```powershell
-python -m http.server 8766 --bind 127.0.0.1
+npm.cmd run dev -- --port 5174 --strictPort
 ```
 
-Then open `http://127.0.0.1:8766/`.
+Without `--strictPort`, Vite chooses another available port when its default is busy. Always use the URL it prints. The scripts bind to the loopback address for local use.
 
-## Open the prototype
+## Test and build
 
-Keep the server running and open:
-
+```powershell
+npm.cmd test
+npm.cmd run build
+npm.cmd run preview
 ```
-http://127.0.0.1:8765/
-```
 
-If you used a different port, replace `8765` with that port.
+- `test` runs the demo selector tests using Node's built-in test runner.
+- `build` writes the production assets to `dist/`.
+- `preview` serves the most recent build, normally at `http://127.0.0.1:4173/`. Rebuild after source changes; preview does not rebuild automatically.
 
-## Edit and stop
+A successful build checks module imports and JSX compilation. Also exercise theme selection, sorting, filters, reset, preview dismissal, keyboard focus, and desktop/narrow layouts in the browser. There is no separate lint command at this checkpoint.
 
-- After saving a source change, refresh the browser. This server does not auto-reload.
-- Use **Ctrl+F5** to refresh without cached files.
-- To stop the server, focus its terminal and press **Ctrl+C**.
-- If the terminal is unavailable, stop the process holding port 8765:
+Do not open `index.html` using `file://`. To host a completed build elsewhere, serve the contents of `dist/`, not the source folder. Deployment and access protection remain separately approved steps; `vite preview` is for local verification.
 
-  Windows PowerShell:
+## Current content
 
-  ```powershell
-  Stop-Process -Id (Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue).OwningProcess -Force
-  ```
-
-  macOS/Linux:
-
-  ```bash
-  lsof -ti:8765 | xargs kill
-  # or
-  fuser -k 8765/tcp
-  ```
-
-## What to expect
-
-The page displays the existing prototype design with tactic selection, sorting, support filtering, difficulty buttons, and board-preview dialogs. Associations and boards are still labeled demo content. The genuine JSON exports are present in `data/` but are not connected to the interface yet. ECLAT runs offline in Colab.
-
-The page loads its stylesheet from `src/styles/site.css` and its module entry point from `src/main.js`. Keep the entire `src/` directory in place alongside the HTML entry point, and use the HTTP URL above rather than opening the file directly.
+The design, responsive sticky header, and existing demo interactions are preserved. Metrics and boards are illustrative. The genuine JSON exports remain unchanged in `data/`; they are neither fetched by the app nor copied into `dist/` in Step 2. JSON integration and real boards require the next approvals.
 
 ## Troubleshooting
 
-| Symptom | Action |
-| ------- | ------ |
-| No server command available | Install Python 3, Node.js, or PHP, then retry one of the start options above. |
-| Browser shows a directory listing or 404 | Run the server from the repository root containing `index.html`. |
-| Page is blank, no styles, or controls do not work | Use the HTTP URL, confirm `src/` is present, and press Ctrl+F5. Developer tools can identify missing module/stylesheet requests. |
-| Browser cannot connect | Confirm the server terminal is running and the URL uses the same port as the command. |
+| Symptom                                              | Action                                                                            |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `node` or `npm.cmd` is unavailable                   | Install a supported Node.js version, reopen the terminal, and check the versions. |
+| PowerShell blocks `npm.ps1`                          | Use the documented `npm.cmd` commands.                                            |
+| Vite is missing or imports fail                      | Run `npm.cmd ci` from the repository root.                                        |
+| Node version is unsupported                          | Upgrade to a version matching the requirement above.                              |
+| Port is busy                                         | Use the URL Vite prints or choose a port with `--port`.                           |
+| Browser cannot connect                               | Keep the server running and use its exact local URL.                              |
+| Page is blank when opened directly or through Python | Start Vite and open its HTTP URL.                                                 |
+| Preview shows an older change                        | Run `npm.cmd run build` again, then reload.                                       |
 
-The server is bound to your loopback address for local development. Production deployment and access protection are separate project steps.
+`node_modules/` and `dist/` are generated and ignored by Git. Dependency versions are pinned intentionally; report incompatibilities before replacing them.
