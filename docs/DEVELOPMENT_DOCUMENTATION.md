@@ -787,6 +787,46 @@ Limits: local development Chrome checks, not exhaustive production-preview, scre
 
 ---
 
+### 7.17 Beginner-friendly About page (completed November 2, 2026)
+
+Scope: the user requested the same UX attention applied to Explorer. Changes are limited to About, its scoped styling, and necessary documentation. No dependency, dataset, Git mutation, or deployment change was introduced.
+
+- Put a plain-language project purpose and links to puzzles/usage alongside the real Lichess source. The source snapshot now displays as a readable date, with its original machine-readable value retained in a time element.
+- Kept all four genuine counts, with clearer labels and explanations of directional connections versus pairs and example entries versus unique puzzles. Counts still come from the validated dataset.
+- Added an accessible heading structure explaining how tag connections are found and visible practical limitations. The original sample/training/evaluation counts, example source, ECLAT method, support/lift thresholds, and unmodified metadata limitations remain in native expandable research details.
+- Moved the complete existing renderer/artwork attribution into a clearly labelled credits section. All contributor names, original URLs, CC BY-SA 3.0 attribution, MIT notice, and artwork notices remain available. Reused the existing palette and components; About styles are scoped to avoid changing Explorer.
+
+Validation:
+
+- All 38 tests passed, including original export hashes, dataset formulas/counts/rankings, and artwork/notice checks. Production build and diff-whitespace checks passed. Changed source files were formatted with the existing Prettier installation.
+- Inspected the running development site in Chrome at desktop, 320px, and 390px widths. Checked purpose/source layout, readable date and genuine counts, stacked narrow cards, visible limitations, preserved credit links, and expanded research fields. Mouse opening and Space-key closing worked with a visible focus ring.
+
+Limits: selected local Chrome development checks, not an exhaustive production-preview, screen-reader, physical-device, other-engine, or participant usability study. No new claims of educational effectiveness or model accuracy were added.
+
+Guidance: [W3C writing for accessibility](https://www.w3.org/WAI/tips/writing/) and [clear purpose](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o1p01-clear-purpose/). These informed headings and plain-language content; this work is not a claim of complete WCAG conformance.
+
+---
+
+### 7.18 Practical How to use guide (completed November 2, 2026)
+
+Scope: the user requested the same beginner UX improvements made to Explorer and About. Preserved prior work, including the existing About changes. Changes in this step concern MethodPage, scoped usage styles, and necessary documentation; no dependencies, frozen data, Git mutations, or deployment were introduced.
+
+- Replaced the outdated tactic-first walkthrough with an ordered browse/preview/solve guide matching the current gallery-first Explorer. Instructions use the real Easy, Enlarge board, Back to explorer, Escape, and Solve on Lichess controls and explain the new-tab return path.
+- Added separate guidance for choosing different tactics, navigating between the mobile gallery and choices, resetting to Fork, and reading side-to-move, difficulty/rating, pair tags, and puzzle details.
+- Added direct Open Explorer links; they use the existing route and do not reset selections. Retained the original optional support/confidence/lift definitions and formulas, with a link to About for provenance. Preserved existing static-preview and association limitations.
+- Used semantic ordered lists, nested headings, visible control names in prose, responsive cards, and native research disclosure. Usage-specific CSS does not change the Explorer or About layouts.
+
+Validation:
+
+- All 38 tests passed, including frozen hashes, data contracts, rule/example selection, ratings, board positions, and artwork notices. Production build and diff-whitespace checks passed. Changed source files were formatted with the existing Prettier installation.
+- Inspected the local Chrome development site at desktop, 390px, and 320px. Checked the walkthrough, stacked preview/solve instructions, card-label guidance, research disclosure, and navigation to Explorer/back. Mouse opening and Space-key closing of the disclosure worked with a visible focus ring. Corrected JSX whitespace around bold control names during review.
+
+Limits: local content/layout and selected browser checks, not a new end-to-end external Lichess solving test, exhaustive production-preview check, screen-reader/device/other-engine audit, or participant usability study.
+
+Guidance: [W3C step-by-step instructions](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o4p07-step-instructions/) and [Nielsen help/documentation](https://www.nngroup.com/articles/help-and-documentation/). These support concrete, concise instructions matching the task; they do not establish complete accessibility conformance.
+
+---
+
 ## 8. Methodological safeguards and limitations
 
 1. Training and test records were split before analytical EDA. All theme choices, frequency thresholds, semantic exclusions, and ranking settings were made using training data and official theme definitions.

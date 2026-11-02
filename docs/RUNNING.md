@@ -64,6 +64,10 @@ Matching examples explain the selected pair using genuine tags and existing them
 
 If a JSON file is missing, malformed, or fails validation, Home, Explorer, and About show an error with **Reload page**. Restore the original export and reload. Do not repair counts or metrics by editing the JSON. The tests protect the original SHA-256 hashes. A production build can compile even when data is missing, so run both tests and browser checks.
 
+How to use follows the current gallery-first interface: choose an example, enlarge the preview, and solve on Lichess. Separate guidance covers Change tactics, View puzzles, Back to puzzles, Reset to Fork, and puzzle-card labels. Statistics and research formulas stay in an optional native disclosure. Open Explorer links lead to the existing gallery without resetting its selection.
+
+About introduces the project and Lichess source first, explains the four genuine dataset counts, and keeps practical limitations visible. View the research details expands the original sample/split counts, method, thresholds, and metadata limitations. Chessboard and artwork credits remain in a labelled section with the original license links.
+
 ## Chessboard assets
 
 The installed `cm-chessboard@8.15.4` supplies the renderer and CSS. `public/chess/standard.svg` is the verified Wikimedia sprite copied unchanged from that package; Vite copies it and `public/licenses/` into the build. The About page gives attribution. Do not replace it with the separately licensed Staunty set or reformat the third-party asset/notice files.
