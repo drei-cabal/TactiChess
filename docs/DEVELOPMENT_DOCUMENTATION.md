@@ -1,7 +1,7 @@
 # TacticPair V2
 ## Development and Research Documentation
 
-Document version: 1.7\
+Document version: 1.8\
 Last updated: November 2, 2026\
 Current status: Stages 1–5 completed; local audit, asset extraction, readability cleanup, and native-module separation completed; Vite + React setup awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
@@ -568,7 +568,13 @@ Validation performed:
 
 Limitations: verification used headless Chrome, not a physical phone or manual screen-reader session. The interface still uses demo content. No React/Vite setup, genuine JSON loading, packages, staging, commits, pushes, or deployment were added. Temporary verification files were removed after checking. Step 2 remains separately approval-gated.
 
-### 7.6 Upcoming work (not yet started)
+### 7.6 November 2, 2026: Sticky header
+
+The user approved a sticky header before Step 2. The header now stays at the top while scrolling, with an opaque background matching the page. Its stacking order remains below the preview overlay. A shared responsive height variable preserves the existing desktop and narrow-screen heights and provides anchor-scroll spacing so linked sections are not hidden beneath the header.
+
+Eight headless Chrome assertions passed at both desktop and narrow-screen widths: sticky positioning, background, responsive height, scrolling, anchor visibility, overlay layering, preview dismissal, and the initial top-of-page layout. The stylesheet formatter check and `git diff --check` passed. HTML, all JavaScript modules, frozen JSON, and unrelated user files remained unchanged. No packages or Step 2 work were added; temporary verification files were removed.
+
+### 7.7 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
