@@ -1,0 +1,4 @@
+# Keep frozen exports and local agent instructions unchanged.
+data/
+AGENTS.md
+docs/TACTICHESS_CODEX_HANDOFF.md

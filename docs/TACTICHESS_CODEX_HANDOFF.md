@@ -1,4 +1,4 @@
-# TactiChess — Codex Project Handoff
+# TactiChess | Codex Project Handoff
 
 Updated: November 1, 2026  
 Project: TactiChess, offline ECLAT-powered chess tactic association explorer  
@@ -12,7 +12,7 @@ Build a responsive, static website where a learner selects a chess tactic, sees 
 - Mine and present **two-item tactical pairs only**; no triples.
 - This is association discovery, **not** chess move prediction, classification accuracy, causal inference, or proof of educational effectiveness.
 - MVP excludes accounts/profiles, databases, backend APIs, and a playable chess engine. A correct static board preview and Lichess practice link suffice.
-- Preserve the existing prototype's design where practical. Keep technology and changes minimal; current site uses one `index.html` with inline CSS and JS.
+- Preserve the existing prototype's design where practical. Keep custom code and changes minimal. The current single-file site is a migration starting point, not the desired final architecture; evaluate modular Vite + Preact or native JS modules before implementation.
 - Use the user-approved development plan and completed documentation for research decisions. Do not silently change model parameters or JSON metrics.
 
 ## 2. Completed research and data pipeline
@@ -67,7 +67,7 @@ Original ZIP: `tacticpair_website_prototype(1).zip`, containing `tacticpair_site
 - Proposed website root:
 
 ```text
-TacticPair_website/
+TactiChess/
   index.html
   README.md
   data/
@@ -75,7 +75,7 @@ TacticPair_website/
     puzzles.json
     metadata.json
   docs/
-    TACTICPAIR_V2_CODEX_HANDOFF.md
+    TACTICHESS_CODEX_HANDOFF.md
     DEVELOPMENT_DOCUMENTATION.md   (optional detailed record)
 ```
 
@@ -94,7 +94,7 @@ Use a simple local HTTP server to test JavaScript `fetch()` of JSON, not `file:/
 5. **6.5 QA**: desktop/mobile, keyboard/accessibility, errors, data integrity, link and FEN checks.
 6. **6.6 Vercel**: static deployment with access protection on all deployments, verify signed-out browser is blocked and authorized reviewer can access.
 
-**Scope/gate rules:** Work on one explicitly approved step at a time. At the start, inspect and explain the minimum necessary changes. Ask before modifying files or proceeding to a new step. Keep code concise, readable, and maintainable; avoid unnecessary refactors, frameworks, servers, databases, or package installations. Do not create a playable chess engine in the MVP. Do not overwrite or modify the supplied JSON metrics.
+**Scope/gate rules:** Work on one explicitly approved step at a time. At the start, inspect and explain the minimum necessary changes. Ask before modifying files or proceeding to a new step. Keep custom code concise, readable, and maintainable. Evaluate a small modular frontend framework or native ES modules and reusable libraries against maintenance and dependency costs. Avoid servers, databases, and unnecessary packages. Do not create a playable chess engine in the MVP. Do not overwrite or modify the supplied JSON metrics.
 
 **Progress recording:** After each confirmed step, update the dated progress section of this handoff (or the detailed documentation) to distinguish completed work, results tested, remaining work, and limitations. Never claim a test or deployment succeeded without running/verifying it. GitHub history should track actual source changes.
 
@@ -103,3 +103,7 @@ Use a simple local HTTP server to test JavaScript `fetch()` of JSON, not `file:/
 The source record before transfer is `TacticPair_V2_Development_Documentation_v1.4.md`, which documents Stages 1–5 in detail and the start of Stage 6.1. The original approved requirements are `TacticPair_V2_Comprehensive_Development_Plan(1).md`.
 
 If those files are copied into `docs/`, read them for details. The current status and verified figures above take precedence over any older *planned* figure. Treat the actual JSON files as authoritative for runtime data, and do not assume their bytes are present until inspected locally.
+
+## 7. Updated frontend architecture decision (November 1, 2026)
+
+The user has renamed the project **TactiChess**. The old prototype and historic Colab/Drive filenames may retain older names, but frontend branding and future repository files must use TactiChess. Stage 6.1 now includes an evidence-based architecture review before any implementation: separate markup, styles, and JavaScript into appropriate modules/components, consider Vite + Preact vs Vite + vanilla modules, and search official documentation and maintained GitHub libraries for reusable static chessboard rendering. Favor minimum custom code and clean responsibilities over copying the entire single-file prototype. No changes are approved until the audit and plan are reviewed. Local `AGENTS.md` governs behavior and is not intended for Git tracking.

@@ -1,9 +1,9 @@
 # TacticPair V2
 ## Development and Research Documentation
 
-Document version: 1.4  
-Last updated: November 1, 2026  
-Current status: Stages 1–5 completed; Stage 6.1 initiated, awaiting local file preparation  
+Document version: 1.7\
+Last updated: November 2, 2026\
+Current status: Stages 1–5 completed; local audit, asset extraction, readability cleanup, and native-module separation completed; Vite + React setup awaits separate approval\
 Notebook: `TactiChess_V2_ECLAT_500K.ipynb`  
 Google Drive project folder: `MyDrive/TactiChess_V2/`
 
@@ -490,13 +490,15 @@ The user reported `STAGE 5 JSON VALIDATION PASSED`; all three files were saved. 
 
 ## 7. Stage 6: Website Integration and Vercel Validation
 
-Status: **In progress. Step 6.1 is the current approval-gated task; no frontend code has been changed yet.**
+Status: **In progress. The local audit and approved frontend migration Step 1 asset extraction are complete. Vite + React setup and genuine JSON integration have not started.**
 
 ### 7.1 Stage 6 objective
 
 Integrate the three validated JSON files into the existing responsive static website, replace illustrative associations and chessboards with real data, verify interactions and puzzle links, and deploy an access-controlled Vercel demonstration. ECLAT was already run offline in Colab; the website will read and display its frozen results rather than rerun mining.
 
 ### 7.2 Step 6.1: Audit and prepare the website files
+
+The following records the original preparation discussion. Its single-file recommendation and pending local-file transfer are superseded by the November 2, 2026 checkpoint in Section 7.3. Historical project and Drive paths below are retained as recorded.
 
 **Inspection completed:** The attached `tacticpair_website_prototype(1).zip` contains a `tacticpair_site/` directory with `index.html` and `README.md`. The HTML currently includes both CSS and JavaScript inline, so no framework, package installation, database, or build tooling is needed. Its `themes`, `pairs`, and `boards` JavaScript variables contain demo content, not the Colab exports. The present practice-board previews are synthetic, and the current support slider was designed for illustrative percentages. The code does not yet load JSON files.
 
@@ -514,7 +516,59 @@ Integrate the three validated JSON files into the existing responsive static web
 
 **Status and checkpoint:** The project ZIP and its contents were inspected in this conversation. Local extraction, copying the three JSON files from Google Drive, and opening the folder in VS Code remain for the user to perform. Step 6.2 must not begin until the user explicitly confirms that the folder is prepared. The current prototype may still show demo metrics during Step 6.1; this is expected.
 
-### 7.3 Upcoming work (not yet started)
+### 7.3 November 2, 2026: Frontend migration Step 1 completed
+
+The actual TactiChess checkout was inspected, including the three JSON exports. The user selected a staged Vite + React migration, with this implementation approval limited to extracting the existing assets and establishing parity. This does not mark the remaining Stage 6 integration work complete.
+
+- Extracted the complete inline stylesheet into `src/styles/site.css` and the existing demo script into `src/main.js`. The extracted contents are byte-identical to their original blocks, and HTML outside those blocks is unchanged apart from the external asset references.
+- Preserved CSS order, responsive breakpoints, existing markup, demo metrics, board layouts, selection, sorting, filters, reset, and modal behavior. The existing visible prototype branding remains for the later branding/integration step.
+- Updated the README with the local HTTP command and the requirement to retain the external assets alongside the HTML entry point.
+- No packages were installed. No Vite/React scaffolding, JSON integration, data relocation, staging, commits, pushes, or deployment occurred. Pre-existing changes to `.gitignore` and the handoff were preserved.
+
+Validation performed:
+
+- `node --check src/main.js` passed, and `git diff --check` passed.
+- All 32 automated assertions passed in isolated headless Chrome before and after extraction. They exercised the six theme selectors, three sort modes, association selection, all difficulty buttons, support filtering and recovery, empty states, reset, modal opening and all four dismissal paths, initial modal focus, navigation anchors, and external-link protection. Captured rendered list and board markup matched before and after.
+- Desktop screenshots at 1440 × 2000 and narrow-screen screenshots at 500 × 3800 were inspected and compared. Both before/after PNG pairs were byte-identical. A 390-pixel capture was excluded because it clipped Chrome's minimum headless viewport.
+- Local HTTP requests returned 200 with the expected HTML, CSS, and JavaScript content types. All three frozen JSON SHA-256 hashes remained unchanged.
+
+Limitations: verification used headless Chrome, not a physical mobile device or a manual screen-reader session. Desktop browser access was unavailable. No build or lint scripts exist at this step, so no build or lint run is claimed. The temporary browser harness and screenshots are not project deliverables. The website still displays labeled demo content and does not load the exports.
+
+Next approval gate: frontend migration Step 2, minimal Vite + React setup and a component migration preserving the existing behavior. JSON integration and subsequent stages remain separately approval-gated.
+
+### 7.4 November 2, 2026: Readability and shared code style
+
+Before Step 2, the user approved a readability pass and documentation for developers and agents. Formatted `index.html`, `src/main.js`, and `src/styles/site.css` with two-space indentation, expanded blocks and HTML templates, blank lines between related sections, and brief comments. Added braces around single-statement conditionals without changing their behavior. Existing selectors, responsive breakpoints, demo content, and interaction defaults were retained.
+
+Added `.prettierrc.json` and `.prettierignore` so formatting is repeatable and the frozen exports are excluded. Used the Prettier 3.7.4 installation already bundled with the local VS Code extension; no packages were installed. Added [Code style](CODE_STYLE.md), linked it from the README, and added a pointer in the local agent instructions. The guide covers indentation, naming, brief comments, inline whitespace, CSS order, formatting, verification, and approval boundaries.
+
+Validation performed:
+
+- The formatter check, `node --check src/main.js`, and `git diff --check` passed.
+- All 32 headless Chrome assertions passed before and after the readability pass, covering the existing controls and preview dismissal paths.
+- Desktop screenshots at 1440 × 2300 and narrow-screen screenshots at 500 × 3800 were byte-identical before and after. Formatting initially introduced a space before inline punctuation; the final markup preserves the original spacing using narrowly placed formatter-ignore comments.
+- All 163 parsed CSS rules retained their order and values, apart from equivalent whitespace and numeric notation in a custom property. The three frozen JSON hashes and unrelated pre-existing user files remained unchanged.
+
+Limitations: checks used headless Chrome rather than a physical mobile device or manual screen-reader session. No Vite/React setup, data integration, package installation, staging, commit, push, or deployment occurred. Temporary verification files were removed after checking. Step 2 remains separately approval-gated.
+
+### 7.5 November 2, 2026: Page and feature responsibilities separated
+
+The user approved breaking down the remaining page markup before Step 2. `index.html` is now a 24-line document shell, and `src/main.js` only composes the page and starts features. Separate native modules own navigation, introduction, explorer markup and behavior, project information, demo data, board rendering, and the preview dialog. See the [current module map](CODE_STYLE.md#current-module-map).
+
+The explorer retains one local state object and its original filtering and rendering flow. It receives a callback for opening previews rather than owning dialog markup or dismissal events. The preview component receives its board renderer; the pure board renderer receives a position array. These narrow function boundaries apply single responsibility and dependency separation without adding classes, a generic framework, packages, or a backend. Existing demo content and visible design were preserved.
+
+The browser loads these files through native module imports, so the documented local HTTP server is required. No HTML-fragment loader or additional fetch layer was introduced. With JavaScript disabled, the shell displays a message explaining that the explorer requires JavaScript. README, run instructions, code-style guidance, and the local agent instructions were updated.
+
+Validation performed:
+
+- Syntax checks and the formatter check passed for all nine JavaScript modules and the HTML entry point. `git diff --check` passed.
+- All 32 browser assertions passed before and after the split. Rendered theme lists, association lists, puzzle lists, hero boards, modal boards, and preview descriptions matched exactly.
+- Desktop screenshots at 1440 × 2300 and narrow-screen screenshots at 500 × 3800 were byte-identical to the baseline. Final headless Chrome checks ran sequentially with sufficient module-loading time.
+- All module URLs returned 200 with JavaScript content types. The existing stylesheet, all frozen JSON exports, formatter configuration, and unrelated user files retained their SHA-256 hashes.
+
+Limitations: verification used headless Chrome, not a physical phone or manual screen-reader session. The interface still uses demo content. No React/Vite setup, genuine JSON loading, packages, staging, commits, pushes, or deployment were added. Temporary verification files were removed after checking. Step 2 remains separately approval-gated.
+
+### 7.6 Upcoming work (not yet started)
 
 - Step 6.2: Connect the JSON files and replace demo themes, association counts, support, confidence, and lift.
 - Step 6.3: Implement theme selection, sorting, support filtering, rating-based puzzle filtering, loading, empty, and error states.
@@ -522,7 +576,7 @@ Integrate the three validated JSON files into the existing responsive static web
 - Step 6.5: Check data integrity, accessibility, responsive layouts, and user flows.
 - Step 6.6: Deploy the static site on Vercel, protect all intended deployments, and test access for authorized and signed-out visitors.
 
-Only Step 6.1 has been presented in the current approval gate.
+The approved asset extraction is complete. The next frontend migration step and all remaining Stage 6 work require separate approval.
 
 ---
 
