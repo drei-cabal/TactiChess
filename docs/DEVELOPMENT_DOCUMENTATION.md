@@ -749,6 +749,26 @@ Design references: [W3C clear words](https://www.w3.org/WAI/WCAG2/supplemental/p
 
 ---
 
+### 7.15 Further Explorer simplification and puzzle context (completed November 2, 2026)
+
+Scope: the user requested a simpler Explorer, descriptions connecting the puzzles to the selected themes, and an assessment of advanced filters. Preserved existing work; no dependency, frozen export, Git mutation, or deployment was introduced by this task.
+
+- Replaced the expandable theme grid and extra beginner action with one labelled native tactic menu, its definition, and Reset to Fork. All 20 themes remain selectable. Shortened pair choices and show optional statistics only for the selected pair.
+- Removed the support/frequency slider and sorting controls from Explorer. They were unnecessary for the learner task: the slider only hid already-curated rules and did not rerun ECLAT. The page retains the original support baseline and ranking. Existing pure selector contracts remain unchanged.
+- Moved difficulty beside puzzle results. Added pair context from the selected themes' genuine definitions and the examples' tag membership. Each card states whose moves to find and names its selected pair. The export has no authored solution commentary, so these descriptions explain tags rather than inventing specific moves, tactical sequences, or causes. No solutions are exposed.
+- Updated How to use, the running guide, and the module map. Removed obsolete theme-grid, slider, sorting, and beginner-action CSS.
+
+Validation:
+
+- All 38 existing tests passed, including original data hashes, pair references, ratings, formulas, ranking preservation, and board/asset contracts. Production build and diff-whitespace checks passed. Changed source files were formatted with the existing Prettier installation.
+- Manually reviewed the running development site in Chrome at desktop, 320px, and 390px. Checked Reset to Fork, keyboard selection of Zugzwang in the native menu, changes between Defensive Move and Quiet Move with updated pair context, Easy/Hard filtering and matching counts/side-to-move tasks, and selected-pair evidence. The revised copy, controls, and cards fit the inspected narrow layouts.
+
+Limits: selected local development-browser checks, not exhaustive production-preview, screen-reader, physical-device, other-engine, or participant usability testing. Puzzle explanations are limited to the existing tags and definitions; position-specific authored reasoning would require separately reviewed annotations. Frozen exports and original Lichess URLs remain unchanged.
+
+Design references: [W3C clear purpose and controls](https://www.w3.org/WAI/WCAG2/supplemental/objectives/o1-understandable/) and [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/). These inform the design; they do not by themselves establish accessibility conformance.
+
+---
+
 ## 8. Methodological safeguards and limitations
 
 1. Training and test records were split before analytical EDA. All theme choices, frequency thresholds, semantic exclusions, and ranking settings were made using training data and official theme definitions.

@@ -54,9 +54,9 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | `src/features/method/MethodPage.jsx`             | Exploring steps and metric explanations.                                    |
 | `src/features/about/AboutPage.jsx`               | Dataset, source, licenses, and provenance.                                  |
 | `src/features/explorer/Explorer.jsx`             | Shared filter and preview selection state, with fixed training metrics.     |
-| `src/features/explorer/ExplorationFilters.jsx`   | Controlled theme, support, and example-difficulty inputs.                   |
+| `src/features/explorer/ExplorationFilters.jsx`   | Controlled tactic menu, selected definition, and reset.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
-| `src/features/explorer/PuzzleExamples.jsx`       | Genuine puzzle cards, links, counts, and distinct empty states.             |
+| `src/features/explorer/PuzzleExamples.jsx`       | Pair context, difficulty controls, genuine puzzle cards, links, counts, and empty states.             |
 | `src/features/puzzles/PuzzleTags.jsx` | Readable puzzle-tag labels and expandable puzzle identifiers/details. |
 | `src/features/puzzles/StaticBoard.jsx`           | Library lifecycle, static SVG, and accessible piece-location description.   |
 | `src/features/puzzles/PuzzlePreviewDialog.jsx`   | Native modal, dismissal, focus, and scroll-lock cleanup.                    |
@@ -106,7 +106,7 @@ Keep comments accurate. The hero and example boards use genuine exported positio
    git diff --check
    ```
 
-4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check themes, sorting, support and rating filtering, selection fallback, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check preview orientation, position descriptions, native-dialog focus, and original practice links. See [Running the project](RUNNING.md).
+4. Run `npm.cmd run dev` for interactive checks. After building, run `npm.cmd run preview` to check the production output. Check the tactic menu, pair selection and descriptions, rating filtering, reset, loading/error recovery, keyboard focus, and desktop/narrow layouts. Check preview orientation, position descriptions, native-dialog focus, and original practice links. See [Running the project](RUNNING.md).
 5. Review the diff and update the existing development record with actual checks and limitations. Preserve unrelated user edits.
 
 Node's built-in runner tests pure logic; Vite validates JSX and module compilation. There is no separate lint command or project-installed formatter. Do not describe these checks as a complete accessibility audit or physical-device test.

@@ -2,8 +2,16 @@ import { PuzzleTags } from '../puzzles/PuzzleTags.jsx';
 import { StaticBoard } from '../puzzles/StaticBoard.jsx';
 
 export function PuzzleExamples({
-  examples, rule, difficulty, totalCount, themeNames, onPreview,
-  theme, relatedTheme, ratingBands, onDifficultyChange,
+  examples,
+  rule,
+  difficulty,
+  totalCount,
+  themeNames,
+  onPreview,
+  theme,
+  relatedTheme,
+  ratingBands,
+  onDifficultyChange,
 }) {
   if (!rule) {
     return (
@@ -16,30 +24,55 @@ export function PuzzleExamples({
   return (
     <div id="puzzles">
       <div className="puzzle-context">
-        <p>Find the best continuation for the side to move. Each puzzle below is tagged with both
-          <strong> {theme.name}</strong> and <strong>{relatedTheme.name}</strong>.</p>
+        <p>
+          Find the best moves for the side to move. Each puzzle below is tagged with both
+          <strong> {theme.name}</strong> and <strong>{relatedTheme.name}</strong>.
+        </p>
         <dl>
-          <div><dt>{theme.name}</dt><dd>{theme.description}</dd></div>
-          <div><dt>{relatedTheme.name}</dt><dd>{relatedTheme.description}</dd></div>
+          <div>
+            <dt>{theme.name}</dt>
+            <dd>{theme.description}</dd>
+          </div>
+          <div>
+            <dt>{relatedTheme.name}</dt>
+            <dd>{relatedTheme.description}</dd>
+          </div>
         </dl>
-        <p>Look for these ideas as you solve. The tags describe the puzzle's solution as a whole;
-          they do not say which tactic comes first.</p>
+        <p>
+          Look for these ideas as you solve. The tags describe the puzzle's solution as a whole;
+          they do not say which tactic comes first.
+        </p>
       </div>
       <div className="puzzle-difficulty">
         <span className="control-label">Puzzle difficulty</span>
-        <div className="segment" id="difficulty" role="group"
-          aria-label="Puzzle difficulty" aria-describedby="difficultyHelp">
+        <div
+          className="segment"
+          id="difficulty"
+          role="group"
+          aria-label="Puzzle difficulty"
+          aria-describedby="difficultyHelp"
+        >
           {['All', 'Easy', 'Medium', 'Hard'].map((level) => (
-            <button key={level} type="button" aria-pressed={difficulty === level}
+            <button
+              key={level}
+              type="button"
+              aria-pressed={difficulty === level}
               className={difficulty === level ? 'active' : ''}
-              onClick={() => onDifficultyChange(level)}>{level}</button>
+              onClick={() => onDifficultyChange(level)}
+            >
+              {level}
+            </button>
           ))}
         </div>
         <p id="difficultyHelp" className="example-summary">
-          {difficulty === 'All' ? 'Choose Easy for lower-rated puzzles.' : `${difficulty}: ${ratingBands[difficulty]}.`}
+          {difficulty === 'All'
+            ? 'Choose Easy for lower-rated puzzles.'
+            : `${difficulty}: ${ratingBands[difficulty]}.`}
         </p>
       </div>
-      <p className="example-summary">View the boards here; use Solve on Lichess to move the pieces.</p>
+      <p className="example-summary">
+        View the boards here; use Solve on Lichess to move the pieces.
+      </p>
       <p id="exampleCount" className="example-summary" role="status">
         {examples.length} of {totalCount} example puzzles ·{' '}
         {difficulty === 'All' ? 'All ratings' : difficulty}
@@ -64,8 +97,9 @@ export function PuzzleExamples({
                   Puzzle rating {puzzle.rating.toLocaleString('en-US')}
                 </p>
                 <p className="puzzle-task">
-                  Find the best continuation for {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'}.
-                  This puzzle brings together {theme.name} and {relatedTheme.name}.
+                  Find the best moves for{' '}
+                  {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'}. This puzzle is
+                  tagged with {theme.name} and {relatedTheme.name}.
                 </p>
                 <PuzzleTags puzzle={puzzle} themeNames={themeNames} />
                 <button

@@ -94,7 +94,6 @@ export function Explorer({ dataset }) {
               onPreview={setPreviewPuzzle}
             />
           </div>
-
         </div>
       </div>
       {previewPuzzle && (

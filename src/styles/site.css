@@ -505,57 +505,6 @@ h2,
   font-weight: 550;
 }
 
-.theme-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.theme-chip {
-  min-height: 45px;
-  padding: 8px 9px;
-  background: #fbfcf9;
-  border: 1px solid #e3eae1;
-  color: #596b5c;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  text-align: left;
-  font-size: 11.5px;
-  font-weight: 750;
-  transition: all 0.14s;
-}
-
-.theme-chip .sym {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  flex: none;
-  border-radius: 6px;
-  background: #eff4e9;
-  color: #587e55;
-  font-size: 17px;
-}
-
-.theme-chip.active {
-  background: #eaf5dc;
-  border-color: #98c879;
-  color: #234928;
-  box-shadow: inset 0 0 0 1px #b8da9e;
-}
-
-.theme-chip:hover {
-  border-color: #9bc27f;
-}
-
-.control-divider {
-  border: 0;
-  border-top: 1px solid #edf0eb;
-  margin: 25px 0;
-}
-
 .segment {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -580,27 +529,6 @@ h2,
   color: #234632;
   background: #fff;
   box-shadow: 0 2px 7px #203a2217;
-}
-
-.slider-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.slider-row strong {
-  color: #325638;
-  font-size: 12px;
-}
-
-input[type='range'] {
-  width: 100%;
-  accent-color: #376b42;
-  margin: 14px 0 0;
-  cursor: pointer;
 }
 
 .tiny-note {
@@ -653,16 +581,6 @@ input[type='range'] {
   font-size: 10px;
   font-weight: 850;
   padding: 6px 9px;
-}
-
-.sort-select {
-  border: 1px solid #e1e8de;
-  border-radius: 8px;
-  padding: 9px 10px;
-  color: #49624c;
-  background: #fff;
-  font-size: 11px;
-  font-weight: 700;
 }
 
 .result-list {
@@ -1036,11 +954,6 @@ input[type='range'] {
     grid-template-columns: 275px minmax(0, 1fr);
   }
 
-  .theme-chip {
-    font-size: 10px;
-    padding: 7px;
-  }
-
   .card-top {
     padding: 13px;
   }
@@ -1117,10 +1030,6 @@ input[type='range'] {
 
   .explorer {
     grid-template-columns: 1fr;
-  }
-
-  .theme-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .control-panel {
@@ -1230,17 +1139,8 @@ input[type='range'] {
     font-size: 31px;
   }
 
-  .theme-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .results-top {
     padding: 18px 16px 14px;
-  }
-
-  .sort-select {
-    max-width: 126px;
-    font-size: 10px;
   }
 
   .results-top p {

@@ -15,15 +15,16 @@ export function MethodPage() {
           <div className="step-number">01 /</div>
           <h2>Choose your tactic</h2>
           <p>
-            New to tactics? Start with Fork: attacking two or more opposing pieces at once. Use the tactic menu to choose another idea and read its definition.
+            New to tactics? Start with Fork: attacking two or more opposing pieces at once. Use the
+            tactic menu to choose another idea and read its definition.
           </p>
         </article>
         <article className="step">
           <div className="step-number">02 /</div>
           <h2>Choose a connection</h2>
           <p>
-            Read the related tactic's definition and choose View puzzles. The connection
-            means the two tactics appear in the same puzzles, not that one move follows another.
+            Read the related tactic's definition and choose View puzzles. The connection means the
+            two tactics appear in the same puzzles, not that one move follows another.
           </p>
         </article>
         <article className="step">
