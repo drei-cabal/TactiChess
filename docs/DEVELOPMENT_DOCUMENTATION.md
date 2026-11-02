@@ -769,6 +769,24 @@ Design references: [W3C clear purpose and controls](https://www.w3.org/WAI/WCAG2
 
 ---
 
+### 7.16 Puzzle-first Explorer placement (completed November 2, 2026)
+
+Scope: the user liked the content and requested placement changes so puzzles become the highlight. Preserved the copy, genuine examples, definitions, evidence, filters, and preview/practice actions. No dependencies, data changes, Git mutations, or deployment were introduced.
+
+- Moved the gallery ahead of the choices in both DOM and visual order. Desktop uses a dominant left column with larger boards in two columns; the right rail contains the tactic menu, related pair choices, optional statistics, and unchanged pair-context explanation. Removed step numbers that implied the former stacked order.
+- Reduced Explorer's introductory spacing and put difficulty/counts directly above boards. Longer difficulty/practice help follows the gallery, keeping all copy available without delaying the first board. Cards use level-three headings under the gallery's level-two heading.
+- Narrow screens show a single-column gallery first. Change tactics focuses the relocated native menu; Back to puzzles and View puzzles focus the gallery heading, allowing navigation without scrolling through the full puzzle list. Focus targets account for the sticky header.
+
+Validation:
+
+- `npm.cmd test`: 38/38 passed, including frozen hashes, rule/example selection, formulas, ratings, board positions, and artwork contracts. `npm.cmd run build` and `git diff --check` passed. Formatted changed source files with the existing Prettier installation.
+- Visually inspected the running development site in Chrome at desktop and responsive 390px/320px widths with a 731px viewport height. The first board fit in each inspected initial mobile view; the first desktop row was visible without scrolling through choices or explanations. This is evidence for those viewports, not every possible screen height.
+- Checked Change tactics reaching the native menu and selecting Attraction returning focus to the gallery with the correct pair and board examples. Easy filtering showed 5 of 15 examples. Retained genuine preview positions, original links, and pair definitions; the renderer/dialog implementation was unchanged.
+
+Limits: local development Chrome checks, not exhaustive production-preview, screen-reader, physical-device, other-engine, or participant testing. All existing frozen exports and model rules remain unchanged.
+
+---
+
 ## 8. Methodological safeguards and limitations
 
 1. Training and test records were split before analytical EDA. All theme choices, frequency thresholds, semantic exclusions, and ranking settings were made using training data and official theme definitions.

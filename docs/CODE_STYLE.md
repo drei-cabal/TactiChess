@@ -53,10 +53,10 @@ Keep `src/main.jsx` focused on mounting React in Strict Mode and importing style
 | `src/features/introduction/Introduction.jsx`     | Hero and source context.                                                    |
 | `src/features/method/MethodPage.jsx`             | Exploring steps and metric explanations.                                    |
 | `src/features/about/AboutPage.jsx`               | Dataset, source, licenses, and provenance.                                  |
-| `src/features/explorer/Explorer.jsx`             | Shared filter and preview selection state, with fixed training metrics.     |
+| `src/features/explorer/Explorer.jsx`             | Puzzle-first layout, pair context, shared selection/preview state, and fixed metrics.     |
 | `src/features/explorer/ExplorationFilters.jsx`   | Controlled tactic menu, selected definition, and reset.                   |
 | `src/features/explorer/AssociationList.jsx`      | Directional rules and genuine training metrics/counts.                      |
-| `src/features/explorer/PuzzleExamples.jsx`       | Pair context, difficulty controls, genuine puzzle cards, links, counts, and empty states.             |
+| `src/features/explorer/PuzzleExamples.jsx`       | Difficulty controls, genuine puzzle cards, links, counts, help, and empty states.             |
 | `src/features/puzzles/PuzzleTags.jsx` | Readable puzzle-tag labels and expandable puzzle identifiers/details. |
 | `src/features/puzzles/StaticBoard.jsx`           | Library lifecycle, static SVG, and accessible piece-location description.   |
 | `src/features/puzzles/PuzzlePreviewDialog.jsx`   | Native modal, dismissal, focus, and scroll-lock cleanup.                    |

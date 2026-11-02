@@ -385,3 +385,136 @@
 .puzzle-difficulty {
   max-width: 340px;
 }
+
+/* The boards lead; choices and learning context sit alongside them. */
+#discover > .section-top {
+  margin: 20px 0 18px;
+}
+
+#discover .section-top .kicker {
+  margin-bottom: 5px;
+}
+
+#discover .page-heading {
+  font-size: 32px;
+}
+
+.puzzle-workspace {
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 20px;
+}
+
+.puzzle-workspace > *,
+.explorer-rail > * {
+  min-width: 0;
+}
+
+.explorer-rail {
+  display: grid;
+  gap: 16px;
+}
+
+.explorer-rail .control-panel {
+  padding: 18px;
+}
+
+.explorer-rail .reset {
+  margin-top: 8px;
+}
+
+.explorer-rail .results-top {
+  padding: 18px 18px 12px;
+}
+
+.explorer-rail .connection-card .pattern-main {
+  flex-basis: 100%;
+}
+
+.explorer-rail .puzzle-context {
+  margin: 0;
+}
+
+.puzzle-workspace .puzzle-section {
+  padding: 20px;
+  border-top: 3px solid #98c879;
+}
+
+.puzzle-workspace .puzzle-header h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.workspace-jump {
+  border: 1px solid #b5c9aa;
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-height: 44px;
+  background: #f2f7ec;
+  color: var(--forest);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.return-to-puzzles {
+  display: none;
+}
+
+#tactic,
+#puzzleHeading {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.puzzle-workspace .puzzles {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.puzzle-workspace .card-top .position-preview {
+  max-width: 260px;
+}
+
+.puzzle-workspace .puzzle-header {
+  margin-bottom: 14px;
+}
+
+@media (max-width: 800px) {
+  .puzzle-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .return-to-puzzles {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  #discover > .section-top {
+    margin: 12px 0;
+  }
+
+  #discover .page-heading {
+    font-size: 27px;
+  }
+
+  #discover .section-sub {
+    font-size: 12px;
+  }
+
+  .puzzle-workspace .puzzle-section {
+    padding: 14px;
+  }
+
+  .puzzle-workspace .puzzles {
+    grid-template-columns: 1fr;
+  }
+
+  .puzzle-workspace .puzzle-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .puzzle-workspace .puzzle-header h2 {
+    font-size: 23px;
+  }
+}

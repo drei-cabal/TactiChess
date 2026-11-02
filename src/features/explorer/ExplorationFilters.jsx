@@ -3,7 +3,7 @@ export function ExplorationFilters({ themes, selection, onChange, onReset }) {
 
   return (
     <aside className="panel control-panel" aria-label="Choose a tactic">
-      <h2 className="panel-heading">1. Choose a tactic</h2>
+      <h2 className="panel-heading">Choose a tactic</h2>
       <label className="control-label" htmlFor="tactic">
         Chess tactic
       </label>

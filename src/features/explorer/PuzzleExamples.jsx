@@ -16,33 +16,13 @@ export function PuzzleExamples({
   if (!rule) {
     return (
       <div id="puzzles" className="empty" role="status">
-        Choose a connection above to see its example puzzles.
+        Choose a connection to see its example puzzles.
       </div>
     );
   }
 
   return (
     <div id="puzzles">
-      <div className="puzzle-context">
-        <p>
-          Find the best moves for the side to move. Each puzzle below is tagged with both
-          <strong> {theme.name}</strong> and <strong>{relatedTheme.name}</strong>.
-        </p>
-        <dl>
-          <div>
-            <dt>{theme.name}</dt>
-            <dd>{theme.description}</dd>
-          </div>
-          <div>
-            <dt>{relatedTheme.name}</dt>
-            <dd>{relatedTheme.description}</dd>
-          </div>
-        </dl>
-        <p>
-          Look for these ideas as you solve. The tags describe the puzzle's solution as a whole;
-          they do not say which tactic comes first.
-        </p>
-      </div>
       <div className="puzzle-difficulty">
         <span className="control-label">Puzzle difficulty</span>
         <div
@@ -64,15 +44,7 @@ export function PuzzleExamples({
             </button>
           ))}
         </div>
-        <p id="difficultyHelp" className="example-summary">
-          {difficulty === 'All'
-            ? 'Choose Easy for lower-rated puzzles.'
-            : `${difficulty}: ${ratingBands[difficulty]}.`}
-        </p>
       </div>
-      <p className="example-summary">
-        View the boards here; use Solve on Lichess to move the pieces.
-      </p>
       <p id="exampleCount" className="example-summary" role="status">
         {examples.length} of {totalCount} example puzzles ·{' '}
         {difficulty === 'All' ? 'All ratings' : difficulty}
@@ -89,10 +61,10 @@ export function PuzzleExamples({
                 />
               </div>
               <div className="card-bottom">
-                <h4 className="card-name">
+                <h3 className="card-name">
                   {puzzle.difficulty} -{' '}
                   {puzzle.preview_fen.split(' ')[1] === 'w' ? 'White' : 'Black'} to move
-                </h4>
+                </h3>
                 <p className="example-summary">
                   Puzzle rating {puzzle.rating.toLocaleString('en-US')}
                 </p>
@@ -128,6 +100,14 @@ export function PuzzleExamples({
           connection. Try another difficulty or choose a different connection.
         </div>
       )}
+      <p id="difficultyHelp" className="example-summary">
+        {difficulty === 'All'
+          ? 'Choose Easy for lower-rated puzzles.'
+          : `${difficulty}: ${ratingBands[difficulty]}.`}
+      </p>
+      <p className="example-summary">
+        View the boards here; use Solve on Lichess to move the pieces.
+      </p>
     </div>
   );
 }
