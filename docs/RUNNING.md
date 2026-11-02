@@ -42,6 +42,11 @@ The page loads its stylesheet from `src/styles/site.css` and its module entry po
 - After saving a source change, refresh the browser. This server does not automatically reload the page.
 - If an old style or script remains visible, use **Ctrl+F5** to refresh without the cached version.
 - To stop the server, focus its terminal and press **Ctrl+C**.
+- If the terminal is not available, find and stop the process holding port 8765:
+
+   ```powershell
+   Stop-Process -Id (Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue).OwningProcess -Force
+   ```
 
 ## Troubleshooting
 
